@@ -4,14 +4,14 @@ import { DocsThemeConfig } from 'nextra-theme-docs'
 const config: DocsThemeConfig = {
   logo: <span>Toolkit</span>,
   project: {
-    link: 'https://github.com/shuding/nextra-docs-template',
+    link: 'https://github.com/kiyocy24/toolkit-site',
   },
   chat: {
     link: 'https://discord.com',
   },
-  docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
+  docsRepositoryBase: 'https://github.com/kiyocy24/tooklit-site',
   footer: {
-    text: 'Nextra Docs Template',
+    text: 'kiyocy24\'s toolkit',
   },
 }
 
