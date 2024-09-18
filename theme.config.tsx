@@ -6,9 +6,6 @@ const config: DocsThemeConfig = {
   project: {
     link: 'https://github.com/kiyocy24/toolkit-site',
   },
-  chat: {
-    link: 'https://discord.com',
-  },
   docsRepositoryBase: 'https://github.com/kiyocy24/tooklit-site',
   footer: {
     text: 'kiyocy24\'s toolkit',
