@@ -6,10 +6,13 @@ const config: DocsThemeConfig = {
   project: {
     link: 'https://github.com/kiyocy24/toolkit-site',
   },
-  docsRepositoryBase: 'https://github.com/kiyocy24/tooklit-site',
+  docsRepositoryBase: 'https://github.com/kiyocy24/toolkit-site',
   footer: {
     text: 'kiyocy24\'s toolkit',
   },
+  i18n: [
+    { locale: 'ja', text: '日本語' },
+  ],
 }
 
 export default config
