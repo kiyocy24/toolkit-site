@@ -3,8 +3,6 @@ on:
   pull_request:
     types: [opened, reopened, ready_for_review]
   issue_comment:
-    
-env: 
 
 jobs:
   pr_agent:
