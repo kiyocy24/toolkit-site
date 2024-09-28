@@ -1,9 +1,10 @@
+name: PR Agent
 on:
   pull_request:
     types: [opened, reopened, ready_for_review]
   issue_comment:
 jobs:
-  pr_agent_job:
+  pr_agent:
     if: ${{ github.event.sender.type != 'Bot' }}
     runs-on: ubuntu-latest
     permissions:
