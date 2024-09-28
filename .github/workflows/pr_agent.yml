@@ -24,3 +24,4 @@ jobs:
           GITHUB_ACTION_CONFIG.AUTO_IMPROVE: true
           PR_REVIEWER.EXTRA_INSTRUCTIONS: 'Please use Japanese in descriptions.'
           PR_DESCRIPTION.EXTRA_INSTRUCTIONS: 'Please use Japanese in descriptions.'
+          PR_CODE_SUGGESTIONS.EXTRA_INSTRUCTIONS: 'Please use Japanese in descriptions.'
