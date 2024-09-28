@@ -1,9 +1,10 @@
 name: PR Agent
 on:
-  push: # TODO: あとで消す
   pull_request:
     types: [opened, reopened, ready_for_review]
   issue_comment:
+    
+env: 
 
 jobs:
   pr_agent:
@@ -19,8 +20,32 @@ jobs:
         id: pragent
         uses: Codium-ai/pr-agent@main
         env:
+          COMMON_INSTRUCTIONS: |
+            以下の点に注意してコードをレビューしてください：
+            - コードの可読性：
+              - 変数名や関数名が適切であり、意味が明確であるか。
+              - コメントが十分に記載されており、コードの意図や動作が理解しやすいか。
+            - パフォーマンス：
+              - コードが効率的に実行��れるか。
+              - 無駄な処理や重複した処理が含まれていないか。
+            - セキュリティ：
+              - セキュリティ上の脆弱性がないか。
+              - 入力値の検証が適切に行われているか。
+              - 外部ライブラリやAPIの使用が安全であるか。
+            - 一貫性：
+              - コードスタイルやフォーマットがプロジェクトのガイドラインに従っているか。
+              - コードの構造や命名規則が一貫しているか。
+            - テスト：
+              - ユニットテストや統合テストが十分にカバーされているか。
+              - テストが適切に記述されており、コードの動作を保証しているか。
+            - 日本語の使用：
+              - コメントやドキュメントに日本語を使用する場合、適切で分かりやすい表現が使われているか。
+              - 日本語の誤字脱字がないか。
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTION_CONFIG.AUTO_DESCRIBE: true
           GITHUB_ACTION_CONFIG.AUTO_REVIEW: true
           GITHUB_ACTION_CONFIG.AUTO_IMPROVE: true
+          github_action_config.auto_describe: true
+          github_action_config.auto_review: true
+          github_action_config.auto_improve: true
