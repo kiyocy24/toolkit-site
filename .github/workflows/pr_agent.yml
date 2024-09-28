@@ -1,9 +1,8 @@
 name: PR Agent
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review, synchronize]
+    types: [opened, reopened, ready_for_review]
   issue_comment:
-    types: [created, edited]
 
 jobs:
   pr_agent:
