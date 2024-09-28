@@ -1,8 +1,10 @@
 name: PR Agent
 on:
+  push: # TODO: あとで消す
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, ready_for_review, synchronize]
   issue_comment:
+
 jobs:
   pr_agent:
     if: ${{ github.event.sender.type != 'Bot' }}
@@ -19,3 +21,6 @@ jobs:
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_action_config.auto_review: "true"
+          github_action_config.auto_describe: "true"
+          github_action_config.pr_actions: ["opened", "reopened", "ready_for_review", "review_requested"]
