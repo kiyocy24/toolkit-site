@@ -29,7 +29,7 @@
     "@nextui-org/react": "^2.6.8",
     "@nextui-org/table": "^2.0.40",
     "autoprefixer": "^10.4.20",
-    "framer-motion": "^11.14.4"
+    "framer-motion": "^11.15.0"
   },
   "devDependencies": {
     "@graphql-eslint/eslint-plugin": "^3.20.1",
