@@ -11,7 +11,7 @@ const config: DocsThemeConfig = {
     component: 'kiyocy24\'s toolkit',
   },
   i18n: [
-    { locale: 'ja', text: '日本語' },
+    { locale: 'ja', text: '日本語', direction: 'ltr' },
   ],
 }
 
