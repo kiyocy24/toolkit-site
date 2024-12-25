@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "toolkit",
   "version": "0.0.1",
   "description": "My Toolkit",
