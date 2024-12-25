@@ -1,13 +1,13 @@
-import nextra from 'nextra';
+import nextra from 'nextra'
 
 const withNextra = nextra({
   theme: 'nextra-theme-docs',
-  themeConfig: './theme.config.tsx',
-});
+  themeConfig: './theme.config.tsx'
+})
 
 export default withNextra({
   i18n: {
     locales: ['ja-JP'],
     defaultLocale: 'ja-JP',
   }
-});
+})
