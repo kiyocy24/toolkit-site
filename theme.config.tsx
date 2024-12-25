@@ -8,7 +8,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/kiyocy24/toolkit-site',
   footer: {
-    text: 'kiyocy24\'s toolkit',
+    component: 'kiyocy24\'s toolkit',
   },
   i18n: [
     { locale: 'ja', text: '日本語' },
