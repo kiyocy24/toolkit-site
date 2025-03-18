@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/kiyocy24/toolkit-site#readme",
   "dependencies": {
-    "next": "^14.2.24",
+    "next": "^14.2.25",
     "nextra": "^3.2.4",
     "nextra-theme-docs": "^3.2.4",
     "postcss": "^8.5.3",
