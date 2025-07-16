@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@graphql-eslint/eslint-plugin": "^3.20.1",
-    "@types/node": "18.19.118",
+    "@types/node": "18.19.119",
     "typescript": "^4.9.3"
   }
 }
