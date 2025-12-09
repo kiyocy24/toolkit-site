@@ -5,16 +5,22 @@ export function factorize(n: bigint): Record<string, number> {
         return factors;
     }
 
-    let d = 2n;
     let temp = n;
 
+    // Handle 2 separately
+    while (temp % 2n === 0n) {
+        factors["2"] = (factors["2"] || 0) + 1;
+        temp /= 2n;
+    }
+
+    let d = 3n;
     while (d * d <= temp) {
         while (temp % d === 0n) {
             const key = d.toString();
             factors[key] = (factors[key] || 0) + 1;
             temp /= d;
         }
-        d++;
+        d += 2n;
     }
 
     if (temp > 1n) {

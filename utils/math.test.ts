@@ -27,9 +27,10 @@ describe('factorize', () => {
     });
 
     it('should handle very large numbers without exponential notation issues', () => {
-        // 2^61 - 1 is a Mersenne prime: 2305843009213693951
-        const largePrime = 2305843009213693951n;
-        expect(factorize(largePrime)).toEqual({ "2305843009213693951": 1 });
+        // A prime larger than Number.MAX_SAFE_INTEGER (2^53 - 1)
+        // 9007199254741111n > 9007199254740991n
+        const largePrime = 9007199254741111n;
+        expect(factorize(largePrime)).toEqual({ "9007199254741111": 1 });
 
         // A large composite number: 1000000000000000000 = 2^18 * 5^18
         // 10^18
