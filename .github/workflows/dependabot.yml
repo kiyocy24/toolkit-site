@@ -15,6 +15,49 @@ jobs:
         uses: dependabot/fetch-metadata@v2
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Wait for Vercel
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          echo "Waiting for Vercel Checks..."
+          # Poll for up to 10 minutes (60 * 10s)
+          for i in {1..60}; do
+             VERCEL_STATUS=$(gh pr checks "$PR_URL" --json name,status,conclusion --jq '.[] | select(.name | test("Vercel"; "i"))')
+             
+             if [ -z "$VERCEL_STATUS" ]; then
+                echo "No Vercel check found yet. Waiting..."
+                sleep 10
+                continue
+             fi
+             
+             # Fail immediately if any Vercel check fails
+             FAILURES=$(echo "$VERCEL_STATUS" | jq -r 'select(.conclusion == "failure")')
+             if [ ! -z "$FAILURES" ]; then
+               echo "Vercel deployment failed."
+               echo "$FAILURES"
+               exit 1
+             fi
+             
+             # Check if all found checks are completed
+             # We treat it as success only if ALL found Vercel checks are completed and successful
+             # logic: if all are completed, and we passed the failure check above, then they are all successes.
+             
+             TOTAL_CHECKS=$(echo "$VERCEL_STATUS" | jq -s 'length')
+             COMPLETED_CHECKS=$(echo "$VERCEL_STATUS" | jq -s 'map(select(.status == "completed")) | length')
+             
+             if [ "$TOTAL_CHECKS" -gt 0 ] && [ "$TOTAL_CHECKS" -eq "$COMPLETED_CHECKS" ]; then
+                echo "All Vercel checks completed successfully."
+                exit 0
+             fi
+             
+             echo "Waiting for Vercel checks to complete ($COMPLETED_CHECKS/$TOTAL_CHECKS)..."
+             sleep 10
+          done
+          echo "Timeout waiting for Vercel."
+          exit 1
+
       - name: Enable auto-merge for Dependabot PRs
         run: gh pr merge --auto --squash "$PR_URL"
         env:
