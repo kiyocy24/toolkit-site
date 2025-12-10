@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button"; // Import Button
@@ -65,7 +64,7 @@ export function PrimeFactorization() {
             {isValid && n !== null && (
                 <Card>
                     <CardBody>
-                        <div className="text-2xl font-mono text-center break-all">
+                        <div className="text-xl md:text-2xl font-mono text-center break-all">
                             {n.toString()} = {formatFactors(factors)}
                         </div>
                     </CardBody>
