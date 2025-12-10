@@ -1,0 +1,14 @@
+diff --git a/package.json b/package.json
+index a6e59003ecad0a9fdeb660733dd0268dd6a57d21..dbfb4213a46c5a7810d61ade0a9f617aee5167d3 100644
+--- a/package.json
++++ b/package.json
+@@ -42,9 +42,6 @@
+     "of",
+     "style"
+   ],
+-  "bin": {
+-    "title": "./dist/bin.js"
+-  },
+   "files": [
+     "dist"
+   ],
