@@ -1,65 +1,167 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Github } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="flex flex-col">
+      {/* Header is now in RootLayout */}
+
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
+          <div className="container mx-auto flex max-w-[64rem] flex-col items-center gap-4 text-center">
+            {/* <Link
+              href="https://github.com/kiyocy24/toolkit-site"
+              className="rounded-2xl bg-muted px-4 py-1.5 text-sm font-medium"
+              target="_blank"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
+              Follow along on GitHub
+            </Link> */}
+            <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+              Essential Tools for Modern Engineers
+            </h1>
+            <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+              A curated collection of developer tools to boost your productivity.
+              From formatters to generators, everything you need in one place.
+            </p>
+            <div className="space-x-4">
+              <Button asChild size="lg">
+                <Link href="/tools">Explore Tools</Link>
+              </Button>
+              {/* <Button asChild variant="outline" size="lg">
+                <Link href="https://github.com/kiyocy24/toolkit-site" target="_blank">
+                  GitHub
+                </Link>
+              </Button> */}
+            </div>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Features Section */}
+        <section id="features" className="container mx-auto space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24">
+          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
+            <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl font-bold">
+              Features
+            </h2>
+            <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+              This project is an experiment to see how we can build a modern toolkit app with Next.js 15 and shadcn/ui.
+            </p>
+          </div>
+          <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+            <Link href="/tools/json-formatter">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>JSON Formatter</CardTitle>
+                  <CardDescription>
+                    Format and validate your JSON data.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Core</Badge>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/tools/base64-converter">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>Base64 Converter</CardTitle>
+                  <CardDescription>
+                    Encode and decode Base64 strings.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Utility</Badge>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/tools/uuid-generator">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>UUID Generator</CardTitle>
+                  <CardDescription>
+                    Generate random UUIDs v4.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Utility</Badge>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/tools/sql-formatter">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>SQL Formatter</CardTitle>
+                  <CardDescription>
+                    Beautify your SQL queries.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Database</Badge>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/tools/regex-tester">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>Regex Tester</CardTitle>
+                  <CardDescription>
+                    Test your regular expressions.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Code</Badge>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/tools/diff-viewer">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>Diff Viewer</CardTitle>
+                  <CardDescription>
+                    Compare two text contents.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Utility</Badge>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        </section>
+      </main>
+
+      <footer className="py-6 md:px-8 md:py-0">
+        <div className="container mx-auto flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+          <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
+            Built by{" "}
             <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="https://github.com/kiyocy24"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium underline underline-offset-4"
             >
-              Learning
-            </a>{" "}
-            center.
+              kiyocy24
+            </a>
+            .
+            {/* The source code is available on{" "}
+            <a
+              href="https://github.com/kiyocy24/toolkit-site"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium underline underline-offset-4"
+            >
+              GitHub
+            </a>
+            . */}
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </footer>
     </div>
   );
 }
