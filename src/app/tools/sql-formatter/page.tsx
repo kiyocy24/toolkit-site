@@ -23,7 +23,7 @@ export default function SqlFormatterPage() {
                 setError(null)
                 return
             }
-            const formatted = format(input, { language: dialect as any })
+            const formatted = format(input, { language: dialect as any, keywordCase: 'upper' })
             setOutput(formatted)
             setError(null)
         } catch (e) {
@@ -57,7 +57,7 @@ export default function SqlFormatterPage() {
                     <div className="grid gap-2">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                <label htmlFor="sql-input" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                     Input SQL
                                 </label>
                                 <Select value={dialect} onValueChange={setDialect}>
@@ -79,6 +79,7 @@ export default function SqlFormatterPage() {
                             </Button>
                         </div>
                         <Textarea
+                            id="sql-input"
                             placeholder="SELECT * FROM table..."
                             className="min-h-[200px] font-mono text-sm"
                             value={input}
