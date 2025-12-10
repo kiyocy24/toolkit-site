@@ -1,4 +1,6 @@
 import Link from "next/link"
+import { Github } from "lucide-react"
+
 
 export function SiteHeader() {
     return (
@@ -28,7 +30,16 @@ export function SiteHeader() {
                         {/* Search place holder */}
                     </div>
                     <nav className="flex items-center">
-                        {/* GitHub Link removed as it is a private repo */}
+                        <Link
+                            href="https://github.com/kiyocy24/toolkit-site"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            <div className="flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground">
+                                <Github className="h-4 w-4" />
+                                <span className="sr-only">GitHub</span>
+                            </div>
+                        </Link>
                     </nav>
                 </div>
             </div>

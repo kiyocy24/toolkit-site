@@ -71,7 +71,7 @@ export default function ToolsLayout({ children }: ToolsLayoutProps) {
             <Separator />
 
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-                <aside className="-mx-4 lg:mx-0 lg:w-1/5">
+                <aside className="-mx-4 lg:mx-0 lg:w-1/5 lg:pr-8">
                     <nav className="flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 overflow-x-auto pb-4 lg:pb-0 px-4 lg:px-0">
                         {sidebarItems.map((item) => (
                             <Button
