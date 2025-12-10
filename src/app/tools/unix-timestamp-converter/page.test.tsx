@@ -65,7 +65,9 @@ describe("UnixTimestampConverterPage", () => {
         expect(screen.getByText("ISO 8601")).toBeDefined();
 
         // Content check
-        expect(screen.getByText(/11\/14\/2023, 22:13:20/)).toBeDefined();
+        // We check for ISO string segment to be locale-independent
+        expect(screen.getByText(/2023-11-14T22:13:20/)).toBeDefined();
+        expect(screen.getByText("ISO 8601")).toBeDefined();
     });
 
     it("converts date string to timestamp", async () => {

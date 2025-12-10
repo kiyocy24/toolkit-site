@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Copy, RefreshCw, ArrowRight } from "lucide-react"
+import { Copy, RefreshCw } from "lucide-react"
 
 const TIMEZONES = [
     { value: "UTC", label: "UTC (Coordinated Universal Time)" },
@@ -40,7 +40,6 @@ export default function UnixTimestampConverterPage() {
     } | null>(null)
 
     const [error, setError] = useState<string | null>(null)
-    const [generatedAt, setGeneratedAt] = useState<number>(0) // Force re-render relative time
 
     useEffect(() => {
         if (isPaused) return
@@ -63,6 +62,16 @@ export default function UnixTimestampConverterPage() {
         if (Math.abs(diff) < 31536000) return rtf.format(-Math.floor(diff / 2592000), 'month');
         return rtf.format(-Math.floor(diff / 31536000), 'year');
     }
+
+    useEffect(() => {
+        if (!result) return
+
+        const intervalId = setInterval(() => {
+            setResult((prev) => prev && { ...prev, relativeTime: getRelativeTime(prev.timestamp) })
+        }, 60000) // Update every minute
+
+        return () => clearInterval(intervalId)
+    }, [result])
 
     const handleConvert = () => {
         setError(null)
@@ -117,7 +126,6 @@ export default function UnixTimestampConverterPage() {
                 relativeTime: getRelativeTime(seconds),
                 offset: offset
             })
-            setGeneratedAt(Date.now())
 
         } catch (e) {
             setError("Invalid input. Please check your format.")
@@ -162,7 +170,7 @@ export default function UnixTimestampConverterPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="grid gap-3">
                                 <Label>Input Type</Label>
-                                <RadioGroup defaultValue="seconds" value={inputType} onValueChange={(v) => setInputType(v as any)} className="flex gap-4">
+                                <RadioGroup defaultValue="seconds" value={inputType} onValueChange={(v) => setInputType(v as "seconds" | "date")} className="flex gap-4">
                                     <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="seconds" id="r1" />
                                         <Label htmlFor="r1">Seconds</Label>
