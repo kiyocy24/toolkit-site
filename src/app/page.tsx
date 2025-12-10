@@ -145,6 +145,19 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Link>
+            <Link href="/tools/unix-timestamp-converter">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>Unix Timestamp Converter</CardTitle>
+                  <CardDescription>
+                    Convert timestamps to dates and vice versa.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Date</Badge>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </section>
       </main>
