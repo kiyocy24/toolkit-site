@@ -132,6 +132,19 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Link>
+            <Link href="/tools/url-encoder-decoder">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>URL Encoder/Decoder</CardTitle>
+                  <CardDescription>
+                    Encode and decode URL strings.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Utility</Badge>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </section>
       </main>
