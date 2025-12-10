@@ -22,14 +22,10 @@ describe('DiffViewerPage', () => {
         fireEvent.click(screen.getByRole('button', { name: /compare/i }))
 
         expect(screen.getByText('Differences')).toBeInTheDocument()
-        // We expect 'foo' to be removed and 'bar' to be added
-        // Note: 'foo' exists in input and diff view, so we check for existence generally or scoped
-        const diffSection = screen.getByText('Differences').parentElement!
-        // We can check if specific diff spans exist
-        // But for simplicity, just checking getAllByText is enough to prove it's rendered SOMEWHERE (and we know input has it, but diff view should also have it)
-        // Better: check that we have MORE instances of 'foo' now?
-        // Actually, the specific spans have output styles.
-        // Let's just check getAllByText returns > 1 or contains one in the result area.
+        expect(screen.getByText('Differences')).toBeInTheDocument()
+
+        // Verify changes are highlighted in the diff view
+        // The DiffViewer typically renders changes in a specific structure next to the "Differences" label
 
         const differencesContainer = screen.getByText('Differences').nextElementSibling
         expect(differencesContainer).toHaveTextContent('foo')
