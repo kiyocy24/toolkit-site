@@ -10,6 +10,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    permissions:
+      pull-requests: write
+
     steps:
     - uses: actions/checkout@v4
 
@@ -28,4 +31,7 @@ jobs:
       run: pnpm install
 
     - name: Run tests
-      run: pnpm test
+      run: pnpm test:coverage
+
+    - name: Run octocov
+      uses: k1LoW/octocov-action@v1
