@@ -1,3 +1,5 @@
 coverage:
   paths:
-    - coverage/coverage-final.json
+    - coverage/lcov.info
+comment:
+  if: is_pull_request
