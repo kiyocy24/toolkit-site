@@ -23,7 +23,7 @@ export default function SqlFormatterPage() {
                 setError(null)
                 return
             }
-            const formatted = format(input, { language: dialect as any })
+            const formatted = format(input, { language: dialect as any, keywordCase: 'upper' })
             setOutput(formatted)
             setError(null)
         } catch (e) {

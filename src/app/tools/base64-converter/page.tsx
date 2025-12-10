@@ -77,7 +77,7 @@ export default function Base64ConverterPage() {
 
                     <div className="grid gap-2">
                         <div className="flex items-center justify-between">
-                            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            <label htmlFor="input-text" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                 Input
                             </label>
                             <Button variant="ghost" size="sm" onClick={clearAll} className="h-8 px-2 lg:px-3">
@@ -86,6 +86,7 @@ export default function Base64ConverterPage() {
                             </Button>
                         </div>
                         <Textarea
+                            id="input-text"
                             placeholder={mode === "encode" ? "Type text to encode..." : "Paste Base64 string to decode..."}
                             className="min-h-[150px] font-mono text-sm"
                             value={input}
@@ -101,7 +102,7 @@ export default function Base64ConverterPage() {
 
                     <div className="grid gap-2">
                         <div className="flex items-center justify-between">
-                            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            <label htmlFor="output-text" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                 Output
                             </label>
                             <Button variant="outline" size="sm" onClick={copyToClipboard} className="h-8 px-2 lg:px-3">
@@ -110,6 +111,7 @@ export default function Base64ConverterPage() {
                             </Button>
                         </div>
                         <Textarea
+                            id="output-text"
                             readOnly
                             className="min-h-[150px] bg-muted font-mono text-sm"
                             value={output}

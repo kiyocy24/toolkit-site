@@ -94,8 +94,9 @@ export default function DiffViewerPage() {
                     </div>
                     <div className="grid gap-4 md:grid-cols-2">
                         <div className="grid gap-2">
-                            <Label>Original Text</Label>
+                            <Label htmlFor="original-text">Original Text</Label>
                             <Textarea
+                                id="original-text"
                                 placeholder="Paste original text..."
                                 className="min-h-[200px] font-mono text-sm"
                                 value={oldText}
@@ -103,8 +104,9 @@ export default function DiffViewerPage() {
                             />
                         </div>
                         <div className="grid gap-2">
-                            <Label>Modified Text</Label>
+                            <Label htmlFor="modified-text">Modified Text</Label>
                             <Textarea
+                                id="modified-text"
                                 placeholder="Paste modified text..."
                                 className="min-h-[200px] font-mono text-sm"
                                 value={newText}
