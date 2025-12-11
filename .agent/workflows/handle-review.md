@@ -22,6 +22,7 @@ description: Check for PR on current branch and address review comments.
    ```bash
    gh pr view <number> --json comments,reviews,body
    ```
+   - **Tip**: To check for new comments since your last push, compare the comment `createdAt` timestamp with your last commit time.
    - Also check the latest checks status if relevant:
    ```bash
    gh pr checks <number>
@@ -45,7 +46,8 @@ description: Check for PR on current branch and address review comments.
 7. **Update Pull Request**
    - Commit the changes:
    ```bash
-   git commit -am "fix: address review comments"
+   git add .
+   git commit -m "fix: address review comments"
    ```
    - Push to the branch:
    ```bash
