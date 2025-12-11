@@ -1,3 +1,11 @@
+---
+name: Pull Request
+about: Create a pull request to help us improve
+title: ""
+labels: ""
+assignees: ""
+---
+
 # 概要
 <!-- 変更の目的 もしくは 関連する Issue を記載してください -->
 
