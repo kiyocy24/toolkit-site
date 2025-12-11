@@ -1,11 +1,16 @@
 import Link from "next/link"
 import { Github } from "lucide-react"
 
+import { MobileNav } from "@/components/mobile-nav"
 
 export function SiteHeader() {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container mx-auto flex h-14 items-center">
+                <MobileNav />
+                <div className="md:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                    <Link href="/" className="font-bold pointer-events-auto">Toolkit</Link>
+                </div>
                 <div className="mr-4 hidden md:flex">
                     <Link className="mr-6 flex items-center space-x-2" href="/">
                         <span className="hidden font-bold sm:inline-block">Toolkit</span>

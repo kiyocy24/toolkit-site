@@ -1,9 +1,16 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import {
     ArrowLeft,
@@ -54,9 +61,10 @@ const sidebarItems = [
 
 export default function ToolsLayout({ children }: ToolsLayoutProps) {
     const pathname = usePathname()
+    const router = useRouter()
 
     return (
-        <div className="container mx-auto flex flex-col gap-6 py-8 md:py-10">
+        <div className="container mx-auto flex flex-col gap-6 py-8 md:py-10 px-6 md:px-8">
             <div className="flex w-full flex-col items-start gap-4">
                 {/* Back to Home button removed as it is redundant with global header */}
                 <div className="grid w-full gap-2">
@@ -72,7 +80,30 @@ export default function ToolsLayout({ children }: ToolsLayoutProps) {
 
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
                 <aside className="-mx-4 lg:mx-0 lg:w-1/5 lg:pr-8">
-                    <nav className="flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 overflow-x-auto pb-4 lg:pb-0 px-4 lg:px-0">
+                    {/* Mobile Navigation (Select) */}
+                    <div className="px-4 lg:hidden">
+                        <Select
+                            value={pathname}
+                            onValueChange={(value) => router.push(value)}
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select a tool" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {sidebarItems.map((item) => (
+                                    <SelectItem key={item.href} value={item.href}>
+                                        <div className="flex items-center">
+                                            <item.icon className="mr-2 h-4 w-4" />
+                                            {item.title}
+                                        </div>
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {/* Desktop Navigation (Sidebar) */}
+                    <nav className="hidden lg:flex lg:flex-col lg:space-y-1">
                         {sidebarItems.map((item) => (
                             <Button
                                 key={item.href}

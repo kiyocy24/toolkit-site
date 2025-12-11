@@ -53,7 +53,7 @@ export default function Home() {
               This project is an experiment to see how we can build a modern toolkit app with Next.js 15 and shadcn/ui.
             </p>
           </div>
-          <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+          <div className="mx-auto grid gap-4 grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
             <Link href="/tools/json-formatter">
               <Card className="h-full hover:bg-muted/50 transition-colors">
                 <CardHeader>
