@@ -15,6 +15,8 @@ type Step = {
     operation: string
 }
 
+const MAX_STEPS = 10000
+
 export default function CollatzConjecturePage() {
     const [input, setInput] = useState("")
     const [sequence, setSequence] = useState<Step[]>([])
@@ -25,8 +27,6 @@ export default function CollatzConjecturePage() {
         setError(null)
         setSequence([])
         setMaxVal(null)
-
-        if (!input) return
 
         try {
             if (!/^\d+$/.test(input.trim())) {
@@ -56,7 +56,7 @@ export default function CollatzConjecturePage() {
                 operation: "Initial value"
             })
 
-            const MAX_STEPS = 10000 // Limit to prevent infinite loops if conjecture is false or sequence is too long for UI
+
 
             while (current !== 1n && stepCount < MAX_STEPS) {
                 stepCount++
