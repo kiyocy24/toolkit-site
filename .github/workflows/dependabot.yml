@@ -24,7 +24,7 @@ jobs:
           echo "Waiting for Vercel Checks..."
           # Poll for up to 10 minutes (60 * 10s)
           for i in {1..60}; do
-             VERCEL_STATUS=$(gh pr checks "$PR_URL" --json name,status,conclusion --jq '.[] | select(.name | test("Vercel"; "i"))')
+             VERCEL_STATUS=$(gh pr view "$PR_URL" --json statusCheckRollup --jq '.statusCheckRollup[] | select((.name // .context) | test("Vercel"; "i")) | { name: (.name // .context), status: (.status // (if .state == "PENDING" then "in_progress" else "completed" end)) | ascii_downcase, conclusion: (.conclusion // (if .state == "SUCCESS" then "success" elif .state == "FAILURE" then "failure" else "neutral" end)) | ascii_downcase }')
              
              if [ -z "$VERCEL_STATUS" ]; then
                 echo "No Vercel check found yet. Waiting..."
