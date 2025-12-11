@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
-import { describe, it, expect, vi } from "vitest"
+import { describe, it, expect, vi, afterEach } from "vitest"
 import PrimeFactorizationPage from "./page"
 
 // Mock clipboard API
@@ -11,6 +11,10 @@ Object.defineProperty(navigator, 'clipboard', {
 });
 
 describe("PrimeFactorizationPage", () => {
+    afterEach(() => {
+        vi.clearAllMocks()
+    })
+
     it("renders correctly", () => {
         render(<PrimeFactorizationPage />)
         expect(screen.getByText("Prime Factorization")).toBeDefined()
@@ -97,6 +101,33 @@ describe("PrimeFactorizationPage", () => {
         })
     })
 
+    it("shows error for input larger than 20 digits", async () => {
+        render(<PrimeFactorizationPage />)
+        const input = screen.getByLabelText("Number")
+        fireEvent.change(input, { target: { value: "123456789012345678901" } }) // 21 digits
+        fireEvent.click(screen.getByText("Factorize"))
+
+        await waitFor(() => {
+            expect(screen.getByText("Input is too large. Please enter an integer with 20 digits or fewer.")).toBeDefined()
+        })
+    })
+
+    it("shows processing warning for input larger than 15 digits", async () => {
+        render(<PrimeFactorizationPage />)
+        const input = screen.getByLabelText("Number")
+        // 16 digits: 1000000000000000
+        fireEvent.change(input, { target: { value: "1000000000000000" } })
+        fireEvent.click(screen.getByText("Factorize"))
+
+        // Warning should appear immediately
+        expect(screen.getByText("Calculating... Large numbers may take some time.")).toBeDefined()
+
+        // Then result should eventually appear
+        await waitFor(() => {
+            expect(screen.getByText("2^15 × 5^15")).toBeDefined()
+        })
+    })
+
     it("copies result to clipboard", async () => {
         render(<PrimeFactorizationPage />)
         const input = screen.getByLabelText("Number")
@@ -106,7 +137,7 @@ describe("PrimeFactorizationPage", () => {
         const copyButton = await waitFor(() => screen.getByRole("button", { name: "Copy result" }))
         fireEvent.click(copyButton)
         expect(navigator.clipboard.writeText).toHaveBeenCalledWith("7")
-        expect(await screen.findByRole("button", { name: "Copy result" })).toBeDefined()
+        expect(await screen.findByRole("button", { name: "Result copied" })).toBeDefined()
     })
 })
 
