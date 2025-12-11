@@ -19,7 +19,8 @@ import {
     Fingerprint,
     Database,
     Regex,
-    FileDiff
+    FileDiff,
+    Calculator
 } from "lucide-react"
 
 interface ToolsLayoutProps {
@@ -56,6 +57,11 @@ const sidebarItems = [
         title: "Diff Viewer",
         href: "/tools/diff-viewer",
         icon: FileDiff,
+    },
+    {
+        title: "Prime Factorization",
+        href: "/tools/prime-factorization",
+        icon: Calculator,
     },
 ]
 
