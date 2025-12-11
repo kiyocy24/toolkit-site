@@ -158,9 +158,35 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Link>
+            <Link href="/tools/prime-factorization">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>Prime Factorization</CardTitle>
+                  <CardDescription>
+                    Decompose integers into prime factors.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Math</Badge>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/tools/collatz-conjecture">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>Collatz Conjecture</CardTitle>
+                  <CardDescription>
+                    Visualize the 3n + 1 sequence.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Math</Badge>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
-        </section>
-      </main>
+        </section >
+      </main >
 
       <footer className="py-6 md:px-8 md:py-0">
         <div className="container mx-auto flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
@@ -188,6 +214,6 @@ export default function Home() {
           </p>
         </div>
       </footer>
-    </div>
+    </div >
   );
 }
