@@ -112,6 +112,22 @@ describe("PrimeFactorizationPage", () => {
         })
     })
 
+    it("shows processing warning for input larger than 15 digits", async () => {
+        render(<PrimeFactorizationPage />)
+        const input = screen.getByLabelText("Number")
+        // 16 digits: 1000000000000000
+        fireEvent.change(input, { target: { value: "1000000000000000" } })
+        fireEvent.click(screen.getByText("Factorize"))
+
+        // Warning should appear immediately
+        expect(screen.getByText("Calculating... Large numbers may take some time.")).toBeDefined()
+
+        // Then result should eventually appear
+        await waitFor(() => {
+            expect(screen.getByText("2^15 × 5^15")).toBeDefined()
+        })
+    })
+
     it("copies result to clipboard", async () => {
         render(<PrimeFactorizationPage />)
         const input = screen.getByLabelText("Number")

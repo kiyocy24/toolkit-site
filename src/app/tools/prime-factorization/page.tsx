@@ -14,10 +14,12 @@ export default function PrimeFactorizationPage() {
     const [result, setResult] = useState<string | null>(null)
     const [isPrime, setIsPrime] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [warning, setWarning] = useState<string | null>(null)
     const [copied, setCopied] = useState(false)
 
     const calculate = () => {
         setError(null)
+        setWarning(null)
         setResult(null)
         setIsPrime(false)
 
@@ -30,10 +32,15 @@ export default function PrimeFactorizationPage() {
             return
         }
 
+        if (input.length > 15) {
+            setWarning("Calculating... Large numbers may take some time.")
+        }
+
         try {
             // Remove non-numeric characters for safety check, but allow BigInt parsing
             if (!/^-?\d+$/.test(input.trim())) {
                 setError("Please enter a valid integer.")
+                setWarning(null)
                 return
             }
 
@@ -41,18 +48,24 @@ export default function PrimeFactorizationPage() {
 
             if (num <= 1n) {
                 setError("Please enter an integer greater than 1.")
+                setWarning(null)
                 return
             }
 
-            const factors = primeFactorization(num)
-            setResult(formatFactors(factors))
+            // Using setTimeout to allow the UI to update with the warning message before the heavy calculation freezes the main thread.
+            setTimeout(() => {
+                const factors = primeFactorization(num)
+                setResult(formatFactors(factors))
 
-            // Check if it's prime: if n is prime, it returns { n: 1 }
-            const keys = Object.keys(factors)
-            setIsPrime(keys.length === 1 && factors[keys[0]] === 1n && BigInt(keys[0]) === num)
+                // Check if it's prime: if n is prime, it returns { n: 1 }
+                const keys = Object.keys(factors)
+                setIsPrime(keys.length === 1 && factors[keys[0]] === 1n && BigInt(keys[0]) === num)
+                setWarning(null)
+            }, 50)
 
         } catch (e) {
             setError("Invalid input.")
+            setWarning(null)
         }
     }
 
@@ -136,6 +149,14 @@ export default function PrimeFactorizationPage() {
                             <Button onClick={calculate}>Factorize</Button>
                         </div>
                     </div>
+
+                    {warning && !result && !error && (
+                        <Alert className="bg-yellow-50 text-yellow-800 border-yellow-200">
+                            <AlertCircle className="h-4 w-4" />
+                            <AlertTitle>Processing</AlertTitle>
+                            <AlertDescription>{warning}</AlertDescription>
+                        </Alert>
+                    )}
 
                     {error && (
                         <Alert variant="destructive">
