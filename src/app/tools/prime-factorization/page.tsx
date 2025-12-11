@@ -25,6 +25,11 @@ export default function PrimeFactorizationPage() {
             return
         }
 
+        if (input.length > 20) {
+            setError("Input is too large. Please enter an integer with 20 digits or fewer.")
+            return
+        }
+
         try {
             // Remove non-numeric characters for safety check, but allow BigInt parsing
             if (!/^-?\d+$/.test(input.trim())) {
@@ -39,27 +44,12 @@ export default function PrimeFactorizationPage() {
                 return
             }
 
-            // Optional: Limit the size if needed to prevent browser hang
-            // For now, we trust the user or the browser's ability to handle reasonably large numbers
-            // typically < 15 digits is instantaneous, larger primes will freeze without web worker.
-            if (input.length > 15) {
-                // warning or just let it run? The user asked for enhancement.
-                // Let's allow it but maybe caution if we see performance issues during verify.
-            }
-
             const factors = primeFactorization(num)
             setResult(formatFactors(factors))
 
-            // Check if it's prime: total factors count is 1 and power is 1 (meaning the number itself)
-            // primeFactorization returns { p: exponent }. If only one key 'p' and exponent 1, and p == num, it's prime.
-            // But wait, my primeFactorization implementation logic:
-            // if n is prime, it returns { n: 1 }
+            // Check if it's prime: if n is prime, it returns { n: 1 }
             const keys = Object.keys(factors)
-            if (keys.length === 1 && factors[keys[0]] === 1n && BigInt(keys[0]) === num) {
-                setIsPrime(true)
-            } else {
-                setIsPrime(false)
-            }
+            setIsPrime(keys.length === 1 && factors[keys[0]] === 1n && BigInt(keys[0]) === num)
 
         } catch (e) {
             setError("Invalid input.")
@@ -97,8 +87,10 @@ export default function PrimeFactorizationPage() {
     const formatFactors = (factors: Record<string, bigint>): string => {
         return Object.entries(factors)
             .sort((a, b) => {
-                // Sort by base (key)
-                return BigInt(a[0]) < BigInt(b[0]) ? -1 : 1
+                const diff = BigInt(a[0]) - BigInt(b[0])
+                if (diff > 0n) return 1
+                if (diff < 0n) return -1
+                return 0
             })
             .map(([factor, power]) => {
                 if (power === 1n) return factor
@@ -159,7 +151,7 @@ export default function PrimeFactorizationPage() {
                                 <p className="text-sm font-medium text-muted-foreground">Result:</p>
                                 <div className="flex items-center space-x-2">
                                     {isPrime && <Badge variant="default" className="bg-green-600 hover:bg-green-700">Prime Number</Badge>}
-                                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={copyToClipboard} aria-label="Copy result">
+                                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={copyToClipboard} aria-label={copied ? "Result copied" : "Copy result"}>
                                         {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                                     </Button>
                                 </div>
