@@ -20,7 +20,8 @@ import {
     Database,
     Regex,
     FileDiff,
-    Calculator
+    Calculator,
+    LineChart
 } from "lucide-react"
 
 interface ToolsLayoutProps {
@@ -62,6 +63,11 @@ const sidebarItems = [
         title: "Prime Factorization",
         href: "/tools/prime-factorization",
         icon: Calculator,
+    },
+    {
+        title: "Collatz Conjecture",
+        href: "/tools/collatz-conjecture",
+        icon: LineChart,
     },
 ]
 
