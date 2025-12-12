@@ -21,7 +21,8 @@ import {
     Regex,
     FileDiff,
     Calculator,
-    LineChart
+    LineChart,
+    Hash
 } from "lucide-react"
 
 interface ToolsLayoutProps {
@@ -68,6 +69,11 @@ const sidebarItems = [
         title: "Collatz Conjecture",
         href: "/tools/collatz-conjecture",
         icon: LineChart,
+    },
+    {
+        title: "Hash Generator",
+        href: "/tools/hash-generator",
+        icon: Hash,
     },
 ]
 
