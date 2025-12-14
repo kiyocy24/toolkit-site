@@ -37,5 +37,4 @@ description: Create a GitHub issue based on a simple description, with AI-genera
 6.  **Finalize**:
     -   Once the user approves and the command runs, confirm the issue URL from the output.
 
-5.  **Finalize**:
-    -   Once the user approves and the command runs, confirm the issue URL from the output.
+
