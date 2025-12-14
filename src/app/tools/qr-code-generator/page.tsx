@@ -156,10 +156,11 @@ export default function QrCodeGeneratorPage() {
                                     size={size[0]}
                                     level={errorLevel}
                                     includeMargin={true}
+                                    className="max-w-full h-auto"
                                 />
                             ) : (
                                 <div
-                                    className="flex items-center justify-center bg-gray-100 text-muted-foreground"
+                                    className="flex items-center justify-center bg-gray-100 text-muted-foreground max-w-full h-auto"
                                     style={{ width: size[0], height: size[0] }}
                                 >
                                     Enter text to generate
