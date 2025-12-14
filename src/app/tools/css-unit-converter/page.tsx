@@ -11,6 +11,7 @@ export default function CssUnitConverterPage() {
     const [rootSize, setRootSize] = useState<number>(16)
     const [px, setPx] = useState<string>("16")
     const [rem, setRem] = useState<string>("1")
+    const [em, setEm] = useState<string>("1")
 
     const handleRootChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = parseFloat(e.target.value)
@@ -24,10 +25,12 @@ export default function CssUnitConverterPage() {
             const currentPx = parseFloat(px)
             if (!isNaN(currentPx)) {
                 setRem((currentPx / val).toString())
+                setEm((currentPx / val).toString())
             }
         } else {
             // Clear outputs if root size is invalid
             setRem("")
+            setEm("")
         }
     }
 
@@ -39,8 +42,10 @@ export default function CssUnitConverterPage() {
         const num = parseFloat(val)
         if (!isNaN(num) && rootSize > 0) {
             setRem((num / rootSize).toString())
+            setEm((num / rootSize).toString())
         } else {
             setRem("")
+            setEm("")
         }
     }
 
@@ -49,8 +54,22 @@ export default function CssUnitConverterPage() {
         const num = parseFloat(val)
         if (!isNaN(num)) {
             setPx((num * rootSize).toString())
+            setEm(val) // 1rem = 1em typically in this context context free
         } else {
             setPx("")
+            setEm("")
+        }
+    }
+
+    const updateFromEm = (val: string) => {
+        setEm(val)
+        const num = parseFloat(val)
+        if (!isNaN(num)) {
+            setPx((num * rootSize).toString())
+            setRem(val)
+        } else {
+            setPx("")
+            setRem("")
         }
     }
 
@@ -73,7 +92,7 @@ export default function CssUnitConverterPage() {
                 <CardHeader>
                     <CardTitle>CSS Unit Converter</CardTitle>
                     <CardDescription>
-                        Convert between px and rem units.
+                        Convert between px, rem, and em units.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
@@ -88,7 +107,7 @@ export default function CssUnitConverterPage() {
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
                         <div className="grid w-full gap-1.5">
                             <Label htmlFor="px-input">Pixels (px)</Label>
                             <div className="flex space-x-2">
@@ -118,9 +137,25 @@ export default function CssUnitConverterPage() {
                                 </Button>
                             </div>
                         </div>
+
+                        <div className="grid w-full gap-1.5">
+                            <Label htmlFor="em-input">EM</Label>
+                            <div className="flex space-x-2">
+                                <Input
+                                    type="number"
+                                    id="em-input"
+                                    value={em}
+                                    onChange={(e) => updateFromEm(e.target.value)}
+                                />
+                                <Button variant="ghost" size="icon" onClick={() => copyToClipboard(em)}>
+                                    <Copy className="h-4 w-4" />
+                                </Button>
+                            </div>
+                            <p className="text-xs text-muted-foreground">*Assuming parent font-size is equal to root font-size (1em = 1rem)</p>
+                        </div>
                     </div>
                 </CardContent>
-            </Card>
-        </div>
+            </Card >
+        </div >
     )
 }

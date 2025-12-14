@@ -202,7 +202,7 @@ export default function Home() {
                 <CardHeader>
                   <CardTitle>CSS Unit Converter</CardTitle>
                   <CardDescription>
-                    Convert between px and rem units.
+                    Convert between px, rem, and em units.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
