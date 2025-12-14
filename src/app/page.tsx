@@ -197,6 +197,19 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Link>
+            <Link href="/tools/jwt-debugger">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>JWT Debugger</CardTitle>
+                  <CardDescription>
+                    Decode, encode, and sign JSON Web Tokens.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Development</Badge>
+                </CardContent>
+              </Card>
+            </Link>
             <Link href="/tools/css-unit-converter">
               <Card className="h-full hover:bg-muted/50 transition-colors">
                 <CardHeader>
