@@ -53,4 +53,7 @@ description: Check for PR on current branch and address review comments.
    ```bash
    git push origin $(git branch --show-current)
    ```
-   - Optionally reply to the PR comments to indicate they have been resolved (can be done in browser or via `gh pr comment`).
+   - **Reply to Review Comments**:
+     - You MUST reply to each review comment (using `gh pr comment` or via suggested_responses).
+     - **If addressed**: Reply with "Fixed in [commit-hash]. [Brief description of fix]."
+     - **If NOT addressed**: Reply with "Not addressed because [Reason]."
