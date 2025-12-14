@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { AlertCircle, Copy, Check } from "lucide-react"
+import { AlertCircle, Copy, Check, Shield } from "lucide-react"
 
 export default function JwtDebuggerPage() {
     return (
@@ -180,7 +180,7 @@ function JwtEncoder() {
         return new TextEncoder().encode(str)
     }
 
-    const signToken = async () => {
+    const signToken = useCallback(async () => {
         setError(null)
         try {
             // Validate JSON
@@ -236,7 +236,7 @@ function JwtEncoder() {
             setError(err instanceof Error ? err.message : "Failed to encode token")
             setEncodedToken("")
         }
-    }
+    }, [header, payload, secret])
 
     // Auto-update when inputs change
     useEffect(() => {
@@ -244,11 +244,10 @@ function JwtEncoder() {
             signToken()
         }, 500)
         return () => clearTimeout(timer)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [header, payload, secret])
+    }, [signToken])
 
     const copyToClipboard = async () => {
-        if (!encodedToken) return
+        if (!encodedToken || !navigator.clipboard) return
         try {
             await navigator.clipboard.writeText(encodedToken)
             setCopied(true)
@@ -260,6 +259,15 @@ function JwtEncoder() {
 
     return (
         <div className="grid gap-6 mt-6">
+            <Alert>
+                <Shield className="h-4 w-4" />
+                <AlertTitle>Security Note</AlertTitle>
+                <AlertDescription>
+                    Signing is performed entirely in your browser using the Web Crypto API.
+                    Your secret key is never sent to any server.
+                </AlertDescription>
+            </Alert>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="grid w-full gap-1.5">
                     <Label htmlFor="header-input">Header (JSON)</Label>
