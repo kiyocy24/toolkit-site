@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react"
-import { describe, it, expect, vi } from "vitest"
+import { describe, it, expect, vi, beforeAll, afterAll, beforeEach, afterEach } from "vitest"
 import QrCodeGeneratorPage from "./page"
 
 import React from "react"
@@ -61,20 +61,72 @@ describe("QrCodeGeneratorPage", () => {
         expect(screen.getByText("Enter text to generate")).toBeInTheDocument()
     })
 
+    let originalImage: typeof Image
+    let createElementSpy: any
+    let consoleSpy: any
+
+    beforeAll(() => {
+        originalImage = window.Image
+    })
+
+    afterAll(() => {
+        window.Image = originalImage
+    })
+
+    beforeEach(() => {
+        // Default Image mock that triggers onload synchronously
+        window.Image = class extends originalImage {
+            _onload: ((e: Event) => void) | null = null
+            _onerror: OnErrorEventHandler = null
+
+            set onload(handler: ((e: Event) => void) | null) {
+                this._onload = handler
+            }
+
+            get onload() {
+                return this._onload
+            }
+
+            set onerror(handler: OnErrorEventHandler) {
+                this._onerror = handler
+            }
+
+            get onerror() {
+                return this._onerror
+            }
+
+            set src(_: string) {
+                if (this._onload) {
+                    this._onload(new Event('load'))
+                }
+            }
+        } as unknown as typeof Image
+
+        // Spy on console.error to keep output clean and check for errors
+        consoleSpy = vi.spyOn(console, 'error').mockImplementation((...args) => {
+            console.log("[TEST ERROR LOG]", ...args)
+        })
+    })
+
+    afterEach(() => {
+        if (createElementSpy) {
+            createElementSpy.mockRestore()
+        }
+        consoleSpy.mockRestore()
+        vi.restoreAllMocks()
+        window.Image = originalImage // Reset Image to original (or default mock in beforeEach)
+    })
+
     it("triggers download when Download PNG button is clicked", () => {
         render(<QrCodeGeneratorPage />)
 
         const input = screen.getByLabelText("Content")
         fireEvent.change(input, { target: { value: "Hello World" } })
 
-        // Mock document.createElement and associated methods
-        const mockLink = {
-            click: vi.fn(),
-            href: "",
-            download: "",
-        } as unknown as HTMLAnchorElement
+        const mockLink = document.createElement("a")
+        mockLink.click = vi.fn() as any // Cast to satisfy type if needed, or just assign
 
-        const createElementSpy = vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
+        createElementSpy = vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
             if (tagName === 'a') return mockLink
             if (tagName === 'canvas') {
                 return {
@@ -89,25 +141,129 @@ describe("QrCodeGeneratorPage", () => {
             return document.createElement(tagName)
         })
 
-        // Mock Image to trigger onload synchronously for coverage
-        const originalImage = window.Image
-        window.Image = class extends originalImage {
-            constructor() {
-                super()
-                setTimeout(() => {
-                    if (this.onload) this.onload(new Event('load'))
-                }, 0)
-            }
-        }
-
         const downloadButton = screen.getByText("Download PNG")
         fireEvent.click(downloadButton)
 
         expect(downloadButton).not.toBeDisabled()
+    })
 
-        // Restore mocks
-        createElementSpy.mockRestore()
-        window.Image = originalImage
+    it("uses toBlob when available for download", () => {
+        render(<QrCodeGeneratorPage />)
+        const input = screen.getByLabelText("Content")
+        fireEvent.change(input, { target: { value: "Hello World" } })
+
+        const mockLink = document.createElement("a")
+        mockLink.click = vi.fn()
+
+        const toBlobMock = vi.fn((callback) => callback(new Blob(["mock"], { type: "image/png" })))
+        const revokeObjectURLSpy = vi.spyOn(URL, 'revokeObjectURL')
+
+        createElementSpy = vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
+            console.log(`createElement called for ${tagName}`)
+            if (tagName === 'a') return mockLink
+            if (tagName === 'canvas') {
+                const canvasMock = {
+                    getContext: () => ({
+                        drawImage: vi.fn(),
+                    }),
+                    toBlob: (...args: any[]) => {
+                        console.log("toBlob called")
+                        return toBlobMock(...args)
+                    },
+                    width: 0,
+                    height: 0,
+                } as unknown as HTMLCanvasElement
+                console.log("Returning canvas mocked with toBlob:", !!canvasMock.toBlob)
+                return canvasMock
+            }
+            return document.createElement(tagName)
+        })
+
+        const downloadButton = screen.getByText("Download PNG")
+        fireEvent.click(downloadButton)
+
+        expect(consoleSpy).not.toHaveBeenCalled()
+        expect(toBlobMock).toHaveBeenCalled()
+        expect(revokeObjectURLSpy).toHaveBeenCalled()
+    })
+
+    it("handles toBlob failure (null blob)", () => {
+        render(<QrCodeGeneratorPage />)
+        const input = screen.getByLabelText("Content")
+        fireEvent.change(input, { target: { value: "Hello World" } })
+
+        const toBlobMock = vi.fn((callback) => callback(null))
+
+        createElementSpy = vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
+            if (tagName === 'canvas') {
+                return {
+                    getContext: () => ({ drawImage: vi.fn() }),
+                    toBlob: toBlobMock,
+                    width: 0,
+                    height: 0,
+                } as unknown as HTMLCanvasElement
+            }
+            return document.createElement(tagName)
+        })
+
+        const downloadButton = screen.getByText("Download PNG")
+        fireEvent.click(downloadButton)
+
+        expect(consoleSpy).toHaveBeenCalledWith("Failed to create blob from canvas")
+    })
+
+    it("handles canvas context failure", () => {
+        render(<QrCodeGeneratorPage />)
+        const input = screen.getByLabelText("Content")
+        fireEvent.change(input, { target: { value: "Hello World" } })
+
+        createElementSpy = vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
+            if (tagName === 'canvas') {
+                return {
+                    getContext: () => null, // Fail getContext
+                    width: 0,
+                    height: 0,
+                } as unknown as HTMLCanvasElement
+            }
+            return document.createElement(tagName)
+        })
+
+        const downloadButton = screen.getByText("Download PNG")
+        fireEvent.click(downloadButton)
+
+        expect(consoleSpy).toHaveBeenCalledWith("Failed to get 2D context for canvas")
+    })
+
+    it("handles image load failure", () => {
+        // Override Image mock for this specific test to trigger onerror
+        window.Image = class extends originalImage {
+            _onload: ((e: Event) => void) | null = null
+            _onerror: OnErrorEventHandler = null
+
+            set onload(handler: ((e: Event) => void) | null) {
+                this._onload = handler
+            }
+            set onerror(handler: OnErrorEventHandler) {
+                this._onerror = handler
+            }
+            get onload() { return this._onload }
+            get onerror() { return this._onerror }
+
+            set src(_: string) {
+                if (this._onerror) {
+                    this._onerror(new Event('error'))
+                }
+            }
+        } as unknown as typeof Image
+
+        render(<QrCodeGeneratorPage />)
+        const input = screen.getByLabelText("Content")
+        fireEvent.change(input, { target: { value: "Hello World" } })
+
+        const downloadButton = screen.getByText("Download PNG")
+        fireEvent.click(downloadButton)
+
+        expect(consoleSpy).toHaveBeenCalledWith("Image failed to load for QR code download", expect.any(Object))
     })
 
     it("updates error correction level", () => {
