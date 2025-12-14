@@ -54,7 +54,8 @@ description: Check for PR on current branch and address review comments.
    git push origin $(git branch --show-current)
    ```
    - **Reply to Review Comments**:
-     - You MUST reply to each review comment (using `gh pr comment` or via suggested_responses).
+     - You MUST reply to **EACH** review comment individually.
+     - **Requirement**: A 1:1 reply ratio is mandatory. If there are 3 review comments, you must post 3 separate replies. Do not group them.
      - **If addressed**: Reply with "Fixed in [commit-hash]. [Brief description of fix]."
        - Example: "Fixed in 8e2a1b9. Removed the unused variable."
      - **If NOT addressed**: Reply with "Not addressed because [Reason]."
