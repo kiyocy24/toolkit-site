@@ -23,7 +23,8 @@ import {
     Calculator,
     LineChart,
     Hash,
-    Palette
+    Palette,
+    QrCode
 } from "lucide-react"
 
 interface ToolsLayoutProps {
@@ -80,6 +81,11 @@ const sidebarItems = [
         title: "Color Converter",
         href: "/tools/color-converter",
         icon: Palette,
+    },
+    {
+        title: "QR Code Generator",
+        href: "/tools/qr-code-generator",
+        icon: QrCode,
     },
 ]
 
