@@ -1,0 +1,23 @@
+{
+    "name": "Node.js 24 & TypeScript",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:1-24-bookworm",
+    "features": {
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    "postCreateCommand": "pnpm install",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.fixAll.eslint": "explicit"
+                }
+            },
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode"
+            ]
+        }
+    }
+}
