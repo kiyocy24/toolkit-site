@@ -108,7 +108,7 @@ export default function CssUnitConverterPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="grid w-full items-center gap-1.5">
+                        <div className="grid w-full gap-1.5">
                             <Label htmlFor="px-input">Pixels (px)</Label>
                             <div className="flex space-x-2">
                                 <Input
@@ -123,7 +123,7 @@ export default function CssUnitConverterPage() {
                             </div>
                         </div>
 
-                        <div className="grid w-full items-center gap-1.5">
+                        <div className="grid w-full gap-1.5">
                             <Label htmlFor="rem-input">REM</Label>
                             <div className="flex space-x-2">
                                 <Input
@@ -138,7 +138,7 @@ export default function CssUnitConverterPage() {
                             </div>
                         </div>
 
-                        <div className="grid w-full items-center gap-1.5">
+                        <div className="grid w-full gap-1.5">
                             <Label htmlFor="em-input">EM</Label>
                             <div className="flex space-x-2">
                                 <Input
@@ -155,7 +155,7 @@ export default function CssUnitConverterPage() {
                         </div>
                     </div>
                 </CardContent>
-            </Card>
-        </div>
+            </Card >
+        </div >
     )
 }
