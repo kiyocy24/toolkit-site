@@ -22,7 +22,8 @@ import {
     FileDiff,
     Calculator,
     LineChart,
-    Hash
+    Hash,
+    Palette
 } from "lucide-react"
 
 interface ToolsLayoutProps {
@@ -74,6 +75,11 @@ const sidebarItems = [
         title: "Hash Generator",
         href: "/tools/hash-generator",
         icon: Hash,
+    },
+    {
+        title: "Color Converter",
+        href: "/tools/color-converter",
+        icon: Palette,
     },
 ]
 
