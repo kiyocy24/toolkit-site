@@ -24,6 +24,7 @@ import {
     Palette,
     QrCode,
     Ruler,
+    Shield,
     ShieldCheck,
 } from "lucide-react"
 
@@ -87,10 +88,11 @@ const sidebarItems = [
         href: "/tools/qr-code-generator",
         icon: QrCode,
     },
+
     {
-        title: "JWT Decoder",
-        href: "/tools/jwt-decoder",
-        icon: ShieldCheck,
+        title: "JWT Debugger",
+        href: "/tools/jwt-debugger",
+        icon: Shield,
     },
     {
         title: "CSS Unit Converter",
