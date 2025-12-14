@@ -148,7 +148,7 @@ export default function QrCodeGeneratorPage() {
                     </div>
 
                     <div className="flex flex-col items-center justify-center gap-6 rounded-lg border bg-muted/50 p-8">
-                        <div className="rounded-lg bg-white p-4 shadow-sm">
+                        <div className="rounded-lg bg-white p-4 shadow-sm max-w-full">
                             {text ? (
                                 <QRCodeSVG
                                     ref={svgRef}
