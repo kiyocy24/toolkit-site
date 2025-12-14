@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { colord, extend } from "colord"
+import { useState } from "react"
+import { colord, extend, Colord } from "colord"
 import cmykPlugin from "colord/plugins/cmyk"
 import { Copy, Palette } from "lucide-react"
 
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Slider } from "@/components/ui/slider"
+
 
 extend([cmykPlugin])
 
@@ -21,15 +21,17 @@ interface ColorState {
 }
 
 export default function ColorConverterPage() {
+    // Initialize with default blue color to avoid effect
+    const defaultColor = colord("#3b82f6")
     const [color, setColor] = useState<ColorState>({
-        hex: "#000000",
-        rgb: { r: 0, g: 0, b: 0 },
-        hsl: { h: 0, s: 0, l: 0 },
-        cmyk: { c: 0, m: 0, y: 0, k: 100 },
+        hex: defaultColor.toHex(),
+        rgb: defaultColor.toRgb(),
+        hsl: defaultColor.toHsl(),
+        cmyk: defaultColor.toCmyk(),
     })
 
     // Update all formats from a colord object
-    const updateColor = (c: any) => {
+    const updateColor = (c: Colord) => {
         setColor({
             hex: c.toHex(),
             rgb: c.toRgb(),
@@ -38,10 +40,7 @@ export default function ColorConverterPage() {
         })
     }
 
-    // Effect to set initial color
-    useEffect(() => {
-        updateColor(colord("#3b82f6")) // Default blue
-    }, [])
+
 
     const handleHexChange = (value: string) => {
         const c = colord(value)
@@ -162,7 +161,7 @@ export default function ColorConverterPage() {
 
                         {/* HSL Input */}
                         <div className="grid gap-2 p-4 border rounded-lg">
-                            <Label>DSL</Label>
+                            <Label>HSL</Label>
                             <div className="grid grid-cols-3 gap-2">
                                 {(['h', 's', 'l'] as const).map((key) => (
                                     <div key={key}>
@@ -171,6 +170,8 @@ export default function ColorConverterPage() {
                                             type="number"
                                             value={color.hsl[key]}
                                             onChange={(e) => handleHslChange(key, e.target.value)}
+                                            min={0}
+                                            max={key === 'h' ? 360 : 100}
                                         />
                                     </div>
                                 ))}
