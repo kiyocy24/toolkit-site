@@ -11,9 +11,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { cn } from "@/lib/utils"
 import {
-    ArrowLeft,
     FileJson,
     Binary,
     Fingerprint,
@@ -24,7 +22,8 @@ import {
     LineChart,
     Hash,
     Palette,
-    QrCode
+    QrCode,
+    Ruler
 } from "lucide-react"
 
 interface ToolsLayoutProps {
@@ -86,6 +85,11 @@ const sidebarItems = [
         title: "QR Code Generator",
         href: "/tools/qr-code-generator",
         icon: QrCode,
+    },
+    {
+        title: "CSS Unit Converter",
+        href: "/tools/css-unit-converter",
+        icon: Ruler,
     },
 ]
 

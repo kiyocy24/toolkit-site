@@ -197,6 +197,19 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Link>
+            <Link href="/tools/css-unit-converter">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>CSS Unit Converter</CardTitle>
+                  <CardDescription>
+                    Convert between px, rem, and em units.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Utility</Badge>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </section >
       </main >
