@@ -42,3 +42,18 @@ description: Check GitHub issues, prioritize one, and implement the fix.
 
 close #<number>"
      ```
+
+6. **Wait for Automated Review**
+   - Check if `gemini-code-assist` has provided a review.
+   - You can check this by running (replace `<number>` with the PR number):
+   ```bash
+   gh pr view <number> --json reviews --jq '.reviews[] | select(.author.login == "gemini-code-assist")'
+   ```
+   - If the output is empty, notify the user that you are waiting for the review, and retry periodically (e.g., every 30 seconds) until it appears.
+   - **Timeout**: If no review is received within 5 minutes, proceed to the next step or notify the user.
+
+7. **Handle Review**
+   - Once the review is received, run the handle-review workflow:
+   ```bash
+   /handle-review
+   ```
