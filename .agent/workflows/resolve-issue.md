@@ -50,6 +50,7 @@ close #<number>"
    gh pr view <number> --json reviews --jq '.reviews[] | select(.author.login == "gemini-code-assist")'
    ```
    - If the output is empty, notify the user that you are waiting for the review, and retry periodically (e.g., every 30 seconds) until it appears.
+   - **Timeout**: If no review is received within 5 minutes, proceed to the next step or notify the user.
 
 7. **Handle Review**
    - Once the review is received, run the handle-review workflow:
