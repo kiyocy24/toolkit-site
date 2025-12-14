@@ -74,7 +74,11 @@ export default function QrCodeGeneratorPage() {
                             <Label htmlFor="error-level">Error Correction Level</Label>
                             <Select
                                 value={errorLevel}
-                                onValueChange={(v) => setErrorLevel(v as "L" | "M" | "Q" | "H")}
+                                onValueChange={(v) => {
+                                    if (["L", "M", "Q", "H"].includes(v)) {
+                                        setErrorLevel(v as "L" | "M" | "Q" | "H")
+                                    }
+                                }}
                             >
                                 <SelectTrigger id="error-level">
                                     <SelectValue placeholder="Select level" />
