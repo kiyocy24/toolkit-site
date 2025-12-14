@@ -27,6 +27,10 @@ export default function CssUnitConverterPage() {
                 setRem((currentPx / val).toString())
                 setEm((currentPx / val).toString())
             }
+        } else {
+            // Clear outputs if root size is invalid
+            setRem("")
+            setEm("")
         }
     }
 
@@ -36,7 +40,7 @@ export default function CssUnitConverterPage() {
     const updateFromPx = (val: string) => {
         setPx(val)
         const num = parseFloat(val)
-        if (!isNaN(num)) {
+        if (!isNaN(num) && rootSize > 0) {
             setRem((num / rootSize).toString())
             setEm((num / rootSize).toString())
         } else {
@@ -70,8 +74,16 @@ export default function CssUnitConverterPage() {
     }
 
 
-    const copyToClipboard = (text: string) => {
-        navigator.clipboard.writeText(text)
+    const copyToClipboard = async (text: string) => {
+        if (!navigator?.clipboard) {
+            console.warn("Clipboard not supported")
+            return
+        }
+        try {
+            await navigator.clipboard.writeText(text)
+        } catch (error) {
+            console.error("Failed to copy", error)
+        }
     }
 
     return (
@@ -89,6 +101,7 @@ export default function CssUnitConverterPage() {
                         <Input
                             type="number"
                             id="root-size"
+                            min="1"
                             value={rootSize}
                             onChange={handleRootChange}
                         />
@@ -138,6 +151,7 @@ export default function CssUnitConverterPage() {
                                     <Copy className="h-4 w-4" />
                                 </Button>
                             </div>
+                            <p className="text-xs text-muted-foreground">*Assuming parent font-size is equal to root font-size (1em = 1rem)</p>
                         </div>
                     </div>
                 </CardContent>
