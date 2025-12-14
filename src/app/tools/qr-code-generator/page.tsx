@@ -16,7 +16,7 @@ export default function QrCodeGeneratorPage() {
     const [size, setSize] = useState([200])
     const svgRef = useRef<SVGSVGElement>(null)
 
-    const handleDownload = () => {
+    const downloadPng = () => {
         if (!svgRef.current) return
 
         const svgData = new XMLSerializer().serializeToString(svgRef.current)
@@ -30,16 +30,44 @@ export default function QrCodeGeneratorPage() {
         img.onload = () => {
             canvas.width = size[0]
             canvas.height = size[0]
-            if (ctx) {
-                ctx.drawImage(img, 0, 0)
-                const pngUrl = canvas.toDataURL("image/png")
+            if (!ctx) {
+                console.error("Failed to get 2D context for canvas")
+                URL.revokeObjectURL(url)
+                return
+            }
+            ctx.drawImage(img, 0, 0)
+            // Use toBlob for better memory handling, with fallback for older browsers
+            if (canvas.toBlob) {
+                canvas.toBlob((blob) => {
+                    if (!blob) {
+                        console.error("Failed to create blob from canvas")
+                        URL.revokeObjectURL(url)
+                        return
+                    }
+                    const downloadUrl = URL.createObjectURL(blob)
+                    const downloadLink = document.createElement("a")
+                    downloadLink.href = downloadUrl
+                    downloadLink.download = "qrcode.png"
+                    document.body.appendChild(downloadLink)
+                    downloadLink.click()
+                    document.body.removeChild(downloadLink)
+                    URL.revokeObjectURL(downloadUrl)
+                    URL.revokeObjectURL(url)
+                }, "image/png")
+            } else {
+                // Fallback to toDataURL for older browsers
+                const dataUrl = canvas.toDataURL("image/png")
                 const downloadLink = document.createElement("a")
-                downloadLink.href = pngUrl
+                downloadLink.href = dataUrl
                 downloadLink.download = "qrcode.png"
                 document.body.appendChild(downloadLink)
                 downloadLink.click()
                 document.body.removeChild(downloadLink)
+                URL.revokeObjectURL(url) // Still revoke the original SVG URL
             }
+        }
+        img.onerror = (e) => {
+            console.error("Image failed to load for QR code download", e)
             URL.revokeObjectURL(url)
         }
         img.src = url
@@ -139,7 +167,7 @@ export default function QrCodeGeneratorPage() {
                             )}
                         </div>
                         <Button
-                            onClick={handleDownload}
+                            onClick={downloadPng}
                             disabled={!text}
                             className="w-full max-w-xs"
                         >
