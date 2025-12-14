@@ -21,39 +21,50 @@ export default function HashGeneratorPage() {
     const [upperCase, setUpperCase] = useState(false)
 
     useEffect(() => {
-        const generateHashes = async () => {
-            if (!input) {
-                setHashes({
-                    MD5: "",
-                    "SHA-1": "",
-                    "SHA-256": "",
-                    "SHA-512": "",
-                })
-                return
+        const timer = setTimeout(() => {
+            const generateHashes = async () => {
+                if (!input) {
+                    setHashes({
+                        MD5: "",
+                        "SHA-1": "",
+                        "SHA-256": "",
+                        "SHA-512": "",
+                    })
+                    return
+                }
+
+                try {
+                    const md5 = await computeHash(input, "MD5")
+                    const sha1 = await computeHash(input, "SHA-1")
+                    const sha256 = await computeHash(input, "SHA-256")
+                    const sha512 = await computeHash(input, "SHA-512")
+
+                    setHashes({
+                        MD5: md5,
+                        "SHA-1": sha1,
+                        "SHA-256": sha256,
+                        "SHA-512": sha512,
+                    })
+                } catch (error) {
+                    console.error("Failed to generate hashes:", error)
+                }
             }
+            generateHashes()
+        }, 300)
 
-            const md5 = await computeHash(input, "MD5")
-            const sha1 = await computeHash(input, "SHA-1")
-            const sha256 = await computeHash(input, "SHA-256")
-            const sha512 = await computeHash(input, "SHA-512")
-
-            setHashes({
-                MD5: md5,
-                "SHA-1": sha1,
-                "SHA-256": sha256,
-                "SHA-512": sha512,
-            })
-        }
-
-        generateHashes()
+        return () => clearTimeout(timer)
     }, [input])
 
     const formatHash = (hash: string) => {
         return upperCase ? hash.toUpperCase() : hash
     }
 
-    const copyToClipboard = (text: string) => {
-        navigator.clipboard.writeText(text)
+    const copyToClipboard = async (text: string) => {
+        try {
+            await navigator.clipboard.writeText(text)
+        } catch (err) {
+            console.error("Failed to copy to clipboard:", err)
+        }
     }
 
     return (

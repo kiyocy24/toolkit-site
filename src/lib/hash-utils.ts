@@ -36,8 +36,13 @@ function md5(inputString: string): string {
     var S31 = 4, S32 = 11, S33 = 16, S34 = 23;
     var S41 = 6, S42 = 10, S43 = 15, S44 = 21;
 
-    // UTF-8 encoding logic handles standard ASCII properly too
-    var str = unescape(encodeURIComponent(inputString));
+    // Use TextEncoder to handle UTF-8 propery
+    const encoder = new TextEncoder();
+    const data = encoder.encode(inputString);
+    let str = "";
+    for (let i = 0; i < data.length; i++) {
+        str += String.fromCharCode(data[i]);
+    }
 
     for (var i = 0; i < str.length * 8; i += 8) {
         x[i >> 5] |= (str.charCodeAt(i / 8) & 0xFF) << (i % 32);
