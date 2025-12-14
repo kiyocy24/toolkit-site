@@ -184,6 +184,19 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Link>
+            <Link href="/tools/qr-code-generator">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>QR Code Generator</CardTitle>
+                  <CardDescription>
+                    Generate QR codes for URLs or text.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Utility</Badge>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </section >
       </main >
