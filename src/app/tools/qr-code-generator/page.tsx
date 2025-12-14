@@ -148,7 +148,7 @@ export default function QrCodeGeneratorPage() {
                     </div>
 
                     <div className="flex flex-col items-center justify-center gap-6 rounded-lg border bg-muted/50 p-8">
-                        <div className="rounded-lg bg-white p-4 shadow-sm">
+                        <div className="rounded-lg bg-white p-4 shadow-sm max-w-full">
                             {text ? (
                                 <QRCodeSVG
                                     ref={svgRef}
@@ -156,11 +156,12 @@ export default function QrCodeGeneratorPage() {
                                     size={size[0]}
                                     level={errorLevel}
                                     includeMargin={true}
+                                    className="max-w-full h-auto"
                                 />
                             ) : (
                                 <div
-                                    className="flex items-center justify-center bg-gray-100 text-muted-foreground"
-                                    style={{ width: size[0], height: size[0] }}
+                                    className="flex items-center justify-center bg-gray-100 text-muted-foreground max-w-full h-auto aspect-square"
+                                    style={{ width: size[0] }}
                                 >
                                     Enter text to generate
                                 </div>
