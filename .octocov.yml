@@ -11,5 +11,6 @@ report:
     - artifact://${GITHUB_REPOSITORY}
 
 diff:
+  target: 80%
   datastores:
     - artifact://${GITHUB_REPOSITORY}
