@@ -160,8 +160,8 @@ export default function QrCodeGeneratorPage() {
                                 />
                             ) : (
                                 <div
-                                    className="flex items-center justify-center bg-gray-100 text-muted-foreground max-w-full h-auto"
-                                    style={{ width: size[0], height: size[0] }}
+                                    className="flex items-center justify-center bg-gray-100 text-muted-foreground max-w-full h-auto aspect-square"
+                                    style={{ width: size[0] }}
                                 >
                                     Enter text to generate
                                 </div>
