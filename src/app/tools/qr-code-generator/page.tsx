@@ -45,7 +45,7 @@ export default function QrCodeGeneratorPage() {
         img.src = url
     }
 
-    const clearAll = () => {
+    const clearContent = () => {
         setText("")
     }
 
@@ -105,7 +105,7 @@ export default function QrCodeGeneratorPage() {
                         <div className="flex gap-2">
                             <Button
                                 variant="outline"
-                                onClick={clearAll}
+                                onClick={clearContent}
                                 disabled={!text}
                                 className="w-full"
                             >
