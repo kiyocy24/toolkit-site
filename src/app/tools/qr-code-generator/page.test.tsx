@@ -2,14 +2,26 @@ import { render, screen, fireEvent } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
 import QrCodeGeneratorPage from "./page"
 
+import React from "react"
+
 // Mock qrcode.react since it renders specific SVG structure
-vi.mock("qrcode.react", () => ({
-    QRCodeSVG: ({ value, size }: { value: string; size: number }) => (
-        <svg data-testid="qr-code-svg" width={size} height={size}>
-            <text>{value}</text>
-        </svg>
-    ),
-}))
+vi.mock("qrcode.react", async () => {
+    const React = await import("react")
+    return {
+        QRCodeSVG: React.forwardRef(({ value, size }: { value: string; size: number }, ref: React.ForwardedRef<SVGSVGElement>) => (
+            <svg ref={ref} data-testid="qr-code-svg" width={size} height={size}>
+                <text>{value}</text>
+            </svg>
+        )),
+    }
+})
+
+// Mock XMLSerializer
+global.XMLSerializer = class {
+    serializeToString() {
+        return "<svg>mock</svg>"
+    }
+} as any
 
 // Mock URL.createObjectURL and URL.revokeObjectURL
 global.URL.createObjectURL = vi.fn(() => "mock-url")
