@@ -93,6 +93,19 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Link>
+            <Link href="/tools/password-generator">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>Password Generator</CardTitle>
+                  <CardDescription>
+                    Generate secure random passwords.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Security</Badge>
+                </CardContent>
+              </Card>
+            </Link>
             <Link href="/tools/sql-formatter">
               <Card className="h-full hover:bg-muted/50 transition-colors">
                 <CardHeader>
