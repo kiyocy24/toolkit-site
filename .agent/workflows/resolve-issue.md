@@ -26,7 +26,7 @@ description: Check GitHub issues, prioritize one, and implement the fix.
 4. **Plan and Solve**
    - **Create a new branch from latest main**:
      ```bash
-     git fetch origin main
+     git fetch origin
      git checkout -b <type>/<short-description> origin/main
      ```
      (e.g., `feat/add-new-tool`, `fix/layout-bug`)
