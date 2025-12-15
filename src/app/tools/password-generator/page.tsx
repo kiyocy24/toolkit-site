@@ -157,7 +157,7 @@ export default function PasswordGeneratorPage() {
                                 />
                             </div>
                             <div className="flex items-center justify-between space-x-2">
-                                <Label htmlFor="symbols">Symbols (!@#$%)</Label>
+                                <Label htmlFor="symbols">Symbols (!@#$%^&*()_+~`|{"}"}{"{"}[]:;?&gt;&lt;,./-=)</Label>
                                 <Switch
                                     id="symbols"
                                     checked={includeSymbols}
