@@ -24,7 +24,12 @@ description: Check GitHub issues, prioritize one, and implement the fix.
    ```
 
 4. **Plan and Solve**
-   - Create a new branch: `git checkout -b <type>/<short-description>` (e.g., `feat/add-new-tool`, `fix/layout-bug`)
+   - **Create a new branch from latest main**:
+     ```bash
+     git fetch origin main
+     git checkout -b <type>/<short-description> origin/main
+     ```
+     (e.g., `feat/add-new-tool`, `fix/layout-bug`)
    - Create a proper `task_boundary` for this task.
    - Analyze the codebase (`view_file`, `grep_search`).
    - Create an `implementation_plan.md` and get approval.
