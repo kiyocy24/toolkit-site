@@ -26,6 +26,7 @@ import {
     Ruler,
     Shield,
     ShieldCheck,
+    Lock,
 } from "lucide-react"
 
 interface ToolsLayoutProps {
@@ -82,6 +83,11 @@ const sidebarItems = [
         title: "Color Converter",
         href: "/tools/color-converter",
         icon: Palette,
+    },
+    {
+        title: "Password Generator",
+        href: "/tools/password-generator",
+        icon: Lock,
     },
     {
         title: "QR Code Generator",
