@@ -33,7 +33,7 @@ jobs:
       run: pnpm install
 
     - name: Run tests
-      run: pnpm test:coverage
+      run: pnpm vitest run --coverage --reporter=verbose
 
     - name: Run octocov
       uses: k1LoW/octocov-action@v1
