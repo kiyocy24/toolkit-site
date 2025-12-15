@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -17,30 +17,67 @@ export default function PasswordGeneratorPage() {
     const [includeSymbols, setIncludeSymbols] = useState(true)
     const [password, setPassword] = useState("")
 
-    const generatePassword = () => {
+    const generatePassword = useCallback(() => {
         let charset = ""
-        if (includeUppercase) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        if (includeLowercase) charset += "abcdefghijklmnopqrstuvwxyz"
-        if (includeNumbers) charset += "0123456789"
-        if (includeSymbols) charset += "!@#$%^&*()_+~`|}{[]:;?><,./-="
+        let mandatoryChars = ""
+
+        const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        const lowercaseChars = "abcdefghijklmnopqrstuvwxyz"
+        const numberChars = "0123456789"
+        const symbolChars = "!@#$%^&*()_+~`|}{[]:;?><,./-="
+
+        const getRandomChar = (source: string) => {
+            const array = new Uint32Array(1)
+            crypto.getRandomValues(array)
+            return source.charAt(Math.floor(array[0] / (0xffffffff + 1) * source.length))
+        }
+
+        if (includeUppercase) {
+            charset += uppercaseChars
+            mandatoryChars += getRandomChar(uppercaseChars)
+        }
+        if (includeLowercase) {
+            charset += lowercaseChars
+            mandatoryChars += getRandomChar(lowercaseChars)
+        }
+        if (includeNumbers) {
+            charset += numberChars
+            mandatoryChars += getRandomChar(numberChars)
+        }
+        if (includeSymbols) {
+            charset += symbolChars
+            mandatoryChars += getRandomChar(symbolChars)
+        }
 
         if (charset === "") {
             setPassword("")
             return
         }
 
-        let newPassword = ""
-        for (let i = 0; i < length[0]; i++) {
-            newPassword += charset.charAt(Math.floor(Math.random() * charset.length))
-        }
-        setPassword(newPassword)
-    }
+        let newPasswordArray = mandatoryChars.split('')
+        const remainingLength = length[0] - newPasswordArray.length
 
-    // Generate on initial load
+        for (let i = 0; i < remainingLength; i++) {
+            newPasswordArray.push(getRandomChar(charset))
+        }
+
+        // Shuffle using Fisher-Yates
+        for (let i = newPasswordArray.length - 1; i > 0; i--) {
+            const array = new Uint32Array(1)
+            crypto.getRandomValues(array)
+            const j = Math.floor(array[0] / (0xffffffff + 1) * (i + 1))
+            const temp = newPasswordArray[i]
+            newPasswordArray[i] = newPasswordArray[j]
+            newPasswordArray[j] = temp
+        }
+
+        setPassword(newPasswordArray.join(''))
+    }, [length, includeUppercase, includeLowercase, includeNumbers, includeSymbols])
+
+    // Generate on initial load and when settings change
     useEffect(() => {
         generatePassword()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [generatePassword])
 
     const copyToClipboard = () => {
         if (password) {
