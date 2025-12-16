@@ -1,5 +1,7 @@
-export type LoremIpsumType = "english" | "japanese"
+export type LoremIpsumLanguage = "english" | "japanese"
 export type LoremIpsumUnit = "paragraphs" | "sentences" | "words"
+
+
 
 const LATIN_WORDS = [
     "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
@@ -145,7 +147,7 @@ function generateJapaneseParagraphs(count: number): string {
     return paragraphs.join("\n\n")
 }
 
-const GENERATORS: Record<LoremIpsumType, Record<LoremIpsumUnit, (count: number) => string>> = {
+const GENERATORS: Record<LoremIpsumLanguage, Record<LoremIpsumUnit, (count: number) => string>> = {
     english: {
         words: generateLatinWords,
         sentences: generateLatinSentences,
@@ -158,9 +160,9 @@ const GENERATORS: Record<LoremIpsumType, Record<LoremIpsumUnit, (count: number) 
     }
 }
 
-export function generateLoremIpsum(count: number, type: LoremIpsumType, unit: LoremIpsumUnit): string {
+export function generateLoremIpsum(count: number, language: LoremIpsumLanguage, unit: LoremIpsumUnit): string {
     if (count < 1) return ""
 
-    const generator = GENERATORS[type]?.[unit]
+    const generator = GENERATORS[language]?.[unit]
     return generator ? generator(count) : ""
 }

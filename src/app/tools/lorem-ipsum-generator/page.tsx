@@ -8,20 +8,20 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Copy, RefreshCw } from "lucide-react"
-import { generateLoremIpsum, LoremIpsumType, LoremIpsumUnit } from "@/lib/lorem-ipsum"
+import { generateLoremIpsum, LoremIpsumLanguage, LoremIpsumUnit } from "@/lib/lorem-ipsum"
 
 export default function LoremIpsumGeneratorPage() {
     const [count, setCount] = useState(3)
     const [unit, setUnit] = useState<LoremIpsumUnit>("paragraphs")
-    const [type, setType] = useState<LoremIpsumType>("english")
+    const [language, setLanguage] = useState<LoremIpsumLanguage>("english")
     const [generatedText, setGeneratedText] = useState("")
 
     useEffect(() => {
-        setGeneratedText(generateLoremIpsum(count, type, unit))
+        setGeneratedText(generateLoremIpsum(count, language, unit))
     }, [])
 
     const handleGenerate = () => {
-        const text = generateLoremIpsum(count, type, unit)
+        const text = generateLoremIpsum(count, language, unit)
         setGeneratedText(text)
     }
 
@@ -69,13 +69,13 @@ export default function LoremIpsumGeneratorPage() {
                             </Select>
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="type">Type</Label>
-                            <Select value={type} onValueChange={(v) => setType(v as LoremIpsumType)}>
-                                <SelectTrigger id="type">
+                            <Label htmlFor="language">Language</Label>
+                            <Select value={language} onValueChange={(v) => setLanguage(v as LoremIpsumLanguage)}>
+                                <SelectTrigger id="language">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="english">English (Lorem Ipsum)</SelectItem>
+                                    <SelectItem value="english">English</SelectItem>
                                     <SelectItem value="japanese">Japanese</SelectItem>
                                 </SelectContent>
                             </Select>
