@@ -88,10 +88,10 @@ export default function ToolsLayout({ children }: ToolsLayoutProps) {
                                             key={tool.href}
                                             variant={pathname === tool.href ? "secondary" : "ghost"}
                                             asChild
-                                            className="justify-start shrink-0"
+                                            className="w-full justify-start h-auto whitespace-normal text-left"
                                         >
                                             <Link href={tool.href}>
-                                                <tool.icon className="mr-2 h-4 w-4" />
+                                                <tool.icon className="mr-2 h-4 w-4 shrink-0" />
                                                 {tool.title}
                                             </Link>
                                         </Button>
