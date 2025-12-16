@@ -314,7 +314,7 @@ function JwtEncoder() {
                     <Textarea
                         id="encoded-output"
                         readOnly
-                        className="min-h-[100px] font-mono text-xs bg-muted pr-10"
+                        className="min-h-[100px] font-mono text-xs bg-muted pr-10 break-words"
                         value={encodedToken}
                         placeholder="JWT will appear here..."
                     />
