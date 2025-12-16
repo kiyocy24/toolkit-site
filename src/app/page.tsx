@@ -236,6 +236,19 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Link>
+            <Link href="/tools/markdown-previewer">
+              <Card className="h-full hover:bg-muted/50 transition-colors">
+                <CardHeader>
+                  <CardTitle>Markdown Previewer</CardTitle>
+                  <CardDescription>
+                    Preview markdown text with GFM support.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary">Utility</Badge>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </section >
       </main >
