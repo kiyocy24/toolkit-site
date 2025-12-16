@@ -13,7 +13,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { tools, ToolCategory, Tool } from "@/config/tools"
+import { toolsByCategory, categories } from "@/config/tools"
 
 interface ToolsLayoutProps {
     children: React.ReactNode
@@ -22,16 +22,6 @@ interface ToolsLayoutProps {
 export default function ToolsLayout({ children }: ToolsLayoutProps) {
     const pathname = usePathname()
     const router = useRouter()
-
-    const toolsByCategory = tools.reduce((acc, tool) => {
-        if (!acc[tool.category]) {
-            acc[tool.category] = [];
-        }
-        acc[tool.category].push(tool);
-        return acc;
-    }, {} as Record<ToolCategory, Tool[]>);
-
-    const categories: ToolCategory[] = ["Core", "Utility", "Development", "Security", "Database", "Math", "Date"];
 
     return (
         <div className="container mx-auto flex flex-col gap-6 py-8 md:py-10 px-6 md:px-8">

@@ -15,6 +15,7 @@ import {
     Lock,
     Calendar,
     Link2,
+    FileText,
 } from "lucide-react"
 
 export type ToolCategory = "Core" | "Utility" | "Security" | "Math" | "Database" | "Development" | "Date"
@@ -129,7 +130,7 @@ export const tools: Tool[] = [
     {
         title: "Markdown Previewer",
         href: "/tools/markdown-previewer",
-        icon: FileDiff,
+        icon: FileText,
         description: "Preview markdown text with GFM support.",
         category: "Utility",
     },
@@ -148,3 +149,13 @@ export const tools: Tool[] = [
         category: "Utility",
     },
 ]
+
+export const categories: ToolCategory[] = ["Core", "Utility", "Development", "Security", "Database", "Math", "Date"];
+
+export const toolsByCategory = tools.reduce((acc, tool) => {
+    if (!acc[tool.category]) {
+        acc[tool.category] = [];
+    }
+    acc[tool.category].push(tool);
+    return acc;
+}, {} as Record<ToolCategory, Tool[]>);

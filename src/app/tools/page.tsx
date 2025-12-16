@@ -1,20 +1,9 @@
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { tools, ToolCategory, Tool } from "@/config/tools";
+import { toolsByCategory, categories } from "@/config/tools";
 
 export default function ToolsPage() {
-    const toolsByCategory = tools.reduce((acc, tool) => {
-        if (!acc[tool.category]) {
-            acc[tool.category] = [];
-        }
-        acc[tool.category].push(tool);
-        return acc;
-    }, {} as Record<ToolCategory, Tool[]>);
-
-    // Define order of categories if needed, or just iterate keys
-    const categories: ToolCategory[] = ["Core", "Utility", "Development", "Security", "Database", "Math", "Date"];
-
     return (
         <div className="space-y-8">
             <div className="space-y-2">
