@@ -36,12 +36,12 @@ describe('generateLoremIpsum', () => {
         })
 
         it('should generate sentences', () => {
-            // It's hard to count exact sentences because source sentences might contain random stuff, 
-            // but in our constant list, they are distinct.
-            // However, we join them with empty string.
-            // So checking length is greater than 0 is a basic check.
-            const text = generateLoremIpsum(3, 'japanese', 'sentences')
-            expect(text.length).toBeGreaterThan(0)
+            const count = 3
+            const text = generateLoremIpsum(count, 'japanese', 'sentences')
+            // Shortest sentence is ~6 chars.
+            expect(text.length).toBeGreaterThan(count * 5)
+            // Should contain at least one period/punctuation
+            expect(text).toContain('。')
         })
 
         it('should generate paragraphs', () => {

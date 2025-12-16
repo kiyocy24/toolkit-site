@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -16,13 +16,21 @@ export default function LoremIpsumGeneratorPage() {
     const [type, setType] = useState<LoremIpsumType>("english")
     const [generatedText, setGeneratedText] = useState("")
 
+    useEffect(() => {
+        setGeneratedText(generateLoremIpsum(count, type, unit))
+    }, [])
+
     const handleGenerate = () => {
         const text = generateLoremIpsum(count, type, unit)
         setGeneratedText(text)
     }
 
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText(generatedText)
+    const copyToClipboard = async () => {
+        try {
+            await navigator.clipboard.writeText(generatedText)
+        } catch (err) {
+            console.error("Failed to copy text: ", err)
+        }
     }
 
     return (

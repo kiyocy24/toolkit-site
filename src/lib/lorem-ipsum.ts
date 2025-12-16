@@ -88,7 +88,7 @@ function generateJapaneseWords(count: number): string {
     for (let i = 0; i < count; i++) {
         const len = 2 + getRandomInt(4)
         const start = getRandomInt(allText.length - len)
-        words.push(allText.substr(start, len))
+        words.push(allText.slice(start, start + len))
     }
     return words.join("、")
 }
@@ -111,27 +111,22 @@ function generateJapaneseParagraphs(count: number): string {
     return paragraphs.join("\n\n")
 }
 
+const GENERATORS: Record<LoremIpsumType, Record<LoremIpsumUnit, (count: number) => string>> = {
+    english: {
+        words: generateLatinWords,
+        sentences: generateLatinSentences,
+        paragraphs: generateLatinParagraphs,
+    },
+    japanese: {
+        words: generateJapaneseWords,
+        sentences: generateJapaneseSentences,
+        paragraphs: generateJapaneseParagraphs,
+    }
+}
+
 export function generateLoremIpsum(count: number, type: LoremIpsumType, unit: LoremIpsumUnit): string {
     if (count < 1) return ""
 
-    if (type === "english") {
-        switch (unit) {
-            case "words":
-                return generateLatinWords(count)
-            case "sentences":
-                return generateLatinSentences(count)
-            case "paragraphs":
-                return generateLatinParagraphs(count)
-        }
-    } else {
-        switch (unit) {
-            case "words":
-                return generateJapaneseWords(count)
-            case "sentences":
-                return generateJapaneseSentences(count)
-            case "paragraphs":
-                return generateJapaneseParagraphs(count)
-        }
-    }
-    return ""
+    const generator = GENERATORS[type]?.[unit]
+    return generator ? generator(count) : ""
 }
