@@ -10,7 +10,22 @@ const LATIN_WORDS = [
     "in", "voluptate", "velit", "esse", "cillum", "dolore", "eu", "fugiat", "nulla",
     "pariatur", "excepteur", "sint", "occaecat", "cupidatat", "non", "proident",
     "sunt", "in", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id",
-    "est", "laborum"
+    "est", "laborum", "accumsan", "tortor", "posuere", "ac", "ut", "consequat",
+    "semper", "viverra", "nam", "libero", "justo", "laoreet", "sit", "amet",
+    "cursus", "sit", "amet", "dictum", "sit", "amet", "justo", "donec", "enim",
+    "diam", "vulputate", "ut", "pharetra", "sit", "amet", "aliquam", "id", "diam",
+    "maecenas", "ultricies", "mi", "eget", "mauris", "pharetra", "et", "ultrices",
+    "neque", "ornare", "aenean", "euismod", "elementum", "nisi", "quis", "eleifend",
+    "quam", "adipiscing", "vitae", "proin", "sagittis", "nisl", "rhoncus", "mattis",
+    "rhoncus", "urna", "neque", "viverra", "justo", "nec", "ultrices", "dui",
+    "sapien", "eget", "mi", "proin", "sed", "libero", "enim", "sed", "faucibus",
+    "turpis", "in", "eu", "mi", "bibendum", "neque", "egestas", "congue", "quisque",
+    "egestas", "diam", "in", "arcu", "cursus", "euismod", "quis", "viverra", "nibh",
+    "cras", "pulvinar", "mattis", "nunc", "sed", "blandit", "libero", "volutpat",
+    "sed", "cras", "ornare", "arcu", "dui", "vivamus", "arcu", "felis", "bibendum",
+    "ut", "tristique", "et", "egestas", "quis", "ipsum", "suspendisse", "ultrices",
+    "gravida", "dictum", "fusce", "ut", "placerat", "orci", "nulla", "pellentesque",
+    "dignissim", "enim", "sit"
 ]
 
 const JAPANESE_SENTENCES = [
@@ -31,6 +46,24 @@ const JAPANESE_SENTENCES = [
     "この書生というのは時々我々を捕えて煮て食うという話である。",
     "しかしその当時は何という考もなかったから別段恐しいとも思わなかった。",
     "ただ彼の掌に載せられてスーと持ち上げられた時何だかフワフワした感じがあったばかりである。",
+    "雨ニモマケズ、風ニモマケズ、雪ニモ夏ノ暑サニモマケヌ丈夫ナカラダヲモチ。",
+    "慾ハナク決シテ怒ラズ、イツモシヅカニワラッテヰル。",
+    "一日ニ玄米四合ト味噌ト少シノ野菜ヲタベ。",
+    "アラユルコトヲジブンヲカンジョウニ入レズニ。",
+    "ヨクミキキシワカリ、ソシテワスレズ。",
+    "野原ノ松ノ林ノ蔭ノ小サナ萱ブキノ小屋ニヰテ。",
+    "東ニ病気ノコドモアレバ行ッテ看病シテヤリ、西ニツカレタ母アレバ行ッテソノ稲ノ束ヲ負ヒ。",
+    "南ニ死ニサウナ人アレバ行ッテコハガラナクテモイヽトイヒ、北ニケンクヮヤソショウガアレバツマラナイカラヤメロトイヒ。",
+    "ヒデリノトキハナミダヲナガシ、サムサノナツハオロオロアルキ。",
+    "ミンナニデクノボートヨバレ、ホメラレモセズ、クニモサレズ。",
+    "サウイフモノニワタシハナリタイ。",
+    "ジョバンニは、学校の門を出ると、同じ組の七、八人と一緒に、校庭の隅の桜の木のところへ集まりました。",
+    "それから、みんなは、それぞれ家の方へ帰って行きました。",
+    "ジョバンニは、町の方へ曲がりました。",
+    "ジョバンニが学校の門を出てやって来ると、もう夕方で、町は店に明かりがつき始めていました。",
+    "時計屋の店には、大きな時計が掛かっていて、その下には、いろいろな時計が並んでいました。",
+    "一番星見つけた。",
+    "青白い火花を散らして、銀河の停車場に、列車が着きました。",
 ]
 
 function getRandomInt(max: number): number {
