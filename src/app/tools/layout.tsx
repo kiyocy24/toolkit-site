@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useMemo, useCallback } from "react"
 import { Search } from "lucide-react"
 
 import Link from "next/link"
@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 import {
     Select,
     SelectContent,
@@ -28,7 +29,7 @@ export default function ToolsLayout({ children }: ToolsLayoutProps) {
     const router = useRouter()
     const [searchQuery, setSearchQuery] = useState("")
 
-    const filteredTools = categories.reduce((acc, category) => {
+    const filteredTools = useMemo(() => categories.reduce((acc, category) => {
         const categoryTools = toolsByCategory[category] || []
         const filtered = categoryTools.filter(tool =>
             tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -38,9 +39,13 @@ export default function ToolsLayout({ children }: ToolsLayoutProps) {
             acc[category] = filtered
         }
         return acc
-    }, {} as Record<string, typeof toolsByCategory[keyof typeof toolsByCategory]>)
+    }, {} as Record<string, typeof toolsByCategory[keyof typeof toolsByCategory]>), [searchQuery])
 
     const hasResults = Object.keys(filteredTools).length > 0
+
+    const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value)
+    }, [])
 
     return (
         <div className="container mx-auto flex flex-col gap-6 py-8 md:py-10 px-6 md:px-8">
@@ -61,15 +66,10 @@ export default function ToolsLayout({ children }: ToolsLayoutProps) {
                 <aside className="-mx-4 lg:mx-0 lg:w-1/5 lg:pr-8">
                     {/* Mobile Navigation (Select) */}
                     <div className="px-4 lg:hidden flex flex-col gap-4">
-                        <div className="relative">
-                            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                            <Input
-                                placeholder="Search tools..."
-                                value={searchQuery}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-                                className="pl-8"
-                            />
-                        </div>
+                        <ToolsSearchInput
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                        />
                         <Select
                             value={pathname}
                             onValueChange={(value) => router.push(value)}
@@ -108,15 +108,10 @@ export default function ToolsLayout({ children }: ToolsLayoutProps) {
 
                     {/* Desktop Navigation (Sidebar) */}
                     <nav className="hidden lg:flex lg:flex-col lg:space-y-6">
-                        <div className="relative">
-                            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                            <Input
-                                placeholder="Search tools..."
-                                value={searchQuery}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-                                className="pl-8"
-                            />
-                        </div>
+                        <ToolsSearchInput
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                        />
                         {hasResults ? (
                             categories.map((category) => {
                                 const categoryTools = filteredTools[category];
@@ -152,6 +147,26 @@ export default function ToolsLayout({ children }: ToolsLayoutProps) {
                 </aside>
                 <div className="flex-1 lg:max-w-4xl">{children}</div>
             </div>
+        </div>
+    )
+}
+
+interface SearchInputProps {
+    value: string
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    className?: string
+}
+
+function ToolsSearchInput({ value, onChange, className }: SearchInputProps) {
+    return (
+        <div className={cn("relative", className)}>
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+                placeholder="Search tools..."
+                value={value}
+                onChange={onChange}
+                className="pl-8"
+            />
         </div>
     )
 }
