@@ -148,6 +148,13 @@ export const tools: Tool[] = [
         description: "Encode and decode URL strings.",
         category: "Utility",
     },
+    {
+        title: "Cron Expression Generator",
+        href: "/tools/cron-expression-generator",
+        icon: Calendar,
+        description: "Generate and explain cron expressions.",
+        category: "Utility",
+    },
 ]
 
 export const categories: ToolCategory[] = ["Core", "Utility", "Development", "Security", "Database", "Math", "Date"];
