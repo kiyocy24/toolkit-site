@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
@@ -8,12 +8,14 @@ import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { Trash2 } from "lucide-react"
 
-export default function MarkdownPreviewerPage() {
-    const [markdown, setMarkdown] = useState<string>("# Hello Markdown\n\nWrite your markdown here...")
+const DEFAULT_MARKDOWN = "# Hello Markdown\n\nWrite your markdown here..."
 
-    const clearAll = () => {
+export default function MarkdownPreviewerPage() {
+    const [markdown, setMarkdown] = useState<string>(DEFAULT_MARKDOWN)
+
+    const clearAll = useCallback(() => {
         setMarkdown("")
-    }
+    }, [])
 
     return (
         <div className="grid gap-6 lg:grid-cols-2 h-[calc(100vh-12rem)] min-h-[500px]">
