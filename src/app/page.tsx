@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Github } from "lucide-react";
+import { tools } from "@/config/tools";
 
 export default function Home() {
   return (
@@ -54,201 +54,21 @@ export default function Home() {
             </p>
           </div>
           <div className="mx-auto grid gap-4 grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
-            <Link href="/tools/json-formatter">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>JSON Formatter</CardTitle>
-                  <CardDescription>
-                    Format and validate your JSON data.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Core</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/base64-converter">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>Base64 Converter</CardTitle>
-                  <CardDescription>
-                    Encode and decode Base64 strings.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Utility</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/uuid-generator">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>UUID Generator</CardTitle>
-                  <CardDescription>
-                    Generate random UUIDs v4.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Utility</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/password-generator">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>Password Generator</CardTitle>
-                  <CardDescription>
-                    Generate secure random passwords.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Security</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/sql-formatter">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>SQL Formatter</CardTitle>
-                  <CardDescription>
-                    Beautify your SQL queries.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Database</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/regex-tester">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>Regex Tester</CardTitle>
-                  <CardDescription>
-                    Test your regular expressions.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Code</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/diff-viewer">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>Diff Viewer</CardTitle>
-                  <CardDescription>
-                    Compare two text contents.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Utility</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/url-encoder-decoder">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>URL Encoder/Decoder</CardTitle>
-                  <CardDescription>
-                    Encode and decode URL strings.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Utility</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/unix-timestamp-converter">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>Unix Timestamp Converter</CardTitle>
-                  <CardDescription>
-                    Convert timestamps to dates and vice versa.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Date</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/prime-factorization">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>Prime Factorization</CardTitle>
-                  <CardDescription>
-                    Decompose integers into prime factors.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Math</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/collatz-conjecture">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>Collatz Conjecture</CardTitle>
-                  <CardDescription>
-                    Visualize the 3n + 1 sequence.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Math</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/qr-code-generator">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>QR Code Generator</CardTitle>
-                  <CardDescription>
-                    Generate QR codes for URLs or text.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Utility</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/jwt-debugger">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>JWT Debugger</CardTitle>
-                  <CardDescription>
-                    Decode, encode, and sign JSON Web Tokens.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Development</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/css-unit-converter">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>CSS Unit Converter</CardTitle>
-                  <CardDescription>
-                    Convert between px, rem, and em units.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Utility</Badge>
-                </CardContent>
-              </Card>
-            </Link>
-            <Link href="/tools/markdown-previewer">
-              <Card className="h-full hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle>Markdown Previewer</CardTitle>
-                  <CardDescription>
-                    Preview markdown text with GFM support.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="secondary">Utility</Badge>
-                </CardContent>
-              </Card>
-            </Link>
+            {tools.map((tool) => (
+              <Link key={tool.href} href={tool.href}>
+                <Card className="h-full hover:bg-muted/50 transition-colors">
+                  <CardHeader>
+                    <CardTitle>{tool.title}</CardTitle>
+                    <CardDescription>
+                      {tool.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Badge variant="secondary">{tool.category}</Badge>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
           </div>
         </section >
       </main >
