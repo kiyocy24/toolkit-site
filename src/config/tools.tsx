@@ -16,6 +16,7 @@ import {
     Calendar,
     Link2,
     FileText,
+    Type,
 } from "lucide-react"
 
 export type ToolCategory = "Core" | "Utility" | "Security" | "Math" | "Database" | "Development" | "Date"
@@ -154,6 +155,13 @@ export const tools: Tool[] = [
         icon: Calendar,
         description: "Generate and explain cron expressions.",
         category: "Utility",
+    },
+    {
+        title: "Lorem Ipsum Generator",
+        href: "/tools/lorem-ipsum-generator",
+        icon: Type,
+        description: "Generate dummy text (Lorem Ipsum, Japanese).",
+        category: "Development",
     },
 ]
 
