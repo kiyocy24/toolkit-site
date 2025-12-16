@@ -71,7 +71,7 @@ export default function CronExpressionGeneratorPage() {
                                     <Input value={hour} onChange={(e) => setHour(e.target.value)} placeholder="*" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Day (Month)</Label>
+                                    <Label>Day</Label>
                                     <Input value={dayOfMonth} onChange={(e) => setDayOfMonth(e.target.value)} placeholder="*" />
                                 </div>
                                 <div className="space-y-2">
@@ -79,7 +79,7 @@ export default function CronExpressionGeneratorPage() {
                                     <Input value={month} onChange={(e) => setMonth(e.target.value)} placeholder="*" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Day (Week)</Label>
+                                    <Label>Week</Label>
                                     <Input value={dayOfWeek} onChange={(e) => setDayOfWeek(e.target.value)} placeholder="*" />
                                 </div>
                             </div>
