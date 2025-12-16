@@ -105,6 +105,11 @@ const sidebarItems = [
         href: "/tools/css-unit-converter",
         icon: Ruler,
     },
+    {
+        title: "Markdown Previewer",
+        href: "/tools/markdown-previewer",
+        icon: FileDiff,
+    },
 ]
 
 export default function ToolsLayout({ children }: ToolsLayoutProps) {
