@@ -117,7 +117,8 @@ function generateJapaneseWords(count: number): string {
     // Let's try to grab random chunks of 2-5 chars from the sentences.
 
     const words: string[] = []
-    const allText = JAPANESE_SENTENCES.join("")
+    // Remove punctuation to prevent split/join issues and keep "words" clean
+    const allText = JAPANESE_SENTENCES.join("").replace(/[、。]/g, "")
     for (let i = 0; i < count; i++) {
         const len = 2 + getRandomInt(4)
         const start = getRandomInt(allText.length - len)
