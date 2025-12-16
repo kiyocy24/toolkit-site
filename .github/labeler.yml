@@ -1,22 +1,22 @@
-area: tools:
+"area: tools":
   - changed-files:
     - any-glob-to-any-file: src/app/tools/**
 
-area: ui:
+"area: ui":
   - changed-files:
     - any-glob-to-any-file: src/components/**
 
-area: github:
+"area: github":
   - changed-files:
     - any-glob-to-any-file: .github/**
 
-area: dependencies:
+"area: dependencies":
   - changed-files:
     - any-glob-to-any-file:
       - package.json
       - pnpm-lock.yaml
 
-area: tests:
+"area: tests":
   - changed-files:
     - any-glob-to-any-file:
       - "**/*.test.ts"
@@ -24,6 +24,6 @@ area: tests:
       - "**/*.spec.ts"
       - "**/*.spec.tsx"
 
-area: documentation:
+"area: documentation":
   - changed-files:
     - any-glob-to-any-file: "**/*.md"
