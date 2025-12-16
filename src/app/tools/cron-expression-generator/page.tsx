@@ -1,15 +1,14 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useMemo } from "react"
 import cronstrue from "cronstrue"
-import { Copy, AlertCircle } from "lucide-react"
+import { Copy, AlertCircle, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function CronExpressionGeneratorPage() {
     // Generator State
@@ -18,35 +17,31 @@ export default function CronExpressionGeneratorPage() {
     const [dayOfMonth, setDayOfMonth] = useState("*")
     const [month, setMonth] = useState("*")
     const [dayOfWeek, setDayOfWeek] = useState("*")
-    const [generatedCron, setGeneratedCron] = useState("* * * * *")
+
+    // Copy Feedback State
+    const [isCopied, setIsCopied] = useState(false)
 
     // Explainer State
     const [cronInput, setCronInput] = useState("* * * * *")
-    const [explanation, setExplanation] = useState("")
-    const [error, setError] = useState("")
 
-    // Update generated cron when inputs change
-    useEffect(() => {
-        setGeneratedCron(`${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`)
+    // Derived State
+    const generatedCron = useMemo(() => {
+        return `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`
     }, [minute, hour, dayOfMonth, month, dayOfWeek])
 
-    // Update explanation when cronInput changes
-    useEffect(() => {
+    const explanationResult = useMemo(() => {
         try {
             const desc = cronstrue.toString(cronInput)
-            setExplanation(desc)
-            setError("")
+            return { desc, error: "" }
         } catch (err) {
-            setExplanation("")
-            // Only show error if input is not empty
-            if (cronInput.trim() !== "") {
-                setError("Invalid cron expression")
-            }
+            return { desc: "", error: cronInput.trim() !== "" ? "Invalid cron expression" : "" }
         }
     }, [cronInput])
 
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text)
+        setIsCopied(true)
+        setTimeout(() => setIsCopied(false), 2000)
     }
 
     return (
@@ -92,7 +87,7 @@ export default function CronExpressionGeneratorPage() {
                             <div className="p-4 bg-muted rounded-md flex items-center justify-between">
                                 <code className="text-lg font-mono">{generatedCron}</code>
                                 <Button variant="ghost" size="icon" onClick={() => copyToClipboard(generatedCron)}>
-                                    <Copy className="h-4 w-4" />
+                                    {isCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                                 </Button>
                             </div>
 
@@ -122,15 +117,15 @@ export default function CronExpressionGeneratorPage() {
                                 />
                             </div>
 
-                            {error ? (
+                            {explanationResult.error ? (
                                 <Alert variant="destructive">
                                     <AlertCircle className="h-4 w-4" />
                                     <AlertTitle>Error</AlertTitle>
-                                    <AlertDescription>{error}</AlertDescription>
+                                    <AlertDescription>{explanationResult.error}</AlertDescription>
                                 </Alert>
                             ) : (
                                 <div className="p-4 bg-muted rounded-md border text-center">
-                                    <p className="text-lg font-medium">{explanation}</p>
+                                    <p className="text-lg font-medium">{explanationResult.desc}</p>
                                 </div>
                             )}
                         </CardContent>
