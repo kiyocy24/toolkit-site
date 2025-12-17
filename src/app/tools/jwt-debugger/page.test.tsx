@@ -138,29 +138,11 @@ describe("JwtDebuggerPage", () => {
             })
 
             const copyButton = screen.getByRole("button", { name: "" }) // Icon button usually has empty name if not aria-labeled properly but we can find by svg or just try to find the button inside
-            // Actually the code uses Lucide Copy icon inside button. 
-            // Let's find by class or hierarchy if needed, or better, the button inside the relative container.
-            // The code has: <Button ... onClick={copyToClipboard}>
-
-            // Let's assume there is only one copy button visible in Encoder tab (Header/Payload in Decoder are different fields)
-            // But wait, Decoder is hidden.
-            // There is only one copy button in Encoder tab.
-
-            // Actually, let's find by the SVG icons or the parent div.
-            // Simply looking for button next to Encoded Token textarea.
-            const encodedArea = screen.getByLabelText("Encoded Token")
-            const copyBtn = encodedArea.nextElementSibling as HTMLElement
-
-            if (copyBtn) {
-                fireEvent.click(copyBtn)
-                expect(mockWriteText).toHaveBeenCalled()
-            } else {
-                // Fallback search
-                const btns = screen.getAllByRole("button")
-                // Last button is likely the copy button
-                fireEvent.click(btns[btns.length - 1])
-                expect(mockWriteText).toHaveBeenCalled()
-            }
+            await waitFor(async () => {
+                const copyButton = screen.getByRole("button", { name: /Copy encoded token/i })
+                fireEvent.click(copyButton)
+                expect(navigator.clipboard.writeText).toHaveBeenCalled()
+            })
         })
     })
 })
