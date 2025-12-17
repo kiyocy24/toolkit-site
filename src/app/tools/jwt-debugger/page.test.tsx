@@ -16,25 +16,32 @@ const mockSign = vi.fn()
 const mockImportKey = vi.fn()
 
 beforeAll(() => {
-    // Polyfill TextEncoder
-    if (!global.TextEncoder) {
-        global.TextEncoder = class {
-            encode(str: string) { return Buffer.from(str, 'utf-8') }
-        } as any
-    }
+    // Stub TextEncoder
+    vi.stubGlobal('TextEncoder', class {
+        encode(str: string) { return Buffer.from(str, 'utf-8') }
+    })
 
-    // Ensure crypto.subtle exists
-    // In HappyDOM, global.crypto might be read-only property of Window, but the object itself is mutable usually.
-    if (!global.crypto) {
-        Object.defineProperty(global, 'crypto', {
-            value: { subtle: {} },
-            writable: true,
-            configurable: true
-        })
+    // Stub crypto
+    // We provide specific implementations for what we need
+    const mockCrypto = {
+        subtle: {
+            sign: mockSign,
+            importKey: mockImportKey
+        },
+        getRandomValues: (arr: any) => arr
     }
-    if (!global.crypto.subtle) {
-        // @ts-ignore
-        global.crypto.subtle = {}
+    vi.stubGlobal('crypto', mockCrypto)
+    if (typeof window !== 'undefined') {
+        // Try to overwrite window.crypto
+        try {
+            Object.defineProperty(window, 'crypto', {
+                value: mockCrypto,
+                writable: true,
+                configurable: true
+            })
+        } catch (e) {
+            console.warn("Failed to overwrite window.crypto", e)
+        }
     }
 })
 
@@ -43,23 +50,6 @@ describe("JwtDebuggerPage", () => {
         vi.clearAllMocks()
 
         // Mock importKey
-        // Check if it's already a spy/mock to avoid wrapping multiple times if reuse happens, 
-        // but vitest restores mocks after run if configured? 
-        // Better to just overwrite or spy cleanly.
-
-        try {
-            vi.spyOn(global.crypto.subtle, 'importKey').mockImplementation(mockImportKey)
-        } catch (e) {
-            // If spy fails (e.g. missing property), assign it
-            global.crypto.subtle.importKey = mockImportKey
-        }
-
-        try {
-            vi.spyOn(global.crypto.subtle, 'sign').mockImplementation(mockSign)
-        } catch (e) {
-            global.crypto.subtle.sign = mockSign
-        }
-
         mockImportKey.mockResolvedValue("mockKey")
         mockSign.mockResolvedValue(new Uint8Array([1, 2, 3]).buffer)
     })
@@ -107,15 +97,7 @@ describe("JwtDebuggerPage", () => {
         })
     })
 
-    describe.skip("Encoder", () => {
-        beforeEach(() => {
-            // Setup successes for Web Crypto mocks
-            mockImportKey.mockResolvedValue("mockKey")
-            // Mock signature result (ArrayBuffer)
-            const signature = new Uint8Array([1, 2, 3]).buffer
-            mockSign.mockResolvedValue(signature)
-        })
-
+    describe("Encoder", () => {
         it("switches to encoder tab and generates token", async () => {
             render(<JwtDebuggerPage />)
 

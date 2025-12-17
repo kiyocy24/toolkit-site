@@ -119,9 +119,10 @@ export default function PasswordGeneratorPage() {
                     <div className="grid gap-4">
                         <div className="grid gap-2">
                             <div className="flex items-center justify-between">
-                                <Label>Length: {length}</Label>
+                                <Label htmlFor="length-slider">Length: {length}</Label>
                             </div>
                             <Slider
+                                id="length-slider"
                                 value={length}
                                 onValueChange={setLength}
                                 min={4}
