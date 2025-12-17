@@ -66,9 +66,7 @@ describe("PasswordGeneratorPage", () => {
         // This might trigger change.
 
         // Alternatively, we can check if regeneration happens on button click which is easier
-        const refreshBtn = screen.getByRole("button", { name: "" }) // Refresh icon button
-        // Need to find the specific refresh button.
-        // It's next to the input.
+
 
         // Let's just mock different random values and click refresh
         mockGetRandomValues.mockImplementation((array: Uint32Array) => {
@@ -76,7 +74,7 @@ describe("PasswordGeneratorPage", () => {
             return array;
         })
 
-        const refreshButton = passwordInput.nextElementSibling as HTMLElement
+        const refreshButton = screen.getByRole("button", { name: "Refresh password" })
         fireEvent.click(refreshButton)
 
         expect(passwordInput.value).not.toBe(oldPassword)
@@ -100,12 +98,10 @@ describe("PasswordGeneratorPage", () => {
         // but fireEvent.click usually toggles them.
 
         // Wait for effect
-        await waitFor(() => {
-            // Ideally password should only contain numbers
-            // But we need to ensure the click actually worked.
-            // Let's verify with less strict regex first or check state.
-        })
+        const password = (screen.getByLabelText("Generated Password") as HTMLInputElement).value
+        expect(password).toMatch(/^\d+$/)
     })
+
 
     it("copies to clipboard", async () => {
         render(<PasswordGeneratorPage />)

@@ -171,7 +171,6 @@ export function JwtEncoder() {
     const [encodedToken, setEncodedToken] = useState("")
     const [error, setError] = useState<string | null>(null)
     const [copied, setCopied] = useState(false)
-    console.error("JwtEncoder RENDERED")
 
     const signToken = useCallback(async () => {
         try {

@@ -1,5 +1,15 @@
 
-export async function signJwt(headerObj: any, payloadObj: any, secret: string): Promise<string> {
+export interface JwtHeader {
+    alg?: string
+    typ?: string
+    [key: string]: unknown
+}
+
+export interface JwtPayload {
+    [key: string]: unknown
+}
+
+export async function signJwt(headerObj: JwtHeader, payloadObj: JwtPayload, secret: string): Promise<string> {
     const base64UrlEncode = (str: string) => {
         return btoa(str)
             .replace(/\+/g, "-")

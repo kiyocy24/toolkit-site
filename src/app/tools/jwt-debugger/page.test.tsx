@@ -32,14 +32,13 @@ describe("JwtDebuggerPage", () => {
 
     describe("Decoder", () => {
         it("is using mocked module", () => {
-            console.log("IMPORTED MODULE:", jwtCrypto)
-            console.log("signJwt mock status:", vi.isMockFunction(jwtCrypto.signJwt))
+
             expect(vi.isMockFunction(jwtCrypto.signJwt)).toBe(true)
         })
 
         it("signs token directly", async () => {
             const token = await jwtCrypto.signJwt({}, {}, "secret")
-            console.log("DIRECT SIGN RESULT:", token)
+
             expect(token).toBe("header.payload.signature")
         })
 

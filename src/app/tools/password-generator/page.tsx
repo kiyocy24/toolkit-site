@@ -110,7 +110,7 @@ export default function PasswordGeneratorPage() {
                                 readOnly
                                 className="font-mono text-lg"
                             />
-                            <Button onClick={generatePassword}>
+                            <Button onClick={generatePassword} aria-label="Refresh password">
                                 <RefreshCw className="h-4 w-4" />
                             </Button>
                         </div>
