@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, Copy, Check, Shield } from "lucide-react"
+import { signJwt } from "@/lib/jwt-crypto"
 
 export default function JwtDebuggerPage() {
     return (
@@ -39,7 +40,8 @@ export default function JwtDebuggerPage() {
     )
 }
 
-function JwtDecoder() {
+
+export function JwtDecoder() {
     const [token, setToken] = useState("")
     const [header, setHeader] = useState("")
     const [payload, setPayload] = useState("")
@@ -154,7 +156,8 @@ function JwtDecoder() {
     )
 }
 
-function JwtEncoder() {
+
+export function JwtEncoder() {
     const [header, setHeader] = useState(`{
   "alg": "HS256",
   "typ": "JWT"
@@ -168,72 +171,18 @@ function JwtEncoder() {
     const [encodedToken, setEncodedToken] = useState("")
     const [error, setError] = useState<string | null>(null)
     const [copied, setCopied] = useState(false)
-
-    const base64UrlEncode = (str: string) => {
-        return btoa(str)
-            .replace(/\+/g, "-")
-            .replace(/\//g, "_")
-            .replace(/=+$/, "")
-    }
-
-    const utf8ToUint8Array = (str: string) => {
-        return new TextEncoder().encode(str)
-    }
+    console.error("JwtEncoder RENDERED")
 
     const signToken = useCallback(async () => {
-        setError(null)
         try {
-            // Validate JSON
             const headerObj = JSON.parse(header)
             const payloadObj = JSON.parse(payload)
 
-            const encodedHeader = base64UrlEncode(JSON.stringify(headerObj))
-            const encodedPayload = base64UrlEncode(JSON.stringify(payloadObj))
-
-            const unsignedToken = `${encodedHeader}.${encodedPayload}`
-
-            if (headerObj.alg === "none") {
-                setEncodedToken(`${unsignedToken}.`)
-                return
-            }
-
-            if (headerObj.alg !== "HS256") {
-                throw new Error("Only HS256 (and none) algorithm is currently supported in this client-side demo.")
-            }
-
-            if (!secret) {
-                setEncodedToken("")
-                setError("Please provide a secret for HS256 signing.")
-                return
-            }
-
-            const keyData = utf8ToUint8Array(secret)
-            const key = await window.crypto.subtle.importKey(
-                "raw",
-                keyData,
-                { name: "HMAC", hash: "SHA-256" },
-                false,
-                ["sign"]
-            )
-
-            const signature = await window.crypto.subtle.sign(
-                "HMAC",
-                key,
-                utf8ToUint8Array(unsignedToken)
-            )
-
-            // Convert array buffer to base64url
-            const signatureArray = Array.from(new Uint8Array(signature))
-            const signatureBase64 = btoa(String.fromCharCode.apply(null, signatureArray))
-                .replace(/\+/g, "-")
-                .replace(/\//g, "_")
-                .replace(/=+$/, "")
-
-            setEncodedToken(`${unsignedToken}.${signatureBase64}`)
-
-        } catch (err) {
-            console.error(err)
-            setError(err instanceof Error ? err.message : "Failed to encode token")
+            setError(null)
+            const token = await signJwt(headerObj, payloadObj, secret)
+            setEncodedToken(token)
+        } catch (e) {
+            setError((e as Error).message)
             setEncodedToken("")
         }
     }, [header, payload, secret])
