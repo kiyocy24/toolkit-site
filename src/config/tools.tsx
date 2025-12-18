@@ -171,6 +171,13 @@ export const tools: Tool[] = [
         description: "Convert text between different naming cases.",
         category: "Utility",
     },
+    {
+        title: "Chmod Calculator",
+        href: "/tools/chmod-calculator",
+        icon: Lock,
+        description: "Calculate Linux/Unix file permissions.",
+        category: "Development",
+    },
 ]
 
 export const categories: ToolCategory[] = ["Core", "Utility", "Development", "Security", "Database", "Math", "Date"];

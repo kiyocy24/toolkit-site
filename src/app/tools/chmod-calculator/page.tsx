@@ -1,0 +1,236 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Copy, Check } from "lucide-react"
+
+type PermissionScope = "owner" | "group" | "public"
+type PermissionType = "read" | "write" | "execute"
+
+interface PermissionState {
+    owner: { read: boolean; write: boolean; execute: boolean }
+    group: { read: boolean; write: boolean; execute: boolean }
+    public: { read: boolean; write: boolean; execute: boolean }
+}
+
+const initialPermissions: PermissionState = {
+    owner: { read: true, write: true, execute: true },
+    group: { read: true, write: false, execute: true },
+    public: { read: true, write: false, execute: true },
+}
+
+// Map scope string to a localized label if needed, or just display title case
+const scopeLabels: Record<PermissionScope, string> = {
+    owner: "Owner",
+    group: "Group",
+    public: "Public",
+}
+
+const typeLabels: Record<PermissionType, string> = {
+    read: "Read (4)",
+    write: "Write (2)",
+    execute: "Execute (1)",
+}
+
+// Presets
+const presets = [
+    { label: "777 (Everything)", value: "777" },
+    { label: "755 (Web Server)", value: "755" },
+    { label: "644 (File Read)", value: "644" },
+    { label: "600 (Private)", value: "600" },
+    { label: "400 (Read Only)", value: "400" },
+]
+
+export default function ChmodCalculator() {
+    const [permissions, setPermissions] = useState<PermissionState>(initialPermissions)
+    const [octal, setOctal] = useState("755")
+    const [symbolic, setSymbolic] = useState("-rwxr-xr-x")
+    const [copied, setCopied] = useState(false)
+
+    // Calculate octal and symbolic from state
+    useEffect(() => {
+        const calculateValues = () => {
+            let octalStr = ""
+            let symbolicStr = "-"
+
+            const scopes: PermissionScope[] = ["owner", "group", "public"]
+
+            scopes.forEach(scope => {
+                let val = 0
+                const p = permissions[scope]
+                if (p.read) val += 4
+                if (p.write) val += 2
+                if (p.execute) val += 1
+                octalStr += val
+
+                symbolicStr += p.read ? "r" : "-"
+                symbolicStr += p.write ? "w" : "-"
+                symbolicStr += p.execute ? "x" : "-"
+            })
+
+            setOctal(octalStr)
+            setSymbolic(symbolicStr)
+        }
+
+        calculateValues()
+    }, [permissions])
+
+    const handleCheckboxChange = (scope: PermissionScope, type: PermissionType, checked: boolean) => {
+        setPermissions(prev => ({
+            ...prev,
+            [scope]: {
+                ...prev[scope],
+                [type]: checked
+            }
+        }))
+    }
+
+    const handleOctalChange = (value: string) => {
+        // Validate input: should be exactly 3 digits, each 0-7
+        // But for UX, we allow partial typing and invalid chars processing
+        const cleanVal = value.replace(/[^0-7]/g, "").slice(0, 3)
+        setOctal(cleanVal)
+
+        if (cleanVal.length === 3) {
+            const newPermissions = { ...initialPermissions }
+
+            const scopes: PermissionScope[] = ["owner", "group", "public"]
+            scopes.forEach((scope, index) => {
+                const digit = parseInt(cleanVal[index])
+                newPermissions[scope] = {
+                    read: (digit & 4) !== 0,
+                    write: (digit & 2) !== 0,
+                    execute: (digit & 1) !== 0,
+                }
+            })
+            setPermissions(newPermissions)
+        }
+    }
+
+    const handlePresetClick = (val: string) => {
+        handleOctalChange(val)
+    }
+
+    const copyToClipboard = async (text: string) => {
+        try {
+            await navigator.clipboard.writeText(text)
+            setCopied(true)
+            setTimeout(() => setCopied(false), 2000)
+        } catch (err) {
+            console.error("Failed to copy", err)
+        }
+    }
+
+    return (
+        <div className="space-y-6 max-w-4xl mx-auto">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Chmod Calculator</CardTitle>
+                    <CardDescription>
+                        Calculate Linux/Unix file permissions visually.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    {/* Permissions Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {(["owner", "group", "public"] as PermissionScope[]).map((scope) => (
+                            <div key={scope} className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+                                <h3 className="font-semibold text-lg capitalize flex items-center gap-2">
+                                    {scopeLabels[scope]}
+                                </h3>
+                                <div className="space-y-2">
+                                    {(["read", "write", "execute"] as PermissionType[]).map((type) => (
+                                        <div key={type} className="flex items-center space-x-2">
+                                            <Checkbox
+                                                id={`${scope}-${type}`}
+                                                checked={permissions[scope][type]}
+                                                onCheckedChange={(c) => handleCheckboxChange(scope, type, c as boolean)}
+                                            />
+                                            <Label htmlFor={`${scope}-${type}`} className="cursor-pointer">
+                                                {typeLabels[type]}
+                                            </Label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Output Section */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <Label htmlFor="octal-input">Octal Notation (e.g. 755)</Label>
+                            <div className="flex gap-2">
+                                <Input
+                                    id="octal-input"
+                                    value={octal}
+                                    onChange={(e) => handleOctalChange(e.target.value)}
+                                    className="font-mono text-lg"
+                                    maxLength={3}
+                                />
+                                <Button size="icon" variant="outline" onClick={() => copyToClipboard(`chmod ${octal} filename`)} title="Copy command">
+                                    {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="symbolic-output">Symbolic Notation</Label>
+                            <div className="flex gap-2">
+                                <Input
+                                    id="symbolic-output"
+                                    value={symbolic}
+                                    readOnly
+                                    className="font-mono text-lg bg-muted"
+                                />
+                                <Button size="icon" variant="outline" onClick={() => copyToClipboard(symbolic)}>
+                                    <Copy className="h-4 w-4" />
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Presets */}
+                    <div className="space-y-2">
+                        <Label>Common Presets</Label>
+                        <div className="flex flex-wrap gap-2">
+                            {presets.map((preset) => (
+                                <Button
+                                    key={preset.value}
+                                    variant="secondary"
+                                    size="sm"
+                                    onClick={() => handlePresetClick(preset.value)}
+                                >
+                                    {preset.label}
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-sm">How it works</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                    <p>
+                        <strong>Read (r) = 4</strong>: Permission to read the file's content.
+                    </p>
+                    <p>
+                        <strong>Write (w) = 2</strong>: Permission to modify or delete the file.
+                    </p>
+                    <p>
+                        <strong>Execute (x) = 1</strong>: Permission to execute the file (if it's a script/program) or enter directory.
+                    </p>
+                    <p className="pt-2 border-t mt-2">
+                        The octal number is the sum of these values for each scope (Owner, Group, Public).
+                    </p>
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
