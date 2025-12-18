@@ -17,6 +17,7 @@ import {
     Link2,
     FileText,
     Type,
+    CaseUpper,
 } from "lucide-react"
 
 export type ToolCategory = "Core" | "Utility" | "Security" | "Math" | "Database" | "Development" | "Date"
@@ -162,6 +163,13 @@ export const tools: Tool[] = [
         icon: Type,
         description: "Generate dummy text (Lorem Ipsum, Japanese).",
         category: "Development",
+    },
+    {
+        title: "String Case Converter",
+        href: "/tools/string-case-converter",
+        icon: CaseUpper,
+        description: "Convert text between different naming cases.",
+        category: "Utility",
     },
 ]
 
