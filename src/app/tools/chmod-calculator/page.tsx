@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -45,39 +45,54 @@ const presets = [
     { label: "400 (Read Only)", value: "400" },
 ]
 
+
+const scopes: PermissionScope[] = ["owner", "group", "public"]
+const types: PermissionType[] = ["read", "write", "execute"]
+
 export default function ChmodCalculator() {
     const [permissions, setPermissions] = useState<PermissionState>(initialPermissions)
     const [octal, setOctal] = useState("755")
-    const [symbolic, setSymbolic] = useState("-rwxr-xr-x")
-    const [copied, setCopied] = useState(false)
+    const [copyFeedback, setCopyFeedback] = useState<string | null>(null)
 
-    // Calculate octal and symbolic from state
-    useEffect(() => {
-        const calculateValues = () => {
-            let octalStr = ""
-            let symbolicStr = "-"
-
-            const scopes: PermissionScope[] = ["owner", "group", "public"]
-
-            scopes.forEach(scope => {
-                let val = 0
-                const p = permissions[scope]
-                if (p.read) val += 4
-                if (p.write) val += 2
-                if (p.execute) val += 1
-                octalStr += val
-
-                symbolicStr += p.read ? "r" : "-"
-                symbolicStr += p.write ? "w" : "-"
-                symbolicStr += p.execute ? "x" : "-"
-            })
-
-            setOctal(octalStr)
-            setSymbolic(symbolicStr)
-        }
-
-        calculateValues()
+    // Calculate symbolic from permissions (derived state)
+    const symbolic = useMemo(() => {
+        let symbolicStr = "-"
+        scopes.forEach(scope => {
+            const p = permissions[scope]
+            symbolicStr += p.read ? "r" : "-"
+            symbolicStr += p.write ? "w" : "-"
+            symbolicStr += p.execute ? "x" : "-"
+        })
+        return symbolicStr
     }, [permissions])
+
+    // Sync permissions -> octal (only if valid)
+    // To allow partial typing, we only auto-update octal if permissions change EXTERNALLY (e.g. checkbox)
+    // logic: If we use useEffect, it overrides input.
+    // Better: Derive octal from permissions? No, strictly deriving prevents partial input.
+    // Compromise: Update octal when permissions change.
+    useEffect(() => {
+        let octalStr = ""
+        scopes.forEach(scope => {
+            let val = 0
+            const p = permissions[scope]
+            if (p.read) val += 4
+            if (p.write) val += 2
+            if (p.execute) val += 1
+            octalStr += val
+        })
+        setOctal(octalStr)
+    }, [permissions])
+
+    // Handle copy feedback timeout
+    useEffect(() => {
+        if (copyFeedback) {
+            const timeout = setTimeout(() => {
+                setCopyFeedback(null)
+            }, 2000)
+            return () => clearTimeout(timeout)
+        }
+    }, [copyFeedback])
 
     const handleCheckboxChange = (scope: PermissionScope, type: PermissionType, checked: boolean) => {
         setPermissions(prev => ({
@@ -90,15 +105,12 @@ export default function ChmodCalculator() {
     }
 
     const handleOctalChange = (value: string) => {
-        // Validate input: should be exactly 3 digits, each 0-7
-        // But for UX, we allow partial typing and invalid chars processing
         const cleanVal = value.replace(/[^0-7]/g, "").slice(0, 3)
         setOctal(cleanVal)
 
         if (cleanVal.length === 3) {
             const newPermissions = { ...initialPermissions }
 
-            const scopes: PermissionScope[] = ["owner", "group", "public"]
             scopes.forEach((scope, index) => {
                 const digit = parseInt(cleanVal[index])
                 newPermissions[scope] = {
@@ -107,19 +119,21 @@ export default function ChmodCalculator() {
                     execute: (digit & 1) !== 0,
                 }
             })
+            // This update will trigger useEffect above.
+            // Since calculated octal will match cleanVal, it's safe (no cursor jump or change).
             setPermissions(newPermissions)
         }
     }
 
     const handlePresetClick = (val: string) => {
+        // Just calling handleOctalChange handles both octal and permissions
         handleOctalChange(val)
     }
 
-    const copyToClipboard = async (text: string) => {
+    const copyToClipboard = async (text: string, id: string) => {
         try {
             await navigator.clipboard.writeText(text)
-            setCopied(true)
-            setTimeout(() => setCopied(false), 2000)
+            setCopyFeedback(id)
         } catch (err) {
             console.error("Failed to copy", err)
         }
@@ -137,13 +151,13 @@ export default function ChmodCalculator() {
                 <CardContent className="space-y-6">
                     {/* Permissions Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {(["owner", "group", "public"] as PermissionScope[]).map((scope) => (
+                        {scopes.map((scope) => (
                             <div key={scope} className="space-y-3 p-4 bg-muted/30 rounded-lg border">
                                 <h3 className="font-semibold text-lg capitalize flex items-center gap-2">
                                     {scopeLabels[scope]}
                                 </h3>
                                 <div className="space-y-2">
-                                    {(["read", "write", "execute"] as PermissionType[]).map((type) => (
+                                    {types.map((type) => (
                                         <div key={type} className="flex items-center space-x-2">
                                             <Checkbox
                                                 id={`${scope}-${type}`}
@@ -172,8 +186,8 @@ export default function ChmodCalculator() {
                                     className="font-mono text-lg"
                                     maxLength={3}
                                 />
-                                <Button size="icon" variant="outline" onClick={() => copyToClipboard(`chmod ${octal} filename`)} title="Copy command">
-                                    {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                                <Button size="icon" variant="outline" onClick={() => copyToClipboard(`chmod ${octal} filename`, "octal")} title="Copy command">
+                                    {copyFeedback === "octal" ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                                 </Button>
                             </div>
                         </div>
@@ -186,8 +200,8 @@ export default function ChmodCalculator() {
                                     readOnly
                                     className="font-mono text-lg bg-muted"
                                 />
-                                <Button size="icon" variant="outline" onClick={() => copyToClipboard(symbolic)}>
-                                    <Copy className="h-4 w-4" />
+                                <Button size="icon" variant="outline" onClick={() => copyToClipboard(symbolic, "symbolic")}>
+                                    {copyFeedback === "symbolic" ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                                 </Button>
                             </div>
                         </div>
