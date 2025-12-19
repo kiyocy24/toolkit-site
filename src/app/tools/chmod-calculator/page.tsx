@@ -112,7 +112,7 @@ export default function ChmodCalculator() {
             const newPermissions = { ...initialPermissions }
 
             scopes.forEach((scope, index) => {
-                const digit = parseInt(cleanVal[index])
+                const digit = parseInt(cleanVal[index], 10)
                 newPermissions[scope] = {
                     read: (digit & 4) !== 0,
                     write: (digit & 2) !== 0,
