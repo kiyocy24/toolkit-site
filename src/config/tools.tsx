@@ -178,6 +178,13 @@ export const tools: Tool[] = [
         description: "Calculate Linux/Unix file permissions.",
         category: "Development",
     },
+    {
+        title: "URL Parser",
+        href: "/tools/url-parser",
+        icon: Link2,
+        description: "Parse, edit, and rebuild URLs.",
+        category: "Development",
+    },
 ]
 
 export const categories: ToolCategory[] = ["Core", "Utility", "Development", "Security", "Database", "Math", "Date"];
