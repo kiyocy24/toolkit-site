@@ -1,7 +1,11 @@
 coverage:
-  acceptable: 0%
+  acceptable: current >= 80% && diff >= 0%
+  badge:
+    path: docs/coverage.svg
   paths:
     - coverage/lcov.info
+push:
+  if: is_default_branch
 
 comment:
   if: is_pull_request
