@@ -10,11 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      pull-requests: write
-      actions: read
-
     steps:
     - uses: actions/checkout@v4
 
@@ -34,6 +29,3 @@ jobs:
 
     - name: Run tests
       run: pnpm vitest run --coverage --reporter=verbose
-
-    - name: Run octocov
-      uses: k1LoW/octocov-action@v1
