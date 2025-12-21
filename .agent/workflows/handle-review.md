@@ -40,7 +40,20 @@ description: Check for PR on current branch and address review comments.
      - Modify the code to address the feedback.
 
 6. **Verify**
-   - Run tests or verify UI as appropriate for the changes.
+   - Run tests:
+   ```bash
+   npm run test
+   ```
+   - **Check Coverage**:
+     - Run coverage command:
+     ```bash
+     npm run test:coverage
+     ```
+     - **CRITICAL**: Ensure that code coverage has NOT dropped.
+       - If you removed code, ensure tests are adjusted.
+       - If you added code, ensure it has tests.
+       - CI will FAIL if coverage drops (diff < 0%).
+   - Verify UI if appropriate.
    - Ensure you haven't introduced regressions.
 
 7. **Update Pull Request**
