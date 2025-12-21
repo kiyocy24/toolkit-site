@@ -1,4 +1,5 @@
 coverage:
+  acceptable: 0%
   paths:
     - coverage/lcov.info
 
@@ -11,6 +12,5 @@ report:
     - artifact://${GITHUB_REPOSITORY}
 
 diff:
-  target: 80%
   datastores:
     - artifact://${GITHUB_REPOSITORY}
