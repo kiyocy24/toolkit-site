@@ -1,8 +1,7 @@
 coverage:
-  coverage:
-    acceptable: current >= 80% && diff >= 0%
-    badge:
-      path: docs/coverage.svg
+  acceptable: current >= 80% && diff >= 0%
+  badge:
+    path: docs/coverage.svg
   paths:
     - coverage/lcov.info
 push:
