@@ -1,12 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Binary, Copy, RotateCcw } from "lucide-react"
+import { Binary, Copy, RotateCcw, AlertCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 interface BaseState {
     binary: string
@@ -22,6 +23,15 @@ const INITIAL_STATE: BaseState = {
     hex: "",
 }
 
+type BaseType = keyof BaseState;
+
+const BASES: { key: BaseType; name: string; base: number; placeholder: string }[] = [
+    { key: "decimal", name: "Decimal (10)", base: 10, placeholder: "Enter decimal number..." },
+    { key: "hex", name: "Hexadecimal (16)", base: 16, placeholder: "Enter hex number..." },
+    { key: "binary", name: "Binary (2)", base: 2, placeholder: "Enter binary number..." },
+    { key: "octal", name: "Octal (8)", base: 8, placeholder: "Enter octal number..." },
+]
+
 export default function NumberBaseConverterPage() {
     const [values, setValues] = useState<BaseState>(INITIAL_STATE)
     const [error, setError] = useState<string | null>(null)
@@ -34,9 +44,6 @@ export default function NumberBaseConverterPage() {
         }
 
         try {
-            // Remove spaces for processing, but keep them for display if needed? 
-            // For now, let's just parse the raw string.
-            // Actually, parseInt allows spaces, but it's safer to trim.
             const cleanValue = value.trim()
 
             // Validate based on base
@@ -47,19 +54,12 @@ export default function NumberBaseConverterPage() {
             else if (fromBase === 16) isValid = /^[0-9A-Fa-f]+$/.test(cleanValue)
 
             if (!isValid) {
-                // If invalid char is typed, we can just ignore it or show error.
-                // Better UX: update only the field being typed to show the invalid char, but don't update others?
-                // Or just don't update if invalid. 
-                // Let's try to parse integer.
-                // If the user types "2" in binary, we can't parse it as binary.
-                // So let's update the specific field state but show error.
-
-                // Simplest approach: Update the specific field, try to convert. If fail, clear others or keep previous.
-                // Let's stick to the plan: "Validate input (e.g., allow only 0-1 for binary)."
-                // If invalid, we will update the state of that field but NOT others, and maybe show error.
-
-                // Let's implement strict validation where we don't convert if invalid
+                // Strict validation: don't convert if invalid, but update the specific field to allow correction
+                // We actually handled preventing invalid input in handleChange, so this might be redundant 
+                // unless paste occurs. 
+                // But let's set error just in case.
                 setValues(prev => ({ ...prev, [getBaseKey(fromBase)]: value }))
+                setError(`Invalid character for base ${fromBase}`)
                 return
             }
 
@@ -67,6 +67,7 @@ export default function NumberBaseConverterPage() {
 
             if (isNaN(decimalValue)) {
                 setValues(prev => ({ ...prev, [getBaseKey(fromBase)]: value }))
+                setError("Invalid number")
                 return
             }
 
@@ -79,28 +80,24 @@ export default function NumberBaseConverterPage() {
 
         } catch (e) {
             console.error(e)
-            setError("Invalid input")
+            setError("An error occurred during conversion")
         }
     }
 
-    const getBaseKey = (base: number): keyof BaseState => {
-        switch (base) {
-            case 2: return 'binary'
-            case 8: return 'octal'
-            case 10: return 'decimal'
-            case 16: return 'hex'
-            default: return 'decimal'
-        }
+    const getBaseKey = (base: number): BaseType => {
+        const found = BASES.find(b => b.base === base);
+        return found ? found.key : 'decimal';
     }
 
     const handleChange = (value: string, base: number) => {
         // Allow empty
         if (value === "") {
             setValues(INITIAL_STATE)
+            setError(null)
             return
         }
 
-        // Check valid chars for the base before updating anything to suppress invalid input
+        // Regex for validation
         let regex: RegExp
         switch (base) {
             case 2: regex = /^[0-1]*$/; break;
@@ -111,7 +108,7 @@ export default function NumberBaseConverterPage() {
         }
 
         if (!regex.test(value)) {
-            // Ignore invalid input (prevent typing)
+            // Ignore invalid keystrokes
             return
         }
 
@@ -152,94 +149,39 @@ export default function NumberBaseConverterPage() {
                         </Button>
                     </div>
 
+                    {error && (
+                        <Alert variant="destructive">
+                            <AlertCircle className="h-4 w-4" />
+                            <AlertTitle>Error</AlertTitle>
+                            <AlertDescription>
+                                {error}
+                            </AlertDescription>
+                        </Alert>
+                    )}
+
                     <div className="grid gap-6 sm:grid-cols-2">
-                        {/* Decimal */}
-                        <div className="space-y-2">
-                            <Label htmlFor="decimal">Decimal (10)</Label>
-                            <div className="flex gap-2">
-                                <Input
-                                    id="decimal"
-                                    value={values.decimal}
-                                    onChange={(e) => handleChange(e.target.value, 10)}
-                                    placeholder="Enter decimal number..."
-                                />
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => copyToClipboard(values.decimal)}
-                                    disabled={!values.decimal}
-                                    title="Copy Decimal"
-                                >
-                                    <Copy className="h-4 w-4" />
-                                </Button>
+                        {BASES.map((config) => (
+                            <div key={config.key} className="space-y-2">
+                                <Label htmlFor={config.key}>{config.name}</Label>
+                                <div className="flex gap-2">
+                                    <Input
+                                        id={config.key}
+                                        value={values[config.key]}
+                                        onChange={(e) => handleChange(e.target.value, config.base)}
+                                        placeholder={config.placeholder}
+                                    />
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => copyToClipboard(values[config.key])}
+                                        disabled={!values[config.key]}
+                                        title={`Copy ${config.name}`}
+                                    >
+                                        <Copy className="h-4 w-4" />
+                                    </Button>
+                                </div>
                             </div>
-                        </div>
-
-                        {/* Hexadecimal */}
-                        <div className="space-y-2">
-                            <Label htmlFor="hex">Hexadecimal (16)</Label>
-                            <div className="flex gap-2">
-                                <Input
-                                    id="hex"
-                                    value={values.hex}
-                                    onChange={(e) => handleChange(e.target.value, 16)}
-                                    placeholder="Enter hex number..."
-                                />
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => copyToClipboard(values.hex)}
-                                    disabled={!values.hex}
-                                    title="Copy Hex"
-                                >
-                                    <Copy className="h-4 w-4" />
-                                </Button>
-                            </div>
-                        </div>
-
-                        {/* Binary */}
-                        <div className="space-y-2">
-                            <Label htmlFor="binary">Binary (2)</Label>
-                            <div className="flex gap-2">
-                                <Input
-                                    id="binary"
-                                    value={values.binary}
-                                    onChange={(e) => handleChange(e.target.value, 2)}
-                                    placeholder="Enter binary number..."
-                                />
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => copyToClipboard(values.binary)}
-                                    disabled={!values.binary}
-                                    title="Copy Binary"
-                                >
-                                    <Copy className="h-4 w-4" />
-                                </Button>
-                            </div>
-                        </div>
-
-                        {/* Octal */}
-                        <div className="space-y-2">
-                            <Label htmlFor="octal">Octal (8)</Label>
-                            <div className="flex gap-2">
-                                <Input
-                                    id="octal"
-                                    value={values.octal}
-                                    onChange={(e) => handleChange(e.target.value, 8)}
-                                    placeholder="Enter octal number..."
-                                />
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => copyToClipboard(values.octal)}
-                                    disabled={!values.octal}
-                                    title="Copy Octal"
-                                >
-                                    <Copy className="h-4 w-4" />
-                                </Button>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </CardContent>
             </Card>

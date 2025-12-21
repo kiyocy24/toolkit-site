@@ -55,22 +55,39 @@ describe('NumberBaseConverterPage', () => {
     it('ignores invalid input for Binary', () => {
         render(<NumberBaseConverterPage />)
         const binaryInput = screen.getByLabelText(/Binary/)
-        // First set a valid value
         fireEvent.change(binaryInput, { target: { value: '1' } })
-        expect(binaryInput).toHaveProperty('value', '1')
-
-        // Try to append invalid char '2'
         fireEvent.change(binaryInput, { target: { value: '12' } })
-        // Should remain '1' because handleChange blocks invalid input
         expect(binaryInput).toHaveProperty('value', '1')
+    })
+
+    it('ignores invalid input for Decimal', () => {
+        render(<NumberBaseConverterPage />)
+        const input = screen.getByLabelText(/Decimal/)
+        fireEvent.change(input, { target: { value: '1' } })
+        fireEvent.change(input, { target: { value: '1a' } })
+        expect(input).toHaveProperty('value', '1')
+    })
+
+    it('ignores invalid input for Octal', () => {
+        render(<NumberBaseConverterPage />)
+        const input = screen.getByLabelText(/Octal/)
+        fireEvent.change(input, { target: { value: '7' } })
+        fireEvent.change(input, { target: { value: '78' } })
+        expect(input).toHaveProperty('value', '7')
+    })
+
+    it('ignores invalid input for Hexadecimal', () => {
+        render(<NumberBaseConverterPage />)
+        const input = screen.getByLabelText(/Hexadecimal/)
+        fireEvent.change(input, { target: { value: 'A' } })
+        fireEvent.change(input, { target: { value: 'AG' } })
+        expect(input).toHaveProperty('value', 'A')
     })
 
     it('clears all fields when input is empty', () => {
         render(<NumberBaseConverterPage />)
         const decimalInput = screen.getByLabelText(/Decimal/)
         fireEvent.change(decimalInput, { target: { value: '10' } })
-        expect(decimalInput).toHaveProperty('value', '10')
-
         fireEvent.change(decimalInput, { target: { value: '' } })
         expect(decimalInput).toHaveProperty('value', '')
         expect(screen.getByLabelText(/Binary/)).toHaveProperty('value', '')
