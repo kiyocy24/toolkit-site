@@ -46,22 +46,8 @@ export default function NumberBaseConverterPage() {
         try {
             const cleanValue = value.trim()
 
-            // Validate based on base
-            let isValid = false
-            if (fromBase === 2) isValid = /^[0-1]+$/.test(cleanValue)
-            else if (fromBase === 8) isValid = /^[0-7]+$/.test(cleanValue)
-            else if (fromBase === 10) isValid = /^\d+$/.test(cleanValue)
-            else if (fromBase === 16) isValid = /^[0-9A-Fa-f]+$/.test(cleanValue)
 
-            if (!isValid) {
-                // Strict validation: don't convert if invalid, but update the specific field to allow correction
-                // We actually handled preventing invalid input in handleChange, so this might be redundant 
-                // unless paste occurs. 
-                // But let's set error just in case.
-                setValues(prev => ({ ...prev, [getBaseKey(fromBase)]: value }))
-                setError(`Invalid character for base ${fromBase}`)
-                return
-            }
+
 
             const decimalValue = parseInt(cleanValue, fromBase)
 

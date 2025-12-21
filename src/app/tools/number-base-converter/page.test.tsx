@@ -1,9 +1,18 @@
 
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
+
 import NumberBaseConverterPage from './page'
 
 describe('NumberBaseConverterPage', () => {
+    Object.defineProperty(navigator, 'clipboard', {
+        value: {
+            writeText: vi.fn(),
+        },
+        configurable: true,
+        writable: true,
+    });
+
     it('renders all inputs', () => {
         render(<NumberBaseConverterPage />)
         expect(screen.getByLabelText(/Decimal/)).toBeDefined()
@@ -91,5 +100,30 @@ describe('NumberBaseConverterPage', () => {
         fireEvent.change(decimalInput, { target: { value: '' } })
         expect(decimalInput).toHaveProperty('value', '')
         expect(screen.getByLabelText(/Binary/)).toHaveProperty('value', '')
+    })
+
+    it('resets all fields when Reset button is clicked', () => {
+        render(<NumberBaseConverterPage />)
+        const decimalInput = screen.getByLabelText(/Decimal/)
+        fireEvent.change(decimalInput, { target: { value: '10' } })
+
+        const resetButton = screen.getByRole('button', { name: /Reset/i })
+        fireEvent.click(resetButton)
+
+        expect(decimalInput).toHaveProperty('value', '')
+        expect(screen.getByLabelText(/Binary/)).toHaveProperty('value', '')
+    })
+
+    it('copies value to clipboard', async () => {
+        render(<NumberBaseConverterPage />)
+
+        const decimalInput = screen.getByLabelText(/Decimal/)
+        fireEvent.change(decimalInput, { target: { value: '10' } })
+
+        const decimalCopyButton = screen.getByTitle('Copy Decimal (10)')
+
+        fireEvent.click(decimalCopyButton)
+
+        expect(navigator.clipboard.writeText).toHaveBeenCalledWith('10')
     })
 })
