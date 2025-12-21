@@ -185,6 +185,13 @@ export const tools: Tool[] = [
         description: "Parse, edit, and rebuild URLs.",
         category: "Development",
     },
+    {
+        title: "Number Base Converter",
+        href: "/tools/number-base-converter",
+        icon: Binary,
+        description: "Convert numbers between Binary, Octal, Decimal, and Hex.",
+        category: "Math",
+    },
 ]
 
 export const categories: ToolCategory[] = ["Core", "Utility", "Development", "Security", "Database", "Math", "Date"];
