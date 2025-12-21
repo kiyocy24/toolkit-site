@@ -1,5 +1,5 @@
 coverage:
-  acceptable: 0%
+  acceptable: current >= 80% && diff >= 0%
   paths:
     - coverage/lcov.info
 
