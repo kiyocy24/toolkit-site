@@ -13,6 +13,26 @@ export default function JsonFormatterPage() {
     const [output, setOutput] = useState("")
     const [error, setError] = useState<string | null>(null)
 
+    const getErrorDetails = (e: unknown, input: string) => {
+        if (e instanceof SyntaxError) {
+            const message = e.message
+            // Typical Chrome/V8 error: "Unexpected token } in JSON at position 10"
+            // Or: "Unexpected end of JSON input"
+            const positionMatch = message.match(/at position (\d+)/)
+
+            if (positionMatch) {
+                const position = parseInt(positionMatch[1], 10)
+                const lines = input.substring(0, position).split("\n")
+                const line = lines.length
+                const column = lines[lines.length - 1].length + 1
+
+                return `Syntax Error: ${message} (Line ${line}, Column ${column})`
+            }
+            return `Syntax Error: ${message}`
+        }
+        return "Invalid JSON"
+    }
+
     const formatJson = () => {
         try {
             if (!input.trim()) {
@@ -24,7 +44,7 @@ export default function JsonFormatterPage() {
             setOutput(JSON.stringify(parsed, null, 2))
             setError(null)
         } catch (e) {
-            setError("Invalid JSON")
+            setError(getErrorDetails(e, input))
             setOutput("")
         }
     }
@@ -40,7 +60,7 @@ export default function JsonFormatterPage() {
             setOutput(JSON.stringify(parsed))
             setError(null)
         } catch (e) {
-            setError("Invalid JSON")
+            setError(getErrorDetails(e, input))
             setOutput("")
         }
     }

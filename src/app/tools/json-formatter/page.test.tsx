@@ -49,7 +49,7 @@ describe('JsonFormatterPage', () => {
         fireEvent.change(input, { target: { value: '{invalid}' } })
         fireEvent.click(screen.getByRole('button', { name: /^format$/i }))
 
-        expect(screen.getByText('Invalid JSON')).toBeInTheDocument()
+        expect(screen.getByText(/Syntax Error/)).toBeInTheDocument()
         expect(screen.queryByTestId('syntax-highlighter')).not.toBeInTheDocument()
     })
 })
