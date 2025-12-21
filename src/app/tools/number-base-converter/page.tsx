@@ -38,36 +38,32 @@ export default function NumberBaseConverterPage() {
 
     const updateValues = (value: string, fromBase: number) => {
         setError(null)
-        if (!value) {
+
+
+        // Create clean value
+        const cleanValue = value.trim()
+
+        // Handle whitespace-only input which passes !value check but parseInt fails
+        if (!cleanValue) {
             setValues(INITIAL_STATE)
             return
         }
 
-        try {
-            const cleanValue = value.trim()
+        const decimalValue = parseInt(cleanValue, fromBase)
 
-
-
-
-            const decimalValue = parseInt(cleanValue, fromBase)
-
-            if (isNaN(decimalValue)) {
-                setValues(prev => ({ ...prev, [getBaseKey(fromBase)]: value }))
-                setError("Invalid number")
-                return
-            }
-
-            setValues({
-                binary: decimalValue.toString(2),
-                octal: decimalValue.toString(8),
-                decimal: decimalValue.toString(10),
-                hex: decimalValue.toString(16).toUpperCase(),
-            })
-
-        } catch (e) {
-            console.error(e)
-            setError("An error occurred during conversion")
+        if (isNaN(decimalValue)) {
+            // Should not be reachable with regex validation, but safe guard
+            setValues(prev => ({ ...prev, [getBaseKey(fromBase)]: value }))
+            setError("Invalid number")
+            return
         }
+
+        setValues({
+            binary: decimalValue.toString(2),
+            octal: decimalValue.toString(8),
+            decimal: decimalValue.toString(10),
+            hex: decimalValue.toString(16).toUpperCase(),
+        })
     }
 
     const getBaseKey = (base: number): BaseType => {
@@ -84,14 +80,14 @@ export default function NumberBaseConverterPage() {
         }
 
         // Regex for validation
-        let regex: RegExp
-        switch (base) {
-            case 2: regex = /^[0-1]*$/; break;
-            case 8: regex = /^[0-7]*$/; break;
-            case 10: regex = /^\d*$/; break;
-            case 16: regex = /^[0-9a-fA-F]*$/; break;
-            default: regex = /.*/;
+        // Regex for validation
+        const patterns: Record<number, RegExp> = {
+            2: /^\s*[0-1]*\s*$/,
+            8: /^\s*[0-7]*\s*$/,
+            10: /^\s*\d*\s*$/,
+            16: /^\s*[0-9a-fA-F]*\s*$/
         }
+        const regex = patterns[base] || /.*/
 
         if (!regex.test(value)) {
             // Ignore invalid keystrokes
