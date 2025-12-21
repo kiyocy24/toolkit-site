@@ -1,3 +1,5 @@
+[![octocov](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/kiyocy24/toolkit-site/main/octocov.json)](https://github.com/kiyocy24/toolkit-site/blob/main/octocov.md)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
