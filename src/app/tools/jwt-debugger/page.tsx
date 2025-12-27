@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { useLocalStorageSafe } from "@/hooks/use-local-storage"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
@@ -42,7 +43,7 @@ export default function JwtDebuggerPage() {
 
 
 export function JwtDecoder() {
-    const [token, setToken] = useState("")
+    const [token, setToken] = useLocalStorageSafe("jwt-decoder-token", "")
     const [header, setHeader] = useState("")
     const [payload, setPayload] = useState("")
     const [error, setError] = useState<string | null>(null)
@@ -76,19 +77,16 @@ export function JwtDecoder() {
         }
     }
 
-    const handleTokenChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const val = e.target.value
-        setToken(val)
+    useEffect(() => {
         setError(null)
-
-        if (!val.trim()) {
+        if (!token.trim()) {
             setHeader("")
             setPayload("")
             return
         }
 
         try {
-            const parts = val.split(".")
+            const parts = token.split(".")
             if (parts.length !== 3) {
                 throw new Error("Invalid JWT structure. Expected 3 parts separated by dots.")
             }
@@ -102,11 +100,14 @@ export function JwtDecoder() {
             setHeader(JSON.stringify(headerJson, null, 2))
             setPayload(JSON.stringify(payloadJson, null, 2))
         } catch (err) {
-            console.error(err)
             setError(err instanceof Error ? err.message : "Failed to decode JWT")
             setHeader("")
             setPayload("")
         }
+    }, [token])
+
+    const handleTokenChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setToken(e.target.value)
     }
 
     return (
@@ -158,16 +159,16 @@ export function JwtDecoder() {
 
 
 export function JwtEncoder() {
-    const [header, setHeader] = useState(`{
+    const [header, setHeader] = useLocalStorageSafe("jwt-encoder-header", `{
   "alg": "HS256",
   "typ": "JWT"
 }`)
-    const [payload, setPayload] = useState(`{
+    const [payload, setPayload] = useLocalStorageSafe("jwt-encoder-payload", `{
   "sub": "1234567890",
   "name": "John Doe",
   "iat": 1516239022
 }`)
-    const [secret, setSecret] = useState("your-256-bit-secret")
+    const [secret, setSecret] = useLocalStorageSafe("jwt-encoder-secret", "your-256-bit-secret")
     const [encodedToken, setEncodedToken] = useState("")
     const [error, setError] = useState<string | null>(null)
     const [copied, setCopied] = useState(false)
