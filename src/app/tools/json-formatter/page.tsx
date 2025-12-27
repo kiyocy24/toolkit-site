@@ -8,6 +8,35 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism"
 import { Copy, Trash2 } from "lucide-react"
 
+
+const getErrorDetails = (e: unknown, input: string) => {
+    if (e instanceof SyntaxError) {
+        const message = e.message
+
+        // V8/Chrome: "Unexpected token } in JSON at position 10"
+        // Or: "Unexpected end of JSON input"
+        let match = message.match(/at position (\d+)/)
+
+        if (match) {
+            const position = parseInt(match[1], 10)
+            const lines = input.substring(0, position).split("\n")
+            const line = lines.length
+            const column = lines[lines.length - 1].length + 1
+
+            return `Syntax Error: ${message} (Line ${line}, Column ${column})`
+        }
+
+        // Firefox: "JSON.parse: unexpected character at line 1 column 2 of the JSON data"
+        match = message.match(/at line (\d+) column (\d+)/)
+        if (match) {
+            return `Syntax Error: ${message} (Line ${match[1]}, Column ${match[2]})`
+        }
+
+        return `Syntax Error: ${message}`
+    }
+    return "Invalid JSON"
+}
+
 export default function JsonFormatterPage() {
     const [input, setInput] = useState("")
     const [output, setOutput] = useState("")
@@ -24,7 +53,7 @@ export default function JsonFormatterPage() {
             setOutput(JSON.stringify(parsed, null, 2))
             setError(null)
         } catch (e) {
-            setError("Invalid JSON")
+            setError(getErrorDetails(e, input))
             setOutput("")
         }
     }
@@ -40,7 +69,7 @@ export default function JsonFormatterPage() {
             setOutput(JSON.stringify(parsed))
             setError(null)
         } catch (e) {
-            setError("Invalid JSON")
+            setError(getErrorDetails(e, input))
             setOutput("")
         }
     }
@@ -123,3 +152,4 @@ export default function JsonFormatterPage() {
         </div>
     )
 }
+
