@@ -19,6 +19,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { toolsByCategory, categories } from "@/config/tools"
+import { CONTAINER_PADDING } from "@/config/ui"
 
 interface ToolsLayoutProps {
     children: React.ReactNode
@@ -48,7 +49,7 @@ export default function ToolsLayout({ children }: ToolsLayoutProps) {
     }, [])
 
     return (
-        <div className="container mx-auto flex flex-col gap-6 py-8 md:py-10 px-6 md:px-8">
+        <div className={`container mx-auto flex flex-col gap-6 py-8 md:py-10 ${CONTAINER_PADDING}`}>
             <div className="flex w-full flex-col items-start gap-4">
                 {/* Back to Home button removed as it is redundant with global header */}
                 <div className="grid w-full gap-2">
