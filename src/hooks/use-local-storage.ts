@@ -19,26 +19,14 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
 
             // Only update if value is different to avoid unnecessary re-renders?
             // React usually handles this.
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setStoredValue(value);
         } catch (error) {
             console.warn(`Error reading localStorage key "${key}":`, error);
         }
     }, [key, initialValue]); // Added initialValue to dependencies
 
-    const setValue = useCallback((value: T | ((val: T) => T)) => {
-        try {
-            // Allow value to be a function so we have same API as useState
-            const valueToStore = value instanceof Function ? value(storedValue) : value;
 
-            setStoredValue(valueToStore);
-
-            if (typeof window !== "undefined") {
-                window.localStorage.setItem(key, JSON.stringify(valueToStore));
-            }
-        } catch (error) {
-            console.warn(`Error setting localStorage key "${key}":`, error);
-        }
-    }, [key, storedValue]); // Now depends on storedValue, or use functional update pattern.
 
     // Better: functional update pattern for setValue -> setStoredValue
     // so we don't depend on storedValue in useCallback if logical calculation allows.
