@@ -4,10 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
     const [storedValue, setStoredValue] = useState<T>(initialValue);
 
-    // Use a ref or just rely on hydration logic to prevent hydration mismatch.
-    // The previous implementation used isInitialized state, but we can simplify by just loading in useEffect.
-    // However, we want to avoid returning initialValue if localStorage has something else, 
-    // but during SSR it must return initialValue.
+    // Prevent hydration mismatch by only reading from localStorage after mount.
 
     useEffect(() => {
         if (typeof window === "undefined") {
@@ -17,8 +14,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
             const item = window.localStorage.getItem(key);
             const value = item ? JSON.parse(item) : initialValue;
 
-            // Only update if value is different to avoid unnecessary re-renders?
-            // React usually handles this.
+
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setStoredValue(value);
         } catch (error) {
@@ -28,13 +24,8 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
 
 
 
-    // Better: functional update pattern for setValue -> setStoredValue
-    // so we don't depend on storedValue in useCallback if logical calculation allows.
-    // BUT the persisted valueToStore calculation might need current storedValue if value is function.
-    // Wait, if value is function, it expects current state.
-
-    // Correct safer implementation:
-    const setValueSafe = useCallback((value: T | ((val: T) => T)) => {
+    // Use a functional update to safely access the previous value without including it in dependencies
+    const setValue = useCallback((value: T | ((val: T) => T)) => {
         setStoredValue((prevValue) => {
             const valueToStore = value instanceof Function ? value(prevValue) : value;
             try {
@@ -48,5 +39,5 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
         });
     }, [key]);
 
-    return [storedValue, setValueSafe];
+    return [storedValue, setValue];
 }

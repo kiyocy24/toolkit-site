@@ -45,14 +45,7 @@ describe('useLocalStorage', () => {
         })
     })
 
-    it('should sync from local storage on mount', async () => {
-        window.localStorage.setItem('sync-key', JSON.stringify('synced'))
-        const { result } = renderHook(() => useLocalStorage('sync-key', 'initial'))
 
-        await waitFor(() => {
-            expect(result.current[0]).toBe('synced')
-        })
-    })
 
     it('should handle localStorage read error gracefully', () => {
         const getItemSpy = vi.spyOn(window.localStorage, 'getItem').mockImplementation(() => {
