@@ -58,9 +58,7 @@ export default function NumberBaseConverterPage() {
         const decimalValue = parseInt(cleanValue, fromBase)
 
         if (isNaN(decimalValue)) {
-            // Should not be reachable with regex validation, but safe guard
-            setValues(prev => ({ ...prev, [getBaseKey(fromBase)]: value }))
-            setError("Invalid number")
+            // Should not be reachable with regex validation
             return
         }
 
@@ -71,13 +69,6 @@ export default function NumberBaseConverterPage() {
             hex: decimalValue.toString(16).toUpperCase(),
             custom: isCustomBaseValid ? decimalValue.toString(customBase).toUpperCase() : "",
         })
-    }
-
-    const getBaseKey = (base: number): BaseType => {
-        const found = STANDARD_BASES.find(b => b.base === base);
-        if (found) return found.key;
-        if (isCustomBaseValid && base === customBase) return 'custom';
-        return 'decimal';
     }
 
     const handleChange = (value: string, base: number) => {

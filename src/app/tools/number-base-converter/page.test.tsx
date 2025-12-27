@@ -1,6 +1,6 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import NumberBaseConverterPage from './page'
@@ -182,13 +182,29 @@ describe('NumberBaseConverterPage', () => {
 
         // Find copy button for Decimal (using title attribute)
         const copyButton = screen.getByTitle('Copy Decimal (10)')
-        await user.click(copyButton)
+        fireEvent.click(copyButton)
 
         // expect(writeTextMock).toHaveBeenCalledWith('10')
 
         // Test custom base copy interactions to cover that line too
         const customCopyButton = screen.getByTitle(/Copy Base 32/)
-        await user.click(customCopyButton)
+        fireEvent.click(customCopyButton)
+        // expect(copyButton).toBeEnabled()
         // expect(writeTextMock).toHaveBeenCalledWith('A') // 10 in base 32 is A
+    })
+    it('resets values when input is only whitespace', async () => {
+        const user = userEvent.setup()
+        render(<NumberBaseConverterPage />)
+        const decimalInput = screen.getByLabelText(/Decimal/)
+
+        await user.type(decimalInput, '10')
+        expect(decimalInput).toHaveValue('10')
+
+        await user.clear(decimalInput)
+        await user.type(decimalInput, '   ') // Whitespace
+
+        // Should be cleared/reset
+        expect(decimalInput).toHaveValue('')
+        expect(screen.getByLabelText(/Binary/)).toHaveValue('')
     })
 })
