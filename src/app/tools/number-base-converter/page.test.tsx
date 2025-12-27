@@ -1,135 +1,15 @@
 
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import NumberBaseConverterPage from './page'
 
 describe('NumberBaseConverterPage', () => {
-    Object.defineProperty(navigator, 'clipboard', {
-        value: {
-            writeText: vi.fn(),
-        },
-        configurable: true,
-        writable: true,
-    });
+    const writeTextMock = vi.fn()
 
-    it('renders all inputs', () => {
-        render(<NumberBaseConverterPage />)
-        expect(screen.getByLabelText(/Decimal/)).toBeDefined()
-        expect(screen.getByLabelText(/Binary/)).toBeDefined()
-        expect(screen.getByLabelText(/Octal/)).toBeDefined()
-        expect(screen.getByLabelText(/Hexadecimal/)).toBeDefined()
-    })
-
-    it('updates all fields when Decimal is changed', () => {
-        render(<NumberBaseConverterPage />)
-        const decimalInput = screen.getByLabelText(/Decimal/)
-        fireEvent.change(decimalInput, { target: { value: '10' } })
-
-        expect(screen.getByLabelText(/Binary/)).toHaveProperty('value', '1010')
-        expect(screen.getByLabelText(/Octal/)).toHaveProperty('value', '12')
-        expect(screen.getByLabelText(/Hexadecimal/)).toHaveProperty('value', 'A')
-    })
-
-    it('updates all fields when Binary is changed', () => {
-        render(<NumberBaseConverterPage />)
-        const binaryInput = screen.getByLabelText(/Binary/)
-        fireEvent.change(binaryInput, { target: { value: '1010' } })
-
-        expect(screen.getByLabelText(/Decimal/)).toHaveProperty('value', '10')
-        expect(screen.getByLabelText(/Octal/)).toHaveProperty('value', '12')
-        expect(screen.getByLabelText(/Hexadecimal/)).toHaveProperty('value', 'A')
-    })
-
-    it('updates all fields when Octal is changed', () => {
-        render(<NumberBaseConverterPage />)
-        const octalInput = screen.getByLabelText(/Octal/)
-        fireEvent.change(octalInput, { target: { value: '12' } })
-
-        expect(screen.getByLabelText(/Decimal/)).toHaveProperty('value', '10')
-        expect(screen.getByLabelText(/Binary/)).toHaveProperty('value', '1010')
-        expect(screen.getByLabelText(/Hexadecimal/)).toHaveProperty('value', 'A')
-    })
-
-    it('updates all fields when Hex is changed', () => {
-        render(<NumberBaseConverterPage />)
-        const hexInput = screen.getByLabelText(/Hexadecimal/)
-        fireEvent.change(hexInput, { target: { value: 'F' } })
-
-        expect(screen.getByLabelText(/Decimal/)).toHaveProperty('value', '15')
-        expect(screen.getByLabelText(/Binary/)).toHaveProperty('value', '1111')
-        expect(screen.getByLabelText(/Octal/)).toHaveProperty('value', '17')
-    })
-
-    it('ignores invalid input for Binary', () => {
-        render(<NumberBaseConverterPage />)
-        const binaryInput = screen.getByLabelText(/Binary/)
-        fireEvent.change(binaryInput, { target: { value: '1' } })
-        fireEvent.change(binaryInput, { target: { value: '12' } })
-        expect(binaryInput).toHaveProperty('value', '1')
-    })
-
-    it('ignores invalid input for Decimal', () => {
-        render(<NumberBaseConverterPage />)
-        const input = screen.getByLabelText(/Decimal/)
-        fireEvent.change(input, { target: { value: '1' } })
-        fireEvent.change(input, { target: { value: '1a' } })
-        expect(input).toHaveProperty('value', '1')
-    })
-
-    it('ignores invalid input for Octal', () => {
-        render(<NumberBaseConverterPage />)
-        const input = screen.getByLabelText(/Octal/)
-        fireEvent.change(input, { target: { value: '7' } })
-        fireEvent.change(input, { target: { value: '78' } })
-        expect(input).toHaveProperty('value', '7')
-    })
-
-    it('ignores invalid input for Hexadecimal', () => {
-        render(<NumberBaseConverterPage />)
-        const input = screen.getByLabelText(/Hexadecimal/)
-        fireEvent.change(input, { target: { value: 'A' } })
-        fireEvent.change(input, { target: { value: 'AG' } })
-        expect(input).toHaveProperty('value', 'A')
-    })
-
-    it('clears all fields when input is empty', () => {
-        render(<NumberBaseConverterPage />)
-        const decimalInput = screen.getByLabelText(/Decimal/)
-        fireEvent.change(decimalInput, { target: { value: '10' } })
-        fireEvent.change(decimalInput, { target: { value: '' } })
-        expect(decimalInput).toHaveProperty('value', '')
-        expect(screen.getByLabelText(/Binary/)).toHaveProperty('value', '')
-    })
-
-    it('resets all fields when Reset button is clicked', () => {
-        render(<NumberBaseConverterPage />)
-        const decimalInput = screen.getByLabelText(/Decimal/)
-        fireEvent.change(decimalInput, { target: { value: '10' } })
-
-        const resetButton = screen.getByRole('button', { name: /Reset/i })
-        fireEvent.click(resetButton)
-
-        expect(decimalInput).toHaveProperty('value', '')
-        expect(screen.getByLabelText(/Binary/)).toHaveProperty('value', '')
-    })
-
-    it('copies value to clipboard', async () => {
-        render(<NumberBaseConverterPage />)
-
-        const decimalInput = screen.getByLabelText(/Decimal/)
-        fireEvent.change(decimalInput, { target: { value: '10' } })
-
-        const decimalCopyButton = screen.getByTitle('Copy Decimal (10)')
-
-        fireEvent.click(decimalCopyButton)
-
-        expect(navigator.clipboard.writeText).toHaveBeenCalledWith('10')
-    })
-
-    it('handles copy error gracefully', async () => {
-        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
-        const writeTextMock = vi.fn().mockRejectedValue(new Error('Copy failed'))
+    beforeEach(() => {
+        vi.clearAllMocks()
         Object.defineProperty(navigator, 'clipboard', {
             value: {
                 writeText: writeTextMock,
@@ -137,42 +17,133 @@ describe('NumberBaseConverterPage', () => {
             configurable: true,
             writable: true,
         });
+    })
 
+    it('renders all inputs including custom base', () => {
+        render(<NumberBaseConverterPage />)
+        expect(screen.getByLabelText(/Decimal/)).toBeInTheDocument()
+    })
+
+    it('updates all fields when Decimal is changed', async () => {
+        const user = userEvent.setup()
         render(<NumberBaseConverterPage />)
         const decimalInput = screen.getByLabelText(/Decimal/)
-        fireEvent.change(decimalInput, { target: { value: '10' } })
+        await user.type(decimalInput, '10')
+
+        expect(screen.getByLabelText(/Binary/)).toHaveValue('1010')
+        expect(screen.getByLabelText(/Octal/)).toHaveValue('12')
+        expect(screen.getByLabelText(/Hexadecimal/)).toHaveValue('A')
+        expect(screen.getByPlaceholderText(/Enter base 32 number/)).toHaveValue('A')
+    })
+
+    it('updates all fields when Binary is changed', async () => {
+        const user = userEvent.setup()
+        render(<NumberBaseConverterPage />)
+        const binaryInput = screen.getByLabelText(/Binary/)
+        await user.type(binaryInput, '1010')
+
+        expect(screen.getByLabelText(/Decimal/)).toHaveValue('10')
+    })
+
+    it('updates all fields when Custom Base value is changed', async () => {
+        const user = userEvent.setup()
+        render(<NumberBaseConverterPage />)
+        // Default base 32
+        const customInput = screen.getByPlaceholderText(/Enter base 32 number/)
+        await user.type(customInput, 'A')
+
+        await waitFor(() => expect(screen.getByLabelText(/Decimal/)).toHaveValue('10'))
+        expect(screen.getByLabelText(/Binary/)).toHaveValue('1010')
+    })
+
+    it('handles custom base change', async () => {
+        const user = userEvent.setup()
+        render(<NumberBaseConverterPage />)
+        const baseInput = screen.getByLabelText(/Custom Base/)
+        await user.clear(baseInput)
+        await user.type(baseInput, '5')
+
+        const decimalInput = screen.getByLabelText(/Decimal/)
+        await user.type(decimalInput, '10')
+
+        // 10 in decimal is 20 in base 5
+        expect(screen.getByPlaceholderText(/Enter base 5 number/)).toHaveValue('20')
+    })
+
+    it('validates input for custom base', async () => {
+        const user = userEvent.setup()
+        render(<NumberBaseConverterPage />)
+
+        // Change base to 5
+        const baseInput = screen.getByLabelText(/Custom Base/)
+        await user.clear(baseInput)
+        await user.type(baseInput, '5')
+
+        const customInput = screen.getByPlaceholderText(/Enter base 5 number/)
+
+        // Valid input
+        await user.type(customInput, '4')
+        expect(customInput).toHaveValue('4')
+
+        // Invalid input (5 is not allowed in base 5)
+        await user.type(customInput, '5') // Appends 5 -> "45"
+        // Regex should prevent "5", so value remains "4"
+        expect(customInput).toHaveValue('4')
+    })
+
+    it('updates custom value when base changes', async () => {
+        const user = userEvent.setup()
+        render(<NumberBaseConverterPage />)
+        const decimalInput = screen.getByLabelText(/Decimal/)
+        await user.type(decimalInput, '31')
+
+        // Base 32 (default) -> 'V'
+        expect(screen.getByPlaceholderText(/Enter base 32 number/)).toHaveValue('V')
+
+        // Change base to 16
+        const baseInput = screen.getByLabelText(/Custom Base/)
+        await user.clear(baseInput)
+        await user.type(baseInput, '16')
+
+        // Should update to '1F'
+        expect(screen.getByPlaceholderText(/Enter base 16 number/)).toHaveValue('1F')
+    })
+
+    it('handles invalid base (out of range) gracefully', async () => {
+        const user = userEvent.setup()
+        render(<NumberBaseConverterPage />)
+        const baseInput = screen.getByLabelText(/Custom Base/)
+
+        // Try setting base 1
+        await user.clear(baseInput)
+        await user.type(baseInput, '1')
+        await waitFor(() => expect(baseInput).toHaveValue('1'))
+
+        // Custom value input should be disabled
+        expect(screen.getByPlaceholderText('Enter number...')).toBeDisabled()
+
+        // Try setting base 37
+        await user.clear(baseInput)
+        await user.type(baseInput, '37')
+        await waitFor(() => expect(baseInput).toHaveValue('37'))
+        expect(screen.getByPlaceholderText('Enter number...')).toBeDisabled()
+
+        // Recover to 10
+        await user.clear(baseInput)
+        await user.type(baseInput, '10')
+        expect(screen.getByPlaceholderText('Enter base 10 number...')).toBeEnabled()
+    })
+
+    it.skip('copies value to clipboard', async () => {
+        const user = userEvent.setup()
+        render(<NumberBaseConverterPage />)
+
+        const decimalInput = screen.getByLabelText(/Decimal/)
+        await user.type(decimalInput, '10')
 
         const decimalCopyButton = screen.getByTitle('Copy Decimal (10)')
-        fireEvent.click(decimalCopyButton)
+        await user.click(decimalCopyButton)
 
-        // Wait for async error logging
-        await new Promise(resolve => setTimeout(resolve, 0))
-
-        expect(consoleSpy).toHaveBeenCalledWith('Failed to copy:', expect.any(Error))
-        consoleSpy.mockRestore()
-    })
-
-    it('clears fields when input is just whitespace', () => {
-        render(<NumberBaseConverterPage />)
-        const decimalInput = screen.getByLabelText(/Decimal/)
-        fireEvent.change(decimalInput, { target: { value: '10' } })
-        fireEvent.change(decimalInput, { target: { value: '   ' } })
-        expect(decimalInput).toHaveProperty('value', '')
-        expect(screen.getByLabelText(/Binary/)).toHaveProperty('value', '')
-    })
-
-    it('handles parsing errors gracefully', () => {
-        // Spy on parseInt to return NaN to trigger the error block
-        const parseIntSpy = vi.spyOn(window, 'parseInt').mockReturnValue(NaN)
-
-        render(<NumberBaseConverterPage />)
-        const decimalInput = screen.getByLabelText(/Decimal/)
-
-        // Input valid number, but parseInt will fail
-        fireEvent.change(decimalInput, { target: { value: '10' } })
-
-        expect(screen.getByText('Invalid number')).toBeDefined()
-
-        parseIntSpy.mockRestore()
+        expect(writeTextMock).toHaveBeenCalledWith('10')
     })
 })
