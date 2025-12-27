@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { useLocalStorageSafe } from "@/hooks/use-local-storage"
+import { useLocalStorage } from "@/hooks/use-local-storage"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
@@ -43,7 +43,7 @@ export default function JwtDebuggerPage() {
 
 
 export function JwtDecoder() {
-    const [token, setToken] = useLocalStorageSafe("jwt-decoder-token", "")
+    const [token, setToken] = useLocalStorage("jwt-decoder-token", "")
     const [header, setHeader] = useState("")
     const [payload, setPayload] = useState("")
     const [error, setError] = useState<string | null>(null)
@@ -159,16 +159,16 @@ export function JwtDecoder() {
 
 
 export function JwtEncoder() {
-    const [header, setHeader] = useLocalStorageSafe("jwt-encoder-header", `{
+    const [header, setHeader] = useLocalStorage("jwt-encoder-header", `{
   "alg": "HS256",
   "typ": "JWT"
 }`)
-    const [payload, setPayload] = useLocalStorageSafe("jwt-encoder-payload", `{
+    const [payload, setPayload] = useLocalStorage("jwt-encoder-payload", `{
   "sub": "1234567890",
   "name": "John Doe",
   "iat": 1516239022
 }`)
-    const [secret, setSecret] = useLocalStorageSafe("jwt-encoder-secret", "your-256-bit-secret")
+    const [secret, setSecret] = useLocalStorage("jwt-encoder-secret", "your-256-bit-secret")
     const [encodedToken, setEncodedToken] = useState("")
     const [error, setError] = useState<string | null>(null)
     const [copied, setCopied] = useState(false)
