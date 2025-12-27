@@ -117,9 +117,16 @@ export default function NumberBaseConverterPage() {
     }
 
     const handleCustomBaseChange = (newBase: string) => {
-        setCustomBaseInput(newBase)
+        // Filter out non-numeric characters
+        const filteredBase = newBase.replace(/\D/g, '')
+        setCustomBaseInput(filteredBase)
 
-        const base = parseInt(newBase)
+        if (filteredBase === "") {
+            setValues(prev => ({ ...prev, custom: "" }))
+            return
+        }
+
+        const base = parseInt(filteredBase, 10)
         // If invalid base, we just update the input state but not the values calculation yet 
         // (unless we want to clear custom value)
 
