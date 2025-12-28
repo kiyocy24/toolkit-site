@@ -1,6 +1,6 @@
 export default function DocsPage() {
     return (
-        <div className="container mx-auto py-10 px-6 md:px-8">
+        <div className="container mx-auto py-10">
             <div className="mx-auto max-w-3xl space-y-8">
                 <h1 className="text-4xl font-bold tracking-tight">Introduction</h1>
                 <div className="space-y-4">
