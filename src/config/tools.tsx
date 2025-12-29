@@ -192,6 +192,13 @@ export const tools: Tool[] = [
         description: "Convert numbers between Binary, Octal, Decimal, and Hex.",
         category: "Math",
     },
+    {
+        title: "GCD/LCM Calculator",
+        href: "/tools/gcd-lcm-calculator",
+        icon: Calculator,
+        description: "Calculate Greatest Common Divisor and Least Common Multiple.",
+        category: "Math",
+    },
 ]
 
 export const categories: ToolCategory[] = ["Core", "Utility", "Development", "Security", "Database", "Math", "Date"];
