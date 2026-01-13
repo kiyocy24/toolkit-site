@@ -17,6 +17,12 @@ export function useFileDrop({ onFileDrop, onError }: UseFileDropProps) {
     const handleDragLeave = useCallback((e: React.DragEvent) => {
         e.preventDefault()
         e.stopPropagation()
+
+        // If we are dragging into a child element, do not reset the state
+        if (e.currentTarget.contains(e.relatedTarget as Node)) {
+            return
+        }
+
         setIsDragging(false)
     }, [])
 

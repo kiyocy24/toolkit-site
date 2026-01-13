@@ -32,10 +32,38 @@ describe("useFileDrop", () => {
         })
         expect(result.current.isDragging).toBe(true)
 
+        // Simulate leaving to an element outside the container (null relatedTarget)
         act(() => {
-            result.current.handleDragLeave({ preventDefault: vi.fn(), stopPropagation: vi.fn() } as unknown as React.DragEvent)
+            const e = {
+                preventDefault: vi.fn(),
+                stopPropagation: vi.fn(),
+                currentTarget: { contains: () => false },
+                relatedTarget: null
+            } as unknown as React.DragEvent
+            result.current.handleDragLeave(e)
         })
         expect(result.current.isDragging).toBe(false)
+    })
+
+    it("should NOT set isDragging to false on dragLeave to child", () => {
+        const { result } = renderHook(() => useFileDrop({ onFileDrop: vi.fn() }))
+
+        act(() => {
+            result.current.handleDragOver({ preventDefault: vi.fn(), stopPropagation: vi.fn() } as unknown as React.DragEvent)
+        })
+        expect(result.current.isDragging).toBe(true)
+
+        // Simulate leaving to a child element
+        act(() => {
+            const e = {
+                preventDefault: vi.fn(),
+                stopPropagation: vi.fn(),
+                currentTarget: { contains: () => true },
+                relatedTarget: {}
+            } as unknown as React.DragEvent
+            result.current.handleDragLeave(e)
+        })
+        expect(result.current.isDragging).toBe(true)
     })
 
     it("should process dropped file and call onFileDrop", async () => {
