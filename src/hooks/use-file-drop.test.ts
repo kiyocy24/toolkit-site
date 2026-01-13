@@ -51,30 +51,68 @@ describe("useFileDrop", () => {
             },
         } as unknown as React.DragEvent
 
-        // Mock FileReader
         const originalFileReader = global.FileReader
-
-        // Use a Promise to wait for FileReader to be called
-        await new Promise<void>((resolve) => {
-            class MockFileReader {
-                onload: ((e: ProgressEvent<FileReader>) => any) | null = null
-                readAsText() {
-                    setTimeout(() => {
-                        this.onload?.({ target: { result: "test content" } } as unknown as ProgressEvent<FileReader>)
-                        resolve()
-                    }, 0)
+        try {
+            await new Promise<void>((resolve) => {
+                class MockFileReader {
+                    onload: ((e: ProgressEvent<FileReader>) => any) | null = null
+                    readAsText() {
+                        setTimeout(() => {
+                            this.onload?.({ target: { result: "test content" } } as unknown as ProgressEvent<FileReader>)
+                            resolve()
+                        }, 0)
+                    }
                 }
-            }
-            global.FileReader = MockFileReader as any
+                global.FileReader = MockFileReader as any
 
-            act(() => {
-                result.current.handleDrop(e)
+                act(() => {
+                    result.current.handleDrop(e)
+                })
             })
-        })
 
-        expect(result.current.isDragging).toBe(false)
-        expect(onFileDrop).toHaveBeenCalledWith("test content")
+            expect(result.current.isDragging).toBe(false)
+            expect(onFileDrop).toHaveBeenCalledWith("test content")
+        } finally {
+            global.FileReader = originalFileReader
+        }
+    })
 
-        global.FileReader = originalFileReader
+    it("should call onError when file reading fails", async () => {
+        const onFileDrop = vi.fn()
+        const onError = vi.fn()
+        const { result } = renderHook(() => useFileDrop({ onFileDrop, onError }))
+
+        const file = new File(["test content"], "test.txt", { type: "text/plain" })
+        const e = {
+            preventDefault: vi.fn(),
+            stopPropagation: vi.fn(),
+            dataTransfer: {
+                files: [file],
+            },
+        } as unknown as React.DragEvent
+
+        const originalFileReader = global.FileReader
+        try {
+            await new Promise<void>((resolve) => {
+                class MockFileReader {
+                    onerror: (() => any) | null = null
+                    readAsText() {
+                        setTimeout(() => {
+                            this.onerror?.()
+                            resolve()
+                        }, 0)
+                    }
+                }
+                global.FileReader = MockFileReader as any
+
+                act(() => {
+                    result.current.handleDrop(e)
+                })
+            })
+
+            expect(onError).toHaveBeenCalledWith("Failed to read file.")
+        } finally {
+            global.FileReader = originalFileReader
+        }
     })
 })

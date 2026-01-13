@@ -1,10 +1,11 @@
-import { useCallback, useState, useEffect } from "react"
+import { useCallback, useState } from "react"
 
 interface UseFileDropProps {
     onFileDrop: (content: string) => void
+    onError?: (message: string) => void
 }
 
-export function useFileDrop({ onFileDrop }: UseFileDropProps) {
+export function useFileDrop({ onFileDrop, onError }: UseFileDropProps) {
     const [isDragging, setIsDragging] = useState(false)
 
     const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -34,10 +35,13 @@ export function useFileDrop({ onFileDrop }: UseFileDropProps) {
                         onFileDrop(event.target.result)
                     }
                 }
+                reader.onerror = () => {
+                    onError?.("Failed to read file.")
+                }
                 reader.readAsText(file)
             }
         },
-        [onFileDrop]
+        [onFileDrop, onError]
     )
 
     return {

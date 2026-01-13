@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 import { useFileDrop } from "@/hooks/use-file-drop"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
@@ -46,6 +47,7 @@ export default function JsonFormatterPage() {
 
     const { isDragging, handleDragOver, handleDragLeave, handleDrop } = useFileDrop({
         onFileDrop: (content) => setInput(content),
+        onError: (message) => setError(message),
     })
 
     const formatJson = () => {
@@ -116,7 +118,7 @@ export default function JsonFormatterPage() {
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
                             onDrop={handleDrop}
-                            className={`relative ${isDragging ? "ring-2 ring-primary ring-offset-2" : ""}`}
+                            className={cn("relative", isDragging && "ring-2 ring-primary ring-offset-2")}
                         >
                             {isDragging && (
                                 <div className="absolute inset-0 z-50 flex items-center justify-center rounded-md bg-background/80 backdrop-blur-sm">

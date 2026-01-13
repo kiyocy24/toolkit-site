@@ -55,18 +55,6 @@ describe('JsonFormatterPage', () => {
         fireEvent.change(input, { target: { value: '{"a": 1\n  }' } }) // input doesn't matter much as we mock parse
         fireEvent.click(screen.getByRole('button', { name: /^format$/i }))
 
-        // Line 2 (since position 10 in "{"a": 1\n  }" is on second line likely, but let's trust the calc)
-        // Actually, the calculation depends on the input string passed to getErrorDetails.
-        // If we mock JSON.parse, we should make sure the input state matches what we expect for the position.
-        // "{"a": 1\n  }" -> length is small.
-        // valid input: `{"a": 1\n  }` -> 01234567 8 9 10
-        // `\n` is pos 7 (if "{"a": 1\n..." )
-        // Let's just use a simple string matching the position.
-        // Input: "1234567890\n123"
-        // Position 10 is the newline.
-
-        // We asserted regex /Syntax Error.*Line.*Column/ previously.
-        // Now let's be more specific or just ensure it contains line info.
         expect(screen.getByText(/Syntax Error:.*\(Line \d+, Column \d+\)/)).toBeInTheDocument()
 
         JSON.parse = originalJsonParse
@@ -123,37 +111,10 @@ describe('JsonFormatterPage', () => {
 
         JSON.parse = originalJsonParse
     })
-    it('handles file drop', async () => {
+
+    it('visualizes drag and drop state', () => {
         render(<JsonFormatterPage />)
-        const dropZone = screen.getByPlaceholderText(/paste your json here/i).closest('div')?.parentElement
 
-        // Manually trigger drop event since creating a proper DataTransfer with file in jsdom is tricky
-        // But we can check if our hook is integrated by mocking the hook or just testing the effect
-        // However, testing full integration with FileReader in JSDOM is complex.
-        // Let's settle for checking if the input updates when we simulate a drop if possible, or verify the UI changes on drag over.
-
-        // Test Visual Feedback
-        const eDragOver = new Event('dragover', { bubbles: true })
-        Object.assign(eDragOver, { preventDefault: vi.fn(), stopPropagation: vi.fn() })
-
-        if (dropZone) {
-            fireEvent(dropZone.children[1], eDragOver)
-            // The structure changed: 
-            // parent -> div(dropZone) -> [Overlay(conditional), Textarea]
-        }
-
-        // Since we can't easily select the wrapper div without a testId, let's look for text changes or class changes?
-        // Actually, we added "Drop file here" text.
-
-        // Simulate Drag Over
-        // We need to find the element that has onDragOver. It is the wrapping div around Textarea.
-        // The structure is:
-        // <div>
-        //   <Textarea ... />
-        // </div>
-        // AND we added onDragOver to THAT div.
-
-        // Let's find that div.
         const textarea = screen.getByPlaceholderText(/paste your json here/i)
         const wrapper = textarea.parentElement
 
