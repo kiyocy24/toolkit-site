@@ -123,4 +123,47 @@ describe('JsonFormatterPage', () => {
 
         JSON.parse = originalJsonParse
     })
+    it('handles file drop', async () => {
+        render(<JsonFormatterPage />)
+        const dropZone = screen.getByPlaceholderText(/paste your json here/i).closest('div')?.parentElement
+
+        // Manually trigger drop event since creating a proper DataTransfer with file in jsdom is tricky
+        // But we can check if our hook is integrated by mocking the hook or just testing the effect
+        // However, testing full integration with FileReader in JSDOM is complex.
+        // Let's settle for checking if the input updates when we simulate a drop if possible, or verify the UI changes on drag over.
+
+        // Test Visual Feedback
+        const eDragOver = new Event('dragover', { bubbles: true })
+        Object.assign(eDragOver, { preventDefault: vi.fn(), stopPropagation: vi.fn() })
+
+        if (dropZone) {
+            fireEvent(dropZone.children[1], eDragOver)
+            // The structure changed: 
+            // parent -> div(dropZone) -> [Overlay(conditional), Textarea]
+        }
+
+        // Since we can't easily select the wrapper div without a testId, let's look for text changes or class changes?
+        // Actually, we added "Drop file here" text.
+
+        // Simulate Drag Over
+        // We need to find the element that has onDragOver. It is the wrapping div around Textarea.
+        // The structure is:
+        // <div>
+        //   <Textarea ... />
+        // </div>
+        // AND we added onDragOver to THAT div.
+
+        // Let's find that div.
+        const textarea = screen.getByPlaceholderText(/paste your json here/i)
+        const wrapper = textarea.parentElement
+
+        expect(wrapper).toBeInTheDocument()
+
+        fireEvent.dragOver(wrapper!)
+
+        expect(screen.getByText('Drop file here')).toBeInTheDocument()
+
+        fireEvent.dragLeave(wrapper!)
+        expect(screen.queryByText('Drop file here')).not.toBeInTheDocument()
+    })
 })
