@@ -55,18 +55,6 @@ describe('JsonFormatterPage', () => {
         fireEvent.change(input, { target: { value: '{"a": 1\n  }' } }) // input doesn't matter much as we mock parse
         fireEvent.click(screen.getByRole('button', { name: /^format$/i }))
 
-        // Line 2 (since position 10 in "{"a": 1\n  }" is on second line likely, but let's trust the calc)
-        // Actually, the calculation depends on the input string passed to getErrorDetails.
-        // If we mock JSON.parse, we should make sure the input state matches what we expect for the position.
-        // "{"a": 1\n  }" -> length is small.
-        // valid input: `{"a": 1\n  }` -> 01234567 8 9 10
-        // `\n` is pos 7 (if "{"a": 1\n..." )
-        // Let's just use a simple string matching the position.
-        // Input: "1234567890\n123"
-        // Position 10 is the newline.
-
-        // We asserted regex /Syntax Error.*Line.*Column/ previously.
-        // Now let's be more specific or just ensure it contains line info.
         expect(screen.getByText(/Syntax Error:.*\(Line \d+, Column \d+\)/)).toBeInTheDocument()
 
         JSON.parse = originalJsonParse
@@ -122,5 +110,21 @@ describe('JsonFormatterPage', () => {
         expect(screen.getByText("Invalid JSON")).toBeInTheDocument()
 
         JSON.parse = originalJsonParse
+    })
+
+    it('visualizes drag and drop state', () => {
+        render(<JsonFormatterPage />)
+
+        const textarea = screen.getByPlaceholderText(/paste your json here/i)
+        const wrapper = textarea.parentElement
+
+        expect(wrapper).toBeInTheDocument()
+
+        fireEvent.dragOver(wrapper!)
+
+        expect(screen.getByText('Drop file here')).toBeInTheDocument()
+
+        fireEvent.dragLeave(wrapper!)
+        expect(screen.queryByText('Drop file here')).not.toBeInTheDocument()
     })
 })

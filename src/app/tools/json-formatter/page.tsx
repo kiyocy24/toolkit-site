@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import { useLocalStorage } from "@/hooks/use-local-storage"
+import { useFileDrop } from "@/hooks/use-file-drop"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
@@ -42,6 +44,11 @@ export default function JsonFormatterPage() {
     const [input, setInput] = useLocalStorage("json-formatter-input", "")
     const [output, setOutput] = useState("")
     const [error, setError] = useState<string | null>(null)
+
+    const { isDragging, handleDragOver, handleDragLeave, handleDrop } = useFileDrop({
+        onFileDrop: (content) => setInput(content),
+        onError: (message) => setError(message),
+    })
 
     const formatJson = () => {
         try {
@@ -107,12 +114,24 @@ export default function JsonFormatterPage() {
                                 Clear
                             </Button>
                         </div>
-                        <Textarea
-                            placeholder="Paste your JSON here..."
-                            className="min-h-[200px] font-mono text-sm"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                        />
+                        <div
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                            onDrop={handleDrop}
+                            className={cn("relative", isDragging && "ring-2 ring-primary ring-offset-2")}
+                        >
+                            {isDragging && (
+                                <div className="absolute inset-0 z-50 flex items-center justify-center rounded-md bg-background/80 backdrop-blur-sm">
+                                    <p className="text-lg font-medium text-muted-foreground">Drop file here</p>
+                                </div>
+                            )}
+                            <Textarea
+                                placeholder="Paste your JSON here..."
+                                className="min-h-[200px] font-mono text-sm"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                            />
+                        </div>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
