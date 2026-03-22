@@ -82,8 +82,8 @@ describe("JwtDebuggerPage", () => {
 
             await waitFor(() => {
                 const payloadOutput = screen.getByLabelText("Payload") as HTMLTextAreaElement
-                expect(payloadOutput.value).toMatch(/"iat": 1516239022,\s*\/\/\s*2018\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}/)
-                expect(payloadOutput.value).toMatch(/"exp": 1516242622\s*\/\/\s*2018\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}/)
+                expect(payloadOutput.value).toMatch(/"iat": 1516239022,\s*\/\/\s*2018\/01\/18 01:30:22/)
+                expect(payloadOutput.value).toMatch(/"exp": 1516242622\s*\/\/\s*2018\/01\/18 02:30:22/)
             })
         })
 

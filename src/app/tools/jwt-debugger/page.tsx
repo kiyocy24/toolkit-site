@@ -40,7 +40,18 @@ export default function JwtDebuggerPage() {
         </div>
     )
 }
-
+const formatTimestamp = (ts: number) => {
+    const date = new Date(ts * 1000)
+    return date.toLocaleString('ja-JP', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'UTC',
+    })
+}
 
 export function JwtDecoder() {
     const [token, setToken] = useLocalStorage("jwt-decoder-token", "")
@@ -93,18 +104,6 @@ export function JwtDecoder() {
 
             const headerStr = decodeBase64Url(parts[0])
             const payloadStr = decodeBase64Url(parts[1])
-
-const formatTimestamp = (ts: number) => {
-    const date = new Date(ts * 1000)
-    return date.toLocaleString('ja-JP', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-    })
-}
 
             const headerJson = JSON.parse(headerStr)
             const payloadJson = JSON.parse(payloadStr)
