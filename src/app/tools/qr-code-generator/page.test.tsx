@@ -168,7 +168,7 @@ describe("QrCodeGeneratorPage", () => {
                     }),
                     toBlob: (...args: any[]) => {
                         console.log("toBlob called")
-                        return toBlobMock(...args)
+                        return toBlobMock(...(args as [any]))
                     },
                     width: 0,
                     height: 0,
