@@ -155,7 +155,7 @@ describe("QrCodeGeneratorPage", () => {
         const mockLink = document.createElement("a")
         mockLink.click = vi.fn()
 
-        const toBlobMock = vi.fn((callback) => callback(new Blob(["mock"], { type: "image/png" })))
+        const toBlobMock = vi.fn((callback: any, type?: any, quality?: any) => callback(new Blob(["mock"], { type: "image/png" })))
         const revokeObjectURLSpy = vi.spyOn(URL, 'revokeObjectURL')
 
         createElementSpy = vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
@@ -166,7 +166,7 @@ describe("QrCodeGeneratorPage", () => {
                     getContext: () => ({
                         drawImage: vi.fn(),
                     }),
-                    toBlob: (...args: any[]) => {
+                    toBlob: (...args: Parameters<HTMLCanvasElement["toBlob"]>) => {
                         console.log("toBlob called")
                         return toBlobMock(...args)
                     },

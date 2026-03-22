@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { vi } from "vitest";
+import { vi, describe, it, expect } from "vitest";
 import userEvent from "@testing-library/user-event";
 import GcdLcmCalculatorPage from "./page";
 
