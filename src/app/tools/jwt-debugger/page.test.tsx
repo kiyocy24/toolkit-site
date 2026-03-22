@@ -71,6 +71,22 @@ describe("JwtDebuggerPage", () => {
             })
         })
 
+        it("formats timestamp claims with readable dates", async () => {
+            render(<JwtDebuggerPage />)
+
+            // payload: {"iat": 1516239022, "exp": 1516242622}
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTUxNjI0MjYyMn0.signature"
+
+            const input = screen.getByLabelText("JWT Token")
+            fireEvent.change(input, { target: { value: token } })
+
+            await waitFor(() => {
+                const payloadOutput = screen.getByLabelText("Payload") as HTMLTextAreaElement
+                expect(payloadOutput.value).toMatch(/"iat": 1516239022,\s*\/\/\s*2018\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}/)
+                expect(payloadOutput.value).toMatch(/"exp": 1516242622\s*\/\/\s*2018\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}/)
+            })
+        })
+
         it("shows error for invalid JWT structure", async () => {
             render(<JwtDebuggerPage />)
             const input = screen.getByLabelText("JWT Token")
