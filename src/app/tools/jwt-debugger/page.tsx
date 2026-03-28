@@ -40,7 +40,18 @@ export default function JwtDebuggerPage() {
         </div>
     )
 }
-
+const formatTimestamp = (ts: number) => {
+    const date = new Date(ts * 1000)
+    return date.toLocaleString('ja-JP', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'UTC',
+    })
+}
 
 export function JwtDecoder() {
     const [token, setToken] = useLocalStorage("jwt-decoder-token", "")
@@ -98,7 +109,16 @@ export function JwtDecoder() {
             const payloadJson = JSON.parse(payloadStr)
 
             setHeader(JSON.stringify(headerJson, null, 2))
-            setPayload(JSON.stringify(payloadJson, null, 2))
+            
+            let payloadFormatted = JSON.stringify(payloadJson, null, 2)
+            payloadFormatted = payloadFormatted.replace(
+                /"(exp|iat|nbf|auth_time|updated_at)":\s*(\d+)(,?)/g,
+                (match, key, val, comma) => {
+                    const dateStr = formatTimestamp(parseInt(val, 10))
+                    return `"${key}": ${val}${comma} // ${dateStr}`
+                }
+            )
+            setPayload(payloadFormatted)
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to decode JWT")
             setHeader("")
