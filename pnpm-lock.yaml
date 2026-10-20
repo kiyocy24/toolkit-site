@@ -84,8 +84,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1(supports-color@7.2.0)
       sql-formatter:
-        specifier: ^15.6.12
-        version: 15.6.12
+        specifier: ^15.9.0
+        version: 15.9.0
       tailwind-merge:
         specifier: ^3.5.0
         version: 3.5.0
@@ -3656,8 +3656,8 @@ packages:
   space-separated-tokens@2.0.2:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
 
-  sql-formatter@15.6.12:
-    resolution: {integrity: sha512-mkpF+RG402P66VMsnQkWewTRzDBWfu9iLbOfxaW/nAKOS/2A9MheQmcU5cmX0D0At9azrorZwpvcBRNNBozACQ==}
+  sql-formatter@15.9.0:
+    resolution: {integrity: sha512-3A/N+v+mA5/PDU+FlO4uTFE0L/Mmg63c/Ny161Qv2b1Mxp9IX8War+LLmq17LA/Kgu4KXAR7iutK2JaHWJMMtw==}
     hasBin: true
 
   stable-hash@0.0.5:
@@ -7886,7 +7886,7 @@ snapshots:
 
   space-separated-tokens@2.0.2: {}
 
-  sql-formatter@15.6.12:
+  sql-formatter@15.9.0:
     dependencies:
       argparse: 2.0.1
       nearley: 2.20.1
