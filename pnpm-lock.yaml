@@ -54,8 +54,8 @@ importers:
         specifier: ^2.9.4
         version: 2.9.4
       cronstrue:
-        specifier: ^3.9.0
-        version: 3.9.0
+        specifier: ^3.33.0
+        version: 3.33.0
       diff:
         specifier: ^8.0.4
         version: 8.0.4
@@ -2217,8 +2217,8 @@ packages:
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
-  cronstrue@3.9.0:
-    resolution: {integrity: sha512-T3S35zmD0Ai2B4ko6+mEM+k9C6tipe2nB9RLiGT6QL2Wn0Vsn2cCZAC8Oeuf4CaE00GZWVdpYitbpWCNlIWqdA==}
+  cronstrue@3.33.0:
+    resolution: {integrity: sha512-vyatYcfUXxPZxv8/zwC+j9LZNfSdn1k5t3sCLFZrLw+HvU6H4pNhUulPKgtji9tLTTAUCJs45z2+rJrPsbPxlw==}
     hasBin: true
 
   cross-spawn@7.0.6:
@@ -5938,7 +5938,7 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  cronstrue@3.9.0: {}
+  cronstrue@3.33.0: {}
 
   cross-spawn@7.0.6:
     dependencies:
