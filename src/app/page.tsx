@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { tools } from "@/config/tools";
+import { toolsByCategory, categories } from "@/config/tools";
 
 export default function Home() {
   return (
@@ -53,22 +53,39 @@ export default function Home() {
               This project is an experiment to see how we can build a modern toolkit app with Next.js 15 and shadcn/ui.
             </p>
           </div>
-          <div className="mx-auto grid gap-4 grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
-            {tools.map((tool) => (
-              <Link key={tool.href} href={tool.href}>
-                <Card className="h-full hover:bg-muted/50 transition-colors">
-                  <CardHeader>
-                    <CardTitle>{tool.title}</CardTitle>
-                    <CardDescription>
-                      {tool.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Badge variant="secondary">{tool.category}</Badge>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+          <div className="mx-auto space-y-10 md:max-w-[64rem]">
+            {categories.map((category) => {
+              const categoryTools = toolsByCategory[category];
+              if (!categoryTools || categoryTools.length === 0) return null;
+
+              return (
+                <section key={category} aria-labelledby={`category-${category}`} className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <h3 id={`category-${category}`} className="text-2xl font-semibold tracking-tight">
+                      {category}
+                    </h3>
+                    <Badge variant="secondary">{categoryTools.length}</Badge>
+                  </div>
+                  <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
+                    {categoryTools.map((tool) => (
+                      <Link key={tool.href} href={tool.href}>
+                        <Card className="h-full hover:bg-muted/50 transition-colors">
+                          <CardHeader>
+                            <div className="flex items-center gap-2">
+                              <tool.icon className="h-5 w-5 shrink-0 text-muted-foreground" />
+                              <CardTitle>{tool.title}</CardTitle>
+                            </div>
+                            <CardDescription>
+                              {tool.description}
+                            </CardDescription>
+                          </CardHeader>
+                        </Card>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
           </div>
         </section >
       </main >
