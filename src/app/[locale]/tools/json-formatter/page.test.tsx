@@ -128,3 +128,37 @@ describe('JsonFormatterPage', () => {
         expect(screen.queryByText('Drop file here')).not.toBeInTheDocument()
     })
 })
+
+describe('JsonFormatterPage (ja)', () => {
+    it('renders Japanese translations', () => {
+        render(<JsonFormatterPage />, { locale: 'ja' })
+        expect(screen.getByText('JSON フォーマッター')).toBeInTheDocument()
+        expect(screen.getByText('入力 JSON')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: '整形' })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: '圧縮' })).toBeInTheDocument()
+        expect(screen.getByPlaceholderText('ここに JSON を貼り付け...')).toBeInTheDocument()
+    })
+
+    it('shows Japanese error messages', () => {
+        render(<JsonFormatterPage />, { locale: 'ja' })
+        const input = screen.getByPlaceholderText('ここに JSON を貼り付け...')
+
+        const originalJsonParse = JSON.parse
+        JSON.parse = vi.fn().mockImplementation(() => {
+            throw new SyntaxError("JSON.parse: unexpected character at line 1 column 2 of the JSON data")
+        })
+
+        fireEvent.change(input, { target: { value: '{invalid}' } })
+        fireEvent.click(screen.getByRole('button', { name: '整形' }))
+
+        expect(screen.getByText(/^構文エラー: .*（1 行目、2 列目）$/)).toBeInTheDocument()
+
+        JSON.parse = vi.fn().mockImplementation(() => {
+            throw new Error("Random Error")
+        })
+        fireEvent.click(screen.getByRole('button', { name: '整形' }))
+        expect(screen.getByText('無効な JSON です')).toBeInTheDocument()
+
+        JSON.parse = originalJsonParse
+    })
+})

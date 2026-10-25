@@ -96,3 +96,15 @@ describe("HashGeneratorPage", () => {
         expect(mockWriteText).toHaveBeenCalledWith("098f6bcd4621d373cade4e832627b4f6")
     })
 })
+
+describe("HashGeneratorPage (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<HashGeneratorPage />, { locale: "ja" })
+        expect(screen.getByText("ハッシュ生成")).toBeInTheDocument()
+        expect(screen.getByLabelText("入力テキスト")).toBeInTheDocument()
+        expect(screen.getByPlaceholderText("ハッシュ化するテキストを入力...")).toBeInTheDocument()
+        expect(screen.getByLabelText("大文字で出力")).toBeInTheDocument()
+        expect(screen.getByPlaceholderText("SHA-256 ハッシュがここに表示されます...")).toBeInTheDocument()
+        expect(screen.getAllByTitle("コピー")).toHaveLength(4)
+    })
+})

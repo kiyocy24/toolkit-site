@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
@@ -11,6 +12,7 @@ import { Copy, Trash2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function SqlFormatterPage() {
+    const t = useTranslations("Tools.sql-formatter")
     const [input, setInput] = useState("")
     const [output, setOutput] = useState("")
     const [dialect, setDialect] = useState("sql")
@@ -27,7 +29,7 @@ export default function SqlFormatterPage() {
             setOutput(formatted)
             setError(null)
         } catch (e) {
-            setError("Could not format SQL. It might be invalid syntax for the selected dialect.")
+            setError(t("errors.formatFailed"))
             setOutput("")
         }
     }
@@ -48,9 +50,9 @@ export default function SqlFormatterPage() {
         <div className="grid gap-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>SQL Formatter</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Beautify your SQL queries.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
@@ -58,14 +60,14 @@ export default function SqlFormatterPage() {
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <label htmlFor="sql-input" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    Input SQL
+                                    {t("inputSql")}
                                 </label>
                                 <Select value={dialect} onValueChange={setDialect}>
                                     <SelectTrigger className="w-[180px] h-8">
-                                        <SelectValue placeholder="Dialect" />
+                                        <SelectValue placeholder={t("dialect")} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="sql">Standard SQL</SelectItem>
+                                        <SelectItem value="sql">{t("standardSql")}</SelectItem>
                                         <SelectItem value="postgresql">PostgreSQL</SelectItem>
                                         <SelectItem value="mysql">MySQL</SelectItem>
                                         <SelectItem value="bigquery">BigQuery</SelectItem>
@@ -75,7 +77,7 @@ export default function SqlFormatterPage() {
                             </div>
                             <Button variant="ghost" size="sm" onClick={clearAll} className="h-8 px-2 lg:px-3">
                                 <Trash2 className="mr-2 h-4 w-4" />
-                                Clear
+                                {t("clear")}
                             </Button>
                         </div>
                         <Textarea
@@ -88,7 +90,7 @@ export default function SqlFormatterPage() {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
-                        <Button onClick={handleFormat}>Format SQL</Button>
+                        <Button onClick={handleFormat}>{t("formatSql")}</Button>
                     </div>
 
                     {error && (
@@ -101,11 +103,11 @@ export default function SqlFormatterPage() {
                         <div className="grid gap-2">
                             <div className="flex items-center justify-between">
                                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    Output
+                                    {t("output")}
                                 </label>
                                 <Button variant="outline" size="sm" onClick={copyToClipboard} className="h-8 px-2 lg:px-3">
                                     <Copy className="mr-2 h-4 w-4" />
-                                    Copy
+                                    {t("copy")}
                                 </Button>
                             </div>
                             <div className="overflow-hidden rounded-md border text-sm">

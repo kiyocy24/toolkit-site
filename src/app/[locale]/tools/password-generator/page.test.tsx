@@ -110,3 +110,28 @@ describe("PasswordGeneratorPage", () => {
         expect(mockWriteText).toHaveBeenCalled()
     })
 })
+
+describe("PasswordGeneratorPage (ja)", () => {
+    beforeEach(() => {
+        vi.clearAllMocks()
+        mockGetRandomValues.mockImplementation((array: Uint32Array) => {
+            for (let i = 0; i < array.length; i++) {
+                array[i] = 0
+            }
+            return array
+        })
+    })
+
+    it("renders Japanese translations", () => {
+        render(<PasswordGeneratorPage />, { locale: "ja" })
+        expect(screen.getByText("パスワード生成")).toBeInTheDocument()
+        expect(screen.getByLabelText("生成されたパスワード")).not.toHaveValue("")
+        expect(screen.getByRole("button", { name: "コピー" })).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "パスワードを再生成" })).toBeInTheDocument()
+        expect(screen.getByText("文字数: 16")).toBeInTheDocument()
+        expect(screen.getByText("英大文字（A-Z）")).toBeInTheDocument()
+        expect(screen.getByText("英小文字（a-z）")).toBeInTheDocument()
+        expect(screen.getByText("数字（0-9）")).toBeInTheDocument()
+        expect(screen.getByText("記号（!@#$%^&*()_+~`|}{[]:;?><,./-=）")).toBeInTheDocument()
+    })
+})

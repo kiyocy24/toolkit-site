@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 import { useFileDrop } from "@/hooks/use-file-drop"
 import { cn } from "@/lib/utils"
@@ -12,7 +13,13 @@ import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism"
 import { Copy, Trash2 } from "lucide-react"
 
 
-const getErrorDetails = (e: unknown, input: string) => {
+type JsonError =
+    | { kind: "syntaxAt"; message: string; line: number; column: number }
+    | { kind: "syntax"; message: string }
+    | { kind: "invalidJson" }
+    | { kind: "fileReadFailed" }
+
+const getErrorDetails = (e: unknown, input: string): JsonError => {
     if (e instanceof SyntaxError) {
         const message = e.message
 
@@ -26,28 +33,29 @@ const getErrorDetails = (e: unknown, input: string) => {
             const line = lines.length
             const column = lines[lines.length - 1].length + 1
 
-            return `Syntax Error: ${message} (Line ${line}, Column ${column})`
+            return { kind: "syntaxAt", message, line, column }
         }
 
         // Firefox: "JSON.parse: unexpected character at line 1 column 2 of the JSON data"
         match = message.match(/at line (\d+) column (\d+)/)
         if (match) {
-            return `Syntax Error: ${message} (Line ${match[1]}, Column ${match[2]})`
+            return { kind: "syntaxAt", message, line: Number(match[1]), column: Number(match[2]) }
         }
 
-        return `Syntax Error: ${message}`
+        return { kind: "syntax", message }
     }
-    return "Invalid JSON"
+    return { kind: "invalidJson" }
 }
 
 export default function JsonFormatterPage() {
+    const t = useTranslations("Tools.json-formatter")
     const [input, setInput] = useLocalStorage("json-formatter-input", "")
     const [output, setOutput] = useState("")
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<JsonError | null>(null)
 
     const { isDragging, handleDragOver, handleDragLeave, handleDrop } = useFileDrop({
         onFileDrop: (content) => setInput(content),
-        onError: (message) => setError(message),
+        onError: () => setError({ kind: "fileReadFailed" }),
     })
 
     const formatJson = () => {
@@ -98,20 +106,20 @@ export default function JsonFormatterPage() {
         <div className="grid gap-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>JSON Formatter</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Format and validate your JSON data.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
                     <div className="grid gap-2">
                         <div className="flex items-center justify-between">
                             <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                Input JSON
+                                {t("inputJson")}
                             </label>
                             <Button variant="ghost" size="sm" onClick={clearAll} className="h-8 px-2 lg:px-3">
                                 <Trash2 className="mr-2 h-4 w-4" />
-                                Clear
+                                {t("clear")}
                             </Button>
                         </div>
                         <div
@@ -122,11 +130,11 @@ export default function JsonFormatterPage() {
                         >
                             {isDragging && (
                                 <div className="absolute inset-0 z-50 flex items-center justify-center rounded-md bg-background/80 backdrop-blur-sm">
-                                    <p className="text-lg font-medium text-muted-foreground">Drop file here</p>
+                                    <p className="text-lg font-medium text-muted-foreground">{t("dropFileHere")}</p>
                                 </div>
                             )}
                             <Textarea
-                                placeholder="Paste your JSON here..."
+                                placeholder={t("placeholder")}
                                 className="min-h-[200px] font-mono text-sm"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
@@ -135,13 +143,17 @@ export default function JsonFormatterPage() {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
-                        <Button onClick={formatJson}>Format</Button>
-                        <Button variant="secondary" onClick={minifyJson}>Minify</Button>
+                        <Button onClick={formatJson}>{t("format")}</Button>
+                        <Button variant="secondary" onClick={minifyJson}>{t("minify")}</Button>
                     </div>
 
                     {error && (
                         <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
-                            {error}
+                            {error.kind === "syntaxAt"
+                                ? t("errors.syntaxAt", { message: error.message, line: error.line, column: error.column })
+                                : error.kind === "syntax"
+                                  ? t("errors.syntax", { message: error.message })
+                                  : t(`errors.${error.kind}`)}
                         </div>
                     )}
 
@@ -149,11 +161,11 @@ export default function JsonFormatterPage() {
                         <div className="grid gap-2">
                             <div className="flex items-center justify-between">
                                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    Output
+                                    {t("output")}
                                 </label>
                                 <Button variant="outline" size="sm" onClick={copyToClipboard} className="h-8 px-2 lg:px-3">
                                     <Copy className="mr-2 h-4 w-4" />
-                                    Copy
+                                    {t("copy")}
                                 </Button>
                             </div>
                             <div className="overflow-hidden rounded-md border text-sm">

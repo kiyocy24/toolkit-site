@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -10,6 +11,7 @@ import { AlertCircle, Copy, Check } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 export default function PrimeFactorizationPage() {
+    const t = useTranslations("Tools.prime-factorization")
     const [input, setInput] = useState("")
     const [result, setResult] = useState<string | null>(null)
     const [isPrime, setIsPrime] = useState(false)
@@ -28,18 +30,18 @@ export default function PrimeFactorizationPage() {
         }
 
         if (input.length > 20) {
-            setError("Input is too large. Please enter an integer with 20 digits or fewer.")
+            setError(t("errors.tooLarge"))
             return
         }
 
         if (input.length > 15) {
-            setWarning("Calculating... Large numbers may take some time.")
+            setWarning(t("calculatingWarning"))
         }
 
         try {
             // Remove non-numeric characters for safety check, but allow BigInt parsing
             if (!/^-?\d+$/.test(input.trim())) {
-                setError("Please enter a valid integer.")
+                setError(t("errors.invalidInteger"))
                 setWarning(null)
                 return
             }
@@ -47,7 +49,7 @@ export default function PrimeFactorizationPage() {
             const num = BigInt(input)
 
             if (num <= 1n) {
-                setError("Please enter an integer greater than 1.")
+                setError(t("errors.notGreaterThanOne"))
                 setWarning(null)
                 return
             }
@@ -64,7 +66,7 @@ export default function PrimeFactorizationPage() {
             }, 50)
 
         } catch (e) {
-            setError("Invalid input.")
+            setError(t("errors.invalidInput"))
             setWarning(null)
         }
     }
@@ -124,20 +126,20 @@ export default function PrimeFactorizationPage() {
         <div className="space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>Prime Factorization</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Enter an integer to decompose it into its prime factors. Supports large numbers.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="number">Number</Label>
+                        <Label htmlFor="number">{t("number")}</Label>
                         <div className="flex space-x-2">
                             <Input
                                 type="text"
                                 inputMode="numeric"
                                 id="number"
-                                placeholder="e.g. 123456789"
+                                placeholder={t("placeholder")}
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) => {
@@ -146,14 +148,14 @@ export default function PrimeFactorizationPage() {
                                     }
                                 }}
                             />
-                            <Button onClick={calculate}>Factorize</Button>
+                            <Button onClick={calculate}>{t("factorize")}</Button>
                         </div>
                     </div>
 
                     {warning && !result && !error && (
                         <Alert className="bg-yellow-50 text-yellow-800 border-yellow-200">
                             <AlertCircle className="h-4 w-4" />
-                            <AlertTitle>Processing</AlertTitle>
+                            <AlertTitle>{t("processing")}</AlertTitle>
                             <AlertDescription>{warning}</AlertDescription>
                         </Alert>
                     )}
@@ -161,7 +163,7 @@ export default function PrimeFactorizationPage() {
                     {error && (
                         <Alert variant="destructive">
                             <AlertCircle className="h-4 w-4" />
-                            <AlertTitle>Error</AlertTitle>
+                            <AlertTitle>{t("error")}</AlertTitle>
                             <AlertDescription>{error}</AlertDescription>
                         </Alert>
                     )}
@@ -169,10 +171,10 @@ export default function PrimeFactorizationPage() {
                     {result && (
                         <div className="mt-4 p-4 rounded-md bg-muted relative">
                             <div className="flex justify-between items-start mb-1">
-                                <p className="text-sm font-medium text-muted-foreground">Result:</p>
+                                <p className="text-sm font-medium text-muted-foreground">{t("result")}</p>
                                 <div className="flex items-center space-x-2">
-                                    {isPrime && <Badge variant="default" className="bg-green-600 hover:bg-green-700">Prime Number</Badge>}
-                                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={copyToClipboard} aria-label={copied ? "Result copied" : "Copy result"}>
+                                    {isPrime && <Badge variant="default" className="bg-green-600 hover:bg-green-700">{t("primeNumber")}</Badge>}
+                                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={copyToClipboard} aria-label={copied ? t("resultCopied") : t("copyResult")}>
                                         {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                                     </Button>
                                 </div>

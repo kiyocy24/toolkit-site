@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -12,12 +13,14 @@ import { AlertCircle } from "lucide-react"
 type Step = {
     step: number
     value: bigint
-    operation: string
+    // null marks the initial value row (label is translated at render time)
+    operation: string | null
 }
 
 const MAX_STEPS = 10000
 
 export default function CollatzConjecturePage() {
+    const t = useTranslations("Tools.collatz-conjecture")
     const [input, setInput] = useState("")
     const [sequence, setSequence] = useState<Step[]>([])
     const [maxVal, setMaxVal] = useState<bigint | null>(null)
@@ -30,14 +33,14 @@ export default function CollatzConjecturePage() {
 
         try {
             if (!/^\d+$/.test(input.trim())) {
-                setError("Please enter a valid positive integer.")
+                setError(t("errors.invalidInteger"))
                 return
             }
 
             let num = BigInt(input)
 
             if (num <= 0n) {
-                setError("Please enter an integer greater than 0.")
+                setError(t("errors.notPositive"))
                 return
             }
 
@@ -53,7 +56,7 @@ export default function CollatzConjecturePage() {
             steps.push({
                 step: stepCount,
                 value: current,
-                operation: "Initial value"
+                operation: null
             })
 
 
@@ -81,7 +84,7 @@ export default function CollatzConjecturePage() {
             }
 
             if (current !== 1n) {
-                setError(`Calculation stopped after ${MAX_STEPS} steps. The sequence is too long to display.`)
+                setError(t("errors.tooManySteps", { maxSteps: String(MAX_STEPS) }))
                 return
             }
 
@@ -89,7 +92,7 @@ export default function CollatzConjecturePage() {
             setMaxVal(currentMax)
 
         } catch (e) {
-            setError("Invalid input.")
+            setError(t("errors.invalidInput"))
         }
     }
 
@@ -97,21 +100,20 @@ export default function CollatzConjecturePage() {
         <div className="space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>Collatz Conjecture</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Visualizes the Collatz sequence for a given number.
-                        (If even: n / 2, If odd: 3n + 1)
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="number">Starting Number</Label>
+                        <Label htmlFor="number">{t("startingNumber")}</Label>
                         <div className="flex space-x-2">
                             <Input
                                 type="text"
                                 inputMode="numeric"
                                 id="number"
-                                placeholder="e.g. 27"
+                                placeholder={t("placeholder")}
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) => {
@@ -120,14 +122,14 @@ export default function CollatzConjecturePage() {
                                     }
                                 }}
                             />
-                            <Button onClick={calculate}>Calculate</Button>
+                            <Button onClick={calculate}>{t("calculate")}</Button>
                         </div>
                     </div>
 
                     {error && (
                         <Alert variant="destructive">
                             <AlertCircle className="h-4 w-4" />
-                            <AlertTitle>Error</AlertTitle>
+                            <AlertTitle>{t("error")}</AlertTitle>
                             <AlertDescription>{error}</AlertDescription>
                         </Alert>
                     )}
@@ -136,11 +138,11 @@ export default function CollatzConjecturePage() {
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                                 <div className="p-4 bg-muted rounded-lg">
-                                    <p className="text-sm font-medium text-muted-foreground">Steps</p>
+                                    <p className="text-sm font-medium text-muted-foreground">{t("steps")}</p>
                                     <p className="text-2xl font-bold">{sequence.length - 1}</p>
                                 </div>
                                 <div className="p-4 bg-muted rounded-lg">
-                                    <p className="text-sm font-medium text-muted-foreground">Max Value</p>
+                                    <p className="text-sm font-medium text-muted-foreground">{t("maxValue")}</p>
                                     <p className="text-2xl font-bold">{maxVal?.toString()}</p>
                                 </div>
                             </div>
@@ -149,9 +151,9 @@ export default function CollatzConjecturePage() {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead className="w-[100px]">Step</TableHead>
-                                            <TableHead>Value</TableHead>
-                                            <TableHead className="text-right">Operation</TableHead>
+                                            <TableHead className="w-[100px]">{t("step")}</TableHead>
+                                            <TableHead>{t("value")}</TableHead>
+                                            <TableHead className="text-right">{t("operation")}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -159,7 +161,7 @@ export default function CollatzConjecturePage() {
                                             <TableRow key={step.step}>
                                                 <TableCell className="font-medium">{step.step}</TableCell>
                                                 <TableCell>{step.value.toString()}</TableCell>
-                                                <TableCell className="text-right font-mono text-muted-foreground">{step.operation}</TableCell>
+                                                <TableCell className="text-right font-mono text-muted-foreground">{step.operation ?? t("initialValue")}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

@@ -4,6 +4,7 @@ import { useState } from "react"
 import { colord, extend, Colord } from "colord"
 import cmykPlugin from "colord/plugins/cmyk"
 import { Copy, Palette } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -21,6 +22,7 @@ interface ColorState {
 }
 
 export default function ColorConverterPage() {
+    const t = useTranslations("Tools.color-converter")
     // Initialize with default blue color to avoid effect
     const defaultColor = colord("#3b82f6")
     const [color, setColor] = useState<ColorState>({
@@ -87,10 +89,10 @@ export default function ColorConverterPage() {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Palette className="h-6 w-6" />
-                        Color Converter
+                        {t("title")}
                     </CardTitle>
                     <CardDescription>
-                        Convert between HEX, RGB, HSL, and CMYK formats.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
@@ -101,7 +103,7 @@ export default function ColorConverterPage() {
                             style={{ backgroundColor: colord(color.hex).isValid() ? color.hex : '#000' }}
                         />
                         <div className="grid w-full gap-2">
-                            <Label htmlFor="color-picker">Pick a color</Label>
+                            <Label htmlFor="color-picker">{t("pickColor")}</Label>
                             <div className="flex gap-2">
                                 <Input
                                     id="color-picker"
@@ -121,7 +123,7 @@ export default function ColorConverterPage() {
                                         variant="outline"
                                         size="icon"
                                         onClick={() => copyToClipboard(color.hex)}
-                                        title="Copy HEX"
+                                        title={t("copyFormat", { format: "HEX" })}
                                     >
                                         <Copy className="h-4 w-4" />
                                     </Button>
@@ -154,7 +156,7 @@ export default function ColorConverterPage() {
                                     size="sm"
                                     onClick={() => copyToClipboard(`rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b})`)}
                                 >
-                                    <Copy className="h-3 w-3 mr-1" /> Copy RGB
+                                    <Copy className="h-3 w-3 mr-1" /> {t("copyFormat", { format: "RGB" })}
                                 </Button>
                             </div>
                         </div>
@@ -182,7 +184,7 @@ export default function ColorConverterPage() {
                                     size="sm"
                                     onClick={() => copyToClipboard(`hsl(${color.hsl.h}, ${color.hsl.s}%, ${color.hsl.l}%)`)}
                                 >
-                                    <Copy className="h-3 w-3 mr-1" /> Copy HSL
+                                    <Copy className="h-3 w-3 mr-1" /> {t("copyFormat", { format: "HSL" })}
                                 </Button>
                             </div>
                         </div>
@@ -210,7 +212,7 @@ export default function ColorConverterPage() {
                                     size="sm"
                                     onClick={() => copyToClipboard(`cmyk(${color.cmyk.c}%, ${color.cmyk.m}%, ${color.cmyk.y}%, ${color.cmyk.k}%)`)}
                                 >
-                                    <Copy className="h-3 w-3 mr-1" /> Copy CMYK
+                                    <Copy className="h-3 w-3 mr-1" /> {t("copyFormat", { format: "CMYK" })}
                                 </Button>
                             </div>
                         </div>

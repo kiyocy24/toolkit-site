@@ -38,3 +38,14 @@ describe('MarkdownPreviewerPage', () => {
         expect(textarea).toHaveValue('')
     })
 })
+
+describe('MarkdownPreviewerPage (ja)', () => {
+    it('renders Japanese translations', () => {
+        render(<MarkdownPreviewerPage />, { locale: 'ja' })
+        expect(screen.getByText('エディター')).toBeInTheDocument()
+        expect(screen.getByText('プレビュー')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'クリア' })).toBeInTheDocument()
+        expect(screen.getByPlaceholderText('ここに Markdown を入力...')).toBeInTheDocument()
+        expect(screen.getByTestId('markdown-preview')).toHaveTextContent('# こんにちは Markdown')
+    })
+})

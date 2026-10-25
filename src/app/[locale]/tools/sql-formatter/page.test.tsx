@@ -55,3 +55,21 @@ describe('SqlFormatterPage', () => {
         expect(input).toHaveValue('')
     })
 })
+
+describe('SqlFormatterPage (ja)', () => {
+    it('renders Japanese translations', () => {
+        render(<SqlFormatterPage />, { locale: 'ja' })
+        expect(screen.getByText('SQL フォーマッター')).toBeInTheDocument()
+        expect(screen.getByText('入力 SQL')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'SQL を整形' })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'クリア' })).toBeInTheDocument()
+    })
+
+    it('shows Japanese output labels after formatting', () => {
+        render(<SqlFormatterPage />, { locale: 'ja' })
+        fireEvent.change(screen.getByPlaceholderText(/select \* from table/i), { target: { value: 'select 1' } })
+        fireEvent.click(screen.getByRole('button', { name: 'SQL を整形' }))
+        expect(screen.getByText('出力')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'コピー' })).toBeInTheDocument()
+    })
+})

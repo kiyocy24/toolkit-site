@@ -208,3 +208,22 @@ describe('NumberBaseConverterPage', () => {
         expect(screen.getByLabelText(/Binary/)).toHaveValue('')
     })
 })
+
+describe('NumberBaseConverterPage (ja)', () => {
+    it('renders Japanese translations', () => {
+        render(<NumberBaseConverterPage />, { locale: 'ja' })
+        expect(screen.getByText('基数変換')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'リセット' })).toBeInTheDocument()
+        expect(screen.getByLabelText('10 進数')).toBeInTheDocument()
+        expect(screen.getByLabelText('任意の基数')).toBeInTheDocument()
+        expect(screen.getByPlaceholderText('32 進数を入力...')).toBeInTheDocument()
+        expect(screen.getByTitle('16 進数をコピー')).toBeInTheDocument()
+    })
+
+    it('converts values with Japanese labels', async () => {
+        const user = userEvent.setup()
+        render(<NumberBaseConverterPage />, { locale: 'ja' })
+        await user.type(screen.getByLabelText('10 進数'), '10')
+        expect(screen.getByLabelText('2 進数')).toHaveValue('1010')
+    })
+})

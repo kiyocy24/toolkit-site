@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
@@ -8,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Copy, Trash2 } from "lucide-react"
 
 export default function Base64ConverterPage() {
+    const t = useTranslations("Tools.base64-converter")
     const [input, setInput] = useState("")
     const [output, setOutput] = useState("")
     const [mode, setMode] = useState<"encode" | "decode">("encode")
@@ -27,7 +29,7 @@ export default function Base64ConverterPage() {
                 setOutput(atob(currentInput))
             }
         } catch (e) {
-            setError("Invalid input for " + currentMode)
+            setError(currentMode === "encode" ? t("errors.invalidEncode") : t("errors.invalidDecode"))
             setOutput("")
         }
     }
@@ -62,32 +64,32 @@ export default function Base64ConverterPage() {
         <div className="grid gap-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>Base64 Converter</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Encode and decode Base64 strings.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
                     <Tabs defaultValue="encode" onValueChange={handleModeChange} className="w-full">
                         <TabsList className="grid w-full grid-cols-2">
-                            <TabsTrigger value="encode">Encode</TabsTrigger>
-                            <TabsTrigger value="decode">Decode</TabsTrigger>
+                            <TabsTrigger value="encode">{t("tabs.encode")}</TabsTrigger>
+                            <TabsTrigger value="decode">{t("tabs.decode")}</TabsTrigger>
                         </TabsList>
                     </Tabs>
 
                     <div className="grid gap-2">
                         <div className="flex items-center justify-between">
                             <label htmlFor="input-text" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                Input
+                                {t("input")}
                             </label>
                             <Button variant="ghost" size="sm" onClick={clearAll} className="h-8 px-2 lg:px-3">
                                 <Trash2 className="mr-2 h-4 w-4" />
-                                Clear
+                                {t("clear")}
                             </Button>
                         </div>
                         <Textarea
                             id="input-text"
-                            placeholder={mode === "encode" ? "Type text to encode..." : "Paste Base64 string to decode..."}
+                            placeholder={mode === "encode" ? t("placeholders.encode") : t("placeholders.decode")}
                             className="min-h-[150px] font-mono text-sm"
                             value={input}
                             onChange={handleInputChange}
@@ -103,11 +105,11 @@ export default function Base64ConverterPage() {
                     <div className="grid gap-2">
                         <div className="flex items-center justify-between">
                             <label htmlFor="output-text" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                Output
+                                {t("output")}
                             </label>
                             <Button variant="outline" size="sm" onClick={copyToClipboard} className="h-8 px-2 lg:px-3">
                                 <Copy className="mr-2 h-4 w-4" />
-                                Copy
+                                {t("copy")}
                             </Button>
                         </div>
                         <Textarea

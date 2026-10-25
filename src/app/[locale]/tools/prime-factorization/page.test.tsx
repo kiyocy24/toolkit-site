@@ -141,3 +141,33 @@ describe("PrimeFactorizationPage", () => {
     })
 })
 
+
+describe("PrimeFactorizationPage (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<PrimeFactorizationPage />, { locale: "ja" })
+        expect(screen.getByText("素因数分解")).toBeDefined()
+        expect(screen.getByLabelText("数値")).toBeDefined()
+        expect(screen.getByPlaceholderText("例: 123456789")).toBeDefined()
+        expect(screen.getByRole("button", { name: "分解" })).toBeDefined()
+    })
+
+    it("shows Japanese result labels for a prime number", async () => {
+        render(<PrimeFactorizationPage />, { locale: "ja" })
+        fireEvent.change(screen.getByLabelText("数値"), { target: { value: "13" } })
+        fireEvent.click(screen.getByRole("button", { name: "分解" }))
+
+        await waitFor(() => {
+            expect(screen.getByText("結果:")).toBeDefined()
+            expect(screen.getByText("素数")).toBeDefined()
+            expect(screen.getByRole("button", { name: "結果をコピー" })).toBeDefined()
+        })
+    })
+
+    it("shows Japanese error messages", () => {
+        render(<PrimeFactorizationPage />, { locale: "ja" })
+        fireEvent.change(screen.getByLabelText("数値"), { target: { value: "1" } })
+        fireEvent.click(screen.getByRole("button", { name: "分解" }))
+        expect(screen.getByText("エラー")).toBeDefined()
+        expect(screen.getByText("1 より大きい整数を入力してください。")).toBeDefined()
+    })
+})

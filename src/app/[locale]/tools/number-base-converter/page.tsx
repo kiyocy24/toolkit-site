@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Binary, Copy, RotateCcw, AlertCircle, Settings2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -27,14 +28,15 @@ const INITIAL_STATE: BaseState = {
 
 type BaseType = keyof BaseState;
 
-const STANDARD_BASES: { key: BaseType; name: string; base: number; placeholder: string }[] = [
-    { key: "decimal", name: "Decimal (10)", base: 10, placeholder: "Enter decimal number..." },
-    { key: "hex", name: "Hexadecimal (16)", base: 16, placeholder: "Enter hex number..." },
-    { key: "binary", name: "Binary (2)", base: 2, placeholder: "Enter binary number..." },
-    { key: "octal", name: "Octal (8)", base: 8, placeholder: "Enter octal number..." },
-]
+const STANDARD_BASES = [
+    { key: "decimal", base: 10 },
+    { key: "hex", base: 16 },
+    { key: "binary", base: 2 },
+    { key: "octal", base: 8 },
+] as const satisfies readonly { key: Exclude<BaseType, "custom">; base: number }[]
 
 export default function NumberBaseConverterPage() {
+    const t = useTranslations("Tools.number-base-converter")
     const [values, setValues] = useState<BaseState>(INITIAL_STATE)
     const [error, setError] = useState<string | null>(null)
     const [customBaseInput, setCustomBaseInput] = useState<string>("32")
@@ -159,24 +161,24 @@ export default function NumberBaseConverterPage() {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Binary className="h-6 w-6" />
-                        Number Base Converter
+                        {t("title")}
                     </CardTitle>
                     <CardDescription>
-                        Convert numbers between Binary (2), Octal (8), Decimal (10), Hexadecimal (16), and arbitrary bases (2-36).
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
                     <div className="flex justify-end">
                         <Button variant="outline" size="sm" onClick={reset}>
                             <RotateCcw className="h-4 w-4 mr-2" />
-                            Reset
+                            {t("reset")}
                         </Button>
                     </div>
 
                     {error && (
                         <Alert variant="destructive">
                             <AlertCircle className="h-4 w-4" />
-                            <AlertTitle>Error</AlertTitle>
+                            <AlertTitle>{t("error")}</AlertTitle>
                             <AlertDescription>
                                 {error}
                             </AlertDescription>
@@ -186,20 +188,20 @@ export default function NumberBaseConverterPage() {
                     <div className="grid gap-6 sm:grid-cols-2">
                         {STANDARD_BASES.map((config) => (
                             <div key={config.key} className="space-y-2">
-                                <Label htmlFor={config.key}>{config.name}</Label>
+                                <Label htmlFor={config.key}>{t(`bases.${config.key}.name`)}</Label>
                                 <div className="flex gap-2">
                                     <Input
                                         id={config.key}
                                         value={values[config.key]}
                                         onChange={(e) => handleChange(e.target.value, config.base)}
-                                        placeholder={config.placeholder}
+                                        placeholder={t(`bases.${config.key}.placeholder`)}
                                     />
                                     <Button
                                         variant="outline"
                                         size="icon"
                                         onClick={() => copyToClipboard(values[config.key])}
                                         disabled={!values[config.key]}
-                                        title={`Copy ${config.name}`}
+                                        title={t("copyBase", { name: t(`bases.${config.key}.name`) })}
                                     >
                                         <Copy className="h-4 w-4" />
                                     </Button>
@@ -212,7 +214,7 @@ export default function NumberBaseConverterPage() {
                             <div className="flex items-center justify-between">
                                 <Label htmlFor="custom-base-input" className="flex items-center gap-2">
                                     <Settings2 className="h-4 w-4" />
-                                    Custom Base
+                                    {t("customBase")}
                                 </Label>
                                 <Input
                                     id="custom-base-input"
@@ -228,16 +230,16 @@ export default function NumberBaseConverterPage() {
                                     id="custom-value-input"
                                     value={values.custom}
                                     onChange={(e) => handleChange(e.target.value, customBase)}
-                                    placeholder={isCustomBaseValid ? `Enter base ${customBase} number...` : "Enter number..."}
+                                    placeholder={isCustomBaseValid ? t("customPlaceholder", { base: customBase }) : t("enterNumber")}
                                     disabled={!isCustomBaseValid}
-                                    aria-label={`Enter base ${customBase} number`}
+                                    aria-label={t("customAriaLabel", { base: customBase })}
                                 />
                                 <Button
                                     variant="outline"
                                     size="icon"
                                     onClick={() => copyToClipboard(values.custom)}
                                     disabled={!values.custom}
-                                    title={isCustomBaseValid ? `Copy Base ${customBase}` : "Copy"}
+                                    title={isCustomBaseValid ? t("copyCustomBase", { base: customBase }) : t("copy")}
                                 >
                                     <Copy className="h-4 w-4" />
                                 </Button>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
+import { useTranslations } from "next-intl"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -14,7 +15,10 @@ interface QueryParam {
     value: string
 }
 
+type ErrorKey = "invalidUrl" | "updateFailed" | "reconstructFailed"
+
 export default function UrlParser() {
+    const t = useTranslations("Tools.url-parser")
     const [urlInput, setUrlInput] = useState("")
     const [protocol, setProtocol] = useState("https:")
     const [host, setHost] = useState("")
@@ -22,7 +26,7 @@ export default function UrlParser() {
     const [pathname, setPathname] = useState("/")
     const [hash, setHash] = useState("")
     const [queryParams, setQueryParams] = useState<QueryParam[]>([])
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<ErrorKey | null>(null)
     const [copied, setCopied] = useState(false)
 
     // Generate unique ID for params
@@ -59,7 +63,7 @@ export default function UrlParser() {
         } catch (e) {
             // Only set error if input is not empty (empty is just reset)
             if (input.trim()) {
-                setError("Invalid URL")
+                setError("invalidUrl")
             } else {
                 setError(null)
                 // Reset fields
@@ -114,7 +118,7 @@ export default function UrlParser() {
             parseUrl(newUrl)
         } catch (e) {
             console.error("Failed to update URL component:", e)
-            setError("Failed to update URL component.")
+            setError("updateFailed")
         }
     }
 
@@ -185,7 +189,7 @@ export default function UrlParser() {
             // and potentially cause focus issues with query params if IDs were not stable.
         } catch (e) {
             console.error("Failed to reconstruct URL from components:", e)
-            setError("Failed to reconstruct URL from components.")
+            setError("reconstructFailed")
         }
     }, []) // No dependencies needed as it takes all values as arguments
 
@@ -210,16 +214,16 @@ export default function UrlParser() {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <LinkIcon className="h-6 w-6" />
-                        URL Parser
+                        {t("title")}
                     </CardTitle>
                     <CardDescription>
-                        Parse, edit, and reconstruct URLs.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     {/* Main Input */}
                     <div className="space-y-2">
-                        <Label htmlFor="url-input">URL String</Label>
+                        <Label htmlFor="url-input">{t("urlString")}</Label>
                         <div className="flex gap-2">
                             <Textarea
                                 id="url-input"
@@ -228,17 +232,17 @@ export default function UrlParser() {
                                 onChange={handleUrlInputChange} // Only this triggers full re-parse
                                 className="font-mono min-h-[80px]"
                             />
-                            <Button size="icon" variant="outline" className="h-auto" onClick={copyToClipboard} title="Copy URL">
+                            <Button size="icon" variant="outline" className="h-auto" onClick={copyToClipboard} title={t("copyUrl")}>
                                 {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                             </Button>
                         </div>
-                        {error && <p className="text-sm text-red-500">{error}</p>}
+                        {error && <p className="text-sm text-red-500">{t(`errors.${error}`)}</p>}
                     </div>
 
                     {/* Components Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div className="space-y-2">
-                            <Label>Protocol</Label>
+                            <Label>{t("protocol")}</Label>
                             <Input
                                 value={protocol}
                                 onChange={(e) => handleComponentChange('protocol', e.target.value)}
@@ -246,7 +250,7 @@ export default function UrlParser() {
                             />
                         </div>
                         <div className="space-y-2 lg:col-span-2">
-                            <Label>Host</Label>
+                            <Label>{t("host")}</Label>
                             <Input
                                 value={host}
                                 onChange={(e) => handleComponentChange('host', e.target.value)}
@@ -254,7 +258,7 @@ export default function UrlParser() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label>Port</Label>
+                            <Label>{t("port")}</Label>
                             <Input
                                 value={port}
                                 onChange={(e) => handleComponentChange('port', e.target.value)}
@@ -262,7 +266,7 @@ export default function UrlParser() {
                             />
                         </div>
                         <div className="space-y-2 lg:col-span-3">
-                            <Label>Path</Label>
+                            <Label>{t("path")}</Label>
                             <Input
                                 value={pathname}
                                 onChange={(e) => handleComponentChange('pathname', e.target.value)}
@@ -270,7 +274,7 @@ export default function UrlParser() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label>Hash</Label>
+                            <Label>{t("hash")}</Label>
                             <Input
                                 value={hash}
                                 onChange={(e) => handleComponentChange('hash', e.target.value)}
@@ -282,27 +286,27 @@ export default function UrlParser() {
                     {/* Query Params Section */}
                     <div className="space-y-4 pt-4 border-t">
                         <div className="flex items-center justify-between">
-                            <Label className="text-base">Query Parameters</Label>
+                            <Label className="text-base">{t("queryParameters")}</Label>
                             <Button size="sm" variant="outline" onClick={addQueryParam}>
-                                <Plus className="h-4 w-4 mr-1" /> Add Param
+                                <Plus className="h-4 w-4 mr-1" /> {t("addParam")}
                             </Button>
                         </div>
 
                         {queryParams.length === 0 ? (
-                            <p className="text-sm text-muted-foreground italic">No query parameters.</p>
+                            <p className="text-sm text-muted-foreground italic">{t("noQueryParameters")}</p>
                         ) : (
                             <div className="space-y-2">
                                 {queryParams.map((param) => (
                                     <div key={param.id} className="flex gap-2 items-center">
                                         <Input
-                                            placeholder="Key"
+                                            placeholder={t("keyPlaceholder")}
                                             value={param.key}
                                             onChange={(e) => updateQueryParam(param.id, 'key', e.target.value)}
                                             className="font-mono text-sm"
                                         />
                                         <span className="text-muted-foreground">=</span>
                                         <Input
-                                            placeholder="Value"
+                                            placeholder={t("valuePlaceholder")}
                                             value={param.value}
                                             onChange={(e) => updateQueryParam(param.id, 'value', e.target.value)}
                                             className="font-mono text-sm"
@@ -312,7 +316,7 @@ export default function UrlParser() {
                                             variant="ghost"
                                             className="shrink-0 text-muted-foreground hover:text-destructive"
                                             onClick={() => removeQueryParam(param.id)}
-                                            aria-label="Remove parameter"
+                                            aria-label={t("removeParameter")}
                                         >
                                             <Trash2 className="h-4 w-4" />
                                         </Button>

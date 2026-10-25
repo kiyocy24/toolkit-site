@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { useLocale, useTranslations } from "next-intl"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -10,23 +11,53 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, Copy, Check, Shield } from "lucide-react"
-import { signJwt } from "@/lib/jwt-crypto"
+import { signJwt, type JwtSignErrorCode } from "@/lib/jwt-crypto"
+
+type JwtErrorKey =
+    | "errors.invalidStructure"
+    | "errors.illegalBase64Url"
+    | "errors.decodeFailed"
+    | "errors.unsupportedAlg"
+    | "errors.secretRequired"
+
+// 翻訳キーで表すエラーと、ネイティブのエラーメッセージ（JSON.parse など）をそのまま表示するエラー
+type JwtError = { key: JwtErrorKey } | { message: string }
+
+const SIGN_ERROR_KEYS: Record<JwtSignErrorCode, JwtErrorKey> = {
+    UNSUPPORTED_ALG: "errors.unsupportedAlg",
+    SECRET_REQUIRED: "errors.secretRequired",
+}
+
+class JwtDecodeError extends Error {
+    readonly key: JwtErrorKey
+
+    constructor(key: JwtErrorKey) {
+        super(key)
+        this.key = key
+    }
+}
+
+function useJwtErrorText() {
+    const t = useTranslations("Tools.jwt-debugger")
+    return (error: JwtError) => ("key" in error ? t(error.key) : error.message)
+}
 
 export default function JwtDebuggerPage() {
+    const t = useTranslations("Tools.jwt-debugger")
     return (
         <div className="grid gap-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>JWT Debugger</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Decode and Encode JSON Web Tokens (JWT).
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Tabs defaultValue="decoder" className="w-full">
                         <TabsList className="grid w-full grid-cols-2">
-                            <TabsTrigger value="decoder">Decoder</TabsTrigger>
-                            <TabsTrigger value="encoder">Encoder</TabsTrigger>
+                            <TabsTrigger value="decoder">{t("tabs.decoder")}</TabsTrigger>
+                            <TabsTrigger value="encoder">{t("tabs.encoder")}</TabsTrigger>
                         </TabsList>
                         <TabsContent value="decoder">
                             <JwtDecoder />
@@ -40,9 +71,9 @@ export default function JwtDebuggerPage() {
         </div>
     )
 }
-const formatTimestamp = (ts: number) => {
+const formatTimestamp = (ts: number, locale: string) => {
     const date = new Date(ts * 1000)
-    return date.toLocaleString('ja-JP', {
+    return date.toLocaleString(locale, {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
@@ -54,10 +85,13 @@ const formatTimestamp = (ts: number) => {
 }
 
 export function JwtDecoder() {
+    const t = useTranslations("Tools.jwt-debugger")
+    const locale = useLocale()
+    const errorText = useJwtErrorText()
     const [token, setToken] = useLocalStorage("jwt-decoder-token", "")
     const [header, setHeader] = useState("")
     const [payload, setPayload] = useState("")
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<JwtError | null>(null)
 
     const decodeBase64Url = (str: string) => {
         let output = str.replace(/-/g, "+").replace(/_/g, "/")
@@ -71,7 +105,7 @@ export function JwtDecoder() {
                 output += "="
                 break
             default:
-                throw new Error("Illegal base64url string!")
+                throw new JwtDecodeError("errors.illegalBase64Url")
         }
 
         try {
@@ -99,7 +133,7 @@ export function JwtDecoder() {
         try {
             const parts = token.split(".")
             if (parts.length !== 3) {
-                throw new Error("Invalid JWT structure. Expected 3 parts separated by dots.")
+                throw new JwtDecodeError("errors.invalidStructure")
             }
 
             const headerStr = decodeBase64Url(parts[0])
@@ -114,17 +148,23 @@ export function JwtDecoder() {
             payloadFormatted = payloadFormatted.replace(
                 /"(exp|iat|nbf|auth_time|updated_at)":\s*(\d+)(,?)/g,
                 (match, key, val, comma) => {
-                    const dateStr = formatTimestamp(parseInt(val, 10))
+                    const dateStr = formatTimestamp(parseInt(val, 10), locale)
                     return `"${key}": ${val}${comma} // ${dateStr}`
                 }
             )
             setPayload(payloadFormatted)
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to decode JWT")
+            if (err instanceof JwtDecodeError) {
+                setError({ key: err.key })
+            } else if (err instanceof Error) {
+                setError({ message: err.message })
+            } else {
+                setError({ key: "errors.decodeFailed" })
+            }
             setHeader("")
             setPayload("")
         }
-    }, [token])
+    }, [token, locale])
 
     const handleTokenChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setToken(e.target.value)
@@ -133,10 +173,10 @@ export function JwtDecoder() {
     return (
         <div className="grid gap-6 mt-6">
             <div className="grid w-full gap-1.5">
-                <Label htmlFor="jwt-input">JWT Token</Label>
+                <Label htmlFor="jwt-input">{t("decoder.tokenLabel")}</Label>
                 <Textarea
                     id="jwt-input"
-                    placeholder="Paste your JWT here (e.g. eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...)"
+                    placeholder={t("decoder.tokenPlaceholder")}
                     className="min-h-[100px] font-mono text-xs"
                     value={token}
                     onChange={handleTokenChange}
@@ -146,30 +186,30 @@ export function JwtDecoder() {
             {error && (
                 <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Error</AlertTitle>
-                    <AlertDescription>{error}</AlertDescription>
+                    <AlertTitle>{t("error")}</AlertTitle>
+                    <AlertDescription>{errorText(error)}</AlertDescription>
                 </Alert>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="grid w-full gap-1.5">
-                    <Label htmlFor="header-output">Header</Label>
+                    <Label htmlFor="header-output">{t("decoder.header")}</Label>
                     <Textarea
                         id="header-output"
                         readOnly
                         className="min-h-[200px] font-mono text-xs bg-muted"
                         value={header}
-                        placeholder="Header JSON will appear here..."
+                        placeholder={t("decoder.headerPlaceholder")}
                     />
                 </div>
                 <div className="grid w-full gap-1.5">
-                    <Label htmlFor="payload-output">Payload</Label>
+                    <Label htmlFor="payload-output">{t("decoder.payload")}</Label>
                     <Textarea
                         id="payload-output"
                         readOnly
                         className="min-h-[200px] font-mono text-xs bg-muted"
                         value={payload}
-                        placeholder="Payload JSON will appear here..."
+                        placeholder={t("decoder.payloadPlaceholder")}
                     />
                 </div>
             </div>
@@ -179,6 +219,8 @@ export function JwtDecoder() {
 
 
 export function JwtEncoder() {
+    const t = useTranslations("Tools.jwt-debugger")
+    const errorText = useJwtErrorText()
     const [header, setHeader] = useLocalStorage("jwt-encoder-header", `{
   "alg": "HS256",
   "typ": "JWT"
@@ -190,7 +232,7 @@ export function JwtEncoder() {
 }`)
     const [secret, setSecret] = useLocalStorage("jwt-encoder-secret", "your-256-bit-secret")
     const [encodedToken, setEncodedToken] = useState("")
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<JwtError | null>(null)
     const [copied, setCopied] = useState(false)
 
     const signToken = useCallback(async () => {
@@ -202,7 +244,8 @@ export function JwtEncoder() {
             const token = await signJwt(headerObj, payloadObj, secret)
             setEncodedToken(token)
         } catch (e) {
-            setError((e as Error).message)
+            const code = (e as { code?: JwtSignErrorCode }).code
+            setError(code && code in SIGN_ERROR_KEYS ? { key: SIGN_ERROR_KEYS[code] } : { message: (e as Error).message })
             setEncodedToken("")
         }
     }, [header, payload, secret])
@@ -230,16 +273,15 @@ export function JwtEncoder() {
         <div className="grid gap-6 mt-6">
             <Alert>
                 <Shield className="h-4 w-4" />
-                <AlertTitle>Security Note</AlertTitle>
+                <AlertTitle>{t("encoder.securityTitle")}</AlertTitle>
                 <AlertDescription>
-                    Signing is performed entirely in your browser using the Web Crypto API.
-                    Your secret key is never sent to any server.
+                    {t("encoder.securityDescription")}
                 </AlertDescription>
             </Alert>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="grid w-full gap-1.5">
-                    <Label htmlFor="header-input">Header (JSON)</Label>
+                    <Label htmlFor="header-input">{t("encoder.headerLabel")}</Label>
                     <Textarea
                         id="header-input"
                         className="min-h-[150px] font-mono text-xs"
@@ -248,7 +290,7 @@ export function JwtEncoder() {
                     />
                 </div>
                 <div className="grid w-full gap-1.5">
-                    <Label htmlFor="payload-input">Payload (JSON)</Label>
+                    <Label htmlFor="payload-input">{t("encoder.payloadLabel")}</Label>
                     <Textarea
                         id="payload-input"
                         className="min-h-[150px] font-mono text-xs"
@@ -259,7 +301,7 @@ export function JwtEncoder() {
             </div>
 
             <div className="grid w-full gap-1.5">
-                <Label htmlFor="secret-input">Secret (for HS256)</Label>
+                <Label htmlFor="secret-input">{t("encoder.secretLabel")}</Label>
                 <Input
                     id="secret-input"
                     type="text"
@@ -272,20 +314,20 @@ export function JwtEncoder() {
             {error && (
                 <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Error</AlertTitle>
-                    <AlertDescription>{error}</AlertDescription>
+                    <AlertTitle>{t("error")}</AlertTitle>
+                    <AlertDescription>{errorText(error)}</AlertDescription>
                 </Alert>
             )}
 
             <div className="grid w-full gap-1.5">
-                <Label htmlFor="encoded-output">Encoded Token</Label>
+                <Label htmlFor="encoded-output">{t("encoder.encodedToken")}</Label>
                 <div className="relative">
                     <Textarea
                         id="encoded-output"
                         readOnly
                         className="min-h-[100px] font-mono text-xs bg-muted pr-10 break-words"
                         value={encodedToken}
-                        placeholder="JWT will appear here..."
+                        placeholder={t("encoder.encodedPlaceholder")}
                     />
                     <Button
                         size="icon"
@@ -293,7 +335,7 @@ export function JwtEncoder() {
                         className="absolute top-2 right-2 h-8 w-8"
                         onClick={copyToClipboard}
                         disabled={!encodedToken}
-                        aria-label="Copy encoded token"
+                        aria-label={t("encoder.copyEncodedToken")}
                     >
                         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                     </Button>

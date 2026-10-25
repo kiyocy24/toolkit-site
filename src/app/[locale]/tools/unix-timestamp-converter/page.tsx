@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useLocale, useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -13,17 +14,33 @@ import { Badge } from "@/components/ui/badge"
 import { Copy, RefreshCw } from "lucide-react"
 
 const TIMEZONES = [
-    { value: "UTC", label: "UTC (Coordinated Universal Time)" },
-    { value: "Asia/Tokyo", label: "JST (Japan Standard Time)" },
-    { value: "America/New_York", label: "EST/EDT (New York)" },
-    { value: "America/Los_Angeles", label: "PST/PDT (Los Angeles)" },
-    { value: "Europe/London", label: "GMT/BST (London)" },
-    { value: "Europe/Paris", label: "CET/CEST (Paris)" },
-    { value: "Asia/Shanghai", label: "CST (Shanghai)" },
-    { value: "Australia/Sydney", label: "AEST/AEDT (Sydney)" },
-]
+    { value: "UTC", labelKey: "timezones.utc" },
+    { value: "Asia/Tokyo", labelKey: "timezones.tokyo" },
+    { value: "America/New_York", labelKey: "timezones.newYork" },
+    { value: "America/Los_Angeles", labelKey: "timezones.losAngeles" },
+    { value: "Europe/London", labelKey: "timezones.london" },
+    { value: "Europe/Paris", labelKey: "timezones.paris" },
+    { value: "Asia/Shanghai", labelKey: "timezones.shanghai" },
+    { value: "Australia/Sydney", labelKey: "timezones.sydney" },
+] as const
+
+const getRelativeTime = (timestamp: number, locale: string) => {
+    const now = Math.floor(Date.now() / 1000);
+    const diff = now - timestamp;
+
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+
+    if (Math.abs(diff) < 60) return rtf.format(-diff, 'second');
+    if (Math.abs(diff) < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
+    if (Math.abs(diff) < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
+    if (Math.abs(diff) < 2592000) return rtf.format(-Math.floor(diff / 86400), 'day'); // 30 days
+    if (Math.abs(diff) < 31536000) return rtf.format(-Math.floor(diff / 2592000), 'month');
+    return rtf.format(-Math.floor(diff / 31536000), 'year');
+}
 
 export default function UnixTimestampConverterPage() {
+    const t = useTranslations("Tools.unix-timestamp-converter")
+    const locale = useLocale()
     const [currentTimestamp, setCurrentTimestamp] = useState<number>(Math.floor(Date.now() / 1000))
     const [isPaused, setIsPaused] = useState(false)
 
@@ -49,29 +66,15 @@ export default function UnixTimestampConverterPage() {
         return () => clearInterval(interval)
     }, [isPaused])
 
-    const getRelativeTime = (timestamp: number) => {
-        const now = Math.floor(Date.now() / 1000);
-        const diff = now - timestamp;
-
-        const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-
-        if (Math.abs(diff) < 60) return rtf.format(-diff, 'second');
-        if (Math.abs(diff) < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
-        if (Math.abs(diff) < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
-        if (Math.abs(diff) < 2592000) return rtf.format(-Math.floor(diff / 86400), 'day'); // 30 days
-        if (Math.abs(diff) < 31536000) return rtf.format(-Math.floor(diff / 2592000), 'month');
-        return rtf.format(-Math.floor(diff / 31536000), 'year');
-    }
-
     useEffect(() => {
         if (!result) return
 
         const intervalId = setInterval(() => {
-            setResult((prev) => prev && { ...prev, relativeTime: getRelativeTime(prev.timestamp) })
+            setResult((prev) => prev && { ...prev, relativeTime: getRelativeTime(prev.timestamp, locale) })
         }, 60000) // Update every minute
 
         return () => clearInterval(intervalId)
-    }, [result])
+    }, [result, locale])
 
     const handleConvert = () => {
         setError(null)
@@ -123,12 +126,12 @@ export default function UnixTimestampConverterPage() {
                 timestamp: seconds,
                 formattedDate: displayDate,
                 isoString: date.toISOString(),
-                relativeTime: getRelativeTime(seconds),
+                relativeTime: getRelativeTime(seconds, locale),
                 offset: offset
             })
 
         } catch (e) {
-            setError("Invalid input. Please check your format.")
+            setError(t("errors.invalidInput"))
         }
     }
 
@@ -140,9 +143,9 @@ export default function UnixTimestampConverterPage() {
         <div className="grid gap-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>Unix Timestamp Converter</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Convert between Unix Timestamps and Human-readable dates (with Timezone support).
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
@@ -150,10 +153,10 @@ export default function UnixTimestampConverterPage() {
                     {/* Current Time */}
                     <div className="flex flex-col gap-2 rounded-lg border p-4 bg-muted/50">
                         <div className="flex items-center justify-between">
-                            <Label className="text-muted-foreground">Current Unix Timestamp</Label>
+                            <Label className="text-muted-foreground">{t("currentTimestamp")}</Label>
                             <div className="flex items-center gap-2">
-                                <Badge variant="outline" className="font-mono text-xs">Seconds</Badge>
-                                <Button variant="ghost" size="icon" onClick={() => setIsPaused(!isPaused)} title={isPaused ? "Resume" : "Pause"}>
+                                <Badge variant="outline" className="font-mono text-xs">{t("seconds")}</Badge>
+                                <Button variant="ghost" size="icon" onClick={() => setIsPaused(!isPaused)} title={isPaused ? t("resume") : t("pause")}>
                                     <RefreshCw className={`h-4 w-4 ${!isPaused ? "animate-spin" : ""}`} />
                                 </Button>
                             </div>
@@ -169,29 +172,29 @@ export default function UnixTimestampConverterPage() {
                     <div className="grid gap-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="grid gap-3">
-                                <Label>Input Type</Label>
+                                <Label>{t("inputType")}</Label>
                                 <RadioGroup defaultValue="seconds" value={inputType} onValueChange={(v) => setInputType(v as "seconds" | "date")} className="flex gap-4">
                                     <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="seconds" id="r1" />
-                                        <Label htmlFor="r1">Seconds</Label>
+                                        <Label htmlFor="r1">{t("seconds")}</Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="date" id="r2" />
-                                        <Label htmlFor="r2">Date String</Label>
+                                        <Label htmlFor="r2">{t("dateString")}</Label>
                                     </div>
                                 </RadioGroup>
                             </div>
 
                             <div className="grid gap-3">
-                                <Label>Target Timezone</Label>
+                                <Label>{t("targetTimezone")}</Label>
                                 <Select value={selectedTimezone} onValueChange={setSelectedTimezone}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Select timezone" />
+                                        <SelectValue placeholder={t("selectTimezone")} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {TIMEZONES.map((tz) => (
                                             <SelectItem key={tz.value} value={tz.value}>
-                                                {tz.label}
+                                                {t(tz.labelKey)}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
@@ -201,10 +204,10 @@ export default function UnixTimestampConverterPage() {
 
                         <div className="grid gap-2">
                             <div className="flex justify-between">
-                                <Label>Input Value</Label>
+                                <Label>{t("inputValue")}</Label>
                                 {inputType === "date" && (
                                     <span className="text-xs text-muted-foreground">
-                                        e.g. 2024-01-01T12:00:00Z, 2024/01/01 12:00
+                                        {t("dateExamples", { examples: "2024-01-01T12:00:00Z, 2024/01/01 12:00" })}
                                     </span>
                                 )}
                             </div>
@@ -216,7 +219,7 @@ export default function UnixTimestampConverterPage() {
                                     className="font-mono"
                                     onKeyDown={(e) => { if (e.key === "Enter") handleConvert() }}
                                 />
-                                <Button onClick={handleConvert}>Convert</Button>
+                                <Button onClick={handleConvert}>{t("convert")}</Button>
                             </div>
                         </div>
 
@@ -229,12 +232,12 @@ export default function UnixTimestampConverterPage() {
                         {result && (
                             <div className="rounded-lg border shadow-sm mt-2 overflow-hidden">
                                 <div className="bg-muted/50 px-4 py-2 border-b">
-                                    <h3 className="font-semibold text-sm">Conversion Result</h3>
+                                    <h3 className="font-semibold text-sm">{t("conversionResult")}</h3>
                                 </div>
                                 <Table>
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell className="font-medium w-[160px]">Unix Timestamp</TableCell>
+                                            <TableCell className="font-medium w-[160px]">{t("unixTimestamp")}</TableCell>
                                             <TableCell className="font-mono">
                                                 <div className="flex items-center gap-2">
                                                     {result.timestamp}
@@ -245,7 +248,7 @@ export default function UnixTimestampConverterPage() {
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell className="font-medium">Date ({selectedTimezone})</TableCell>
+                                            <TableCell className="font-medium">{t("dateInTimezone", { timezone: selectedTimezone })}</TableCell>
                                             <TableCell className="font-mono">
                                                 <span className="font-semibold">{result.formattedDate}</span>
                                             </TableCell>
@@ -257,7 +260,7 @@ export default function UnixTimestampConverterPage() {
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell className="font-medium">Relative</TableCell>
+                                            <TableCell className="font-medium">{t("relative")}</TableCell>
                                             <TableCell>
                                                 <Badge variant="secondary">{result.relativeTime}</Badge>
                                             </TableCell>

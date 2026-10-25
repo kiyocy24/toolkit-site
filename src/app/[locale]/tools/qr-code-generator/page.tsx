@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
+import { useTranslations } from "next-intl"
 import { QRCodeSVG } from "qrcode.react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -11,6 +12,7 @@ import { Slider } from "@/components/ui/slider"
 import { Download, Trash2 } from "lucide-react"
 
 export default function QrCodeGeneratorPage() {
+    const t = useTranslations("Tools.qr-code-generator")
     const [text, setText] = useState("")
     const [errorLevel, setErrorLevel] = useState<"L" | "M" | "Q" | "H">("M")
     const [size, setSize] = useState([200])
@@ -81,25 +83,25 @@ export default function QrCodeGeneratorPage() {
         <div className="grid gap-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>QR Code Generator</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Generate QR codes for URLs or text.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="content">Content</Label>
+                            <Label htmlFor="content">{t("content")}</Label>
                             <Input
                                 id="content"
-                                placeholder="Enter URL or text..."
+                                placeholder={t("contentPlaceholder")}
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
                             />
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="error-level">Error Correction Level</Label>
+                            <Label htmlFor="error-level">{t("errorLevel")}</Label>
                             <Select
                                 value={errorLevel}
                                 onValueChange={(v) => {
@@ -109,20 +111,20 @@ export default function QrCodeGeneratorPage() {
                                 }}
                             >
                                 <SelectTrigger id="error-level">
-                                    <SelectValue placeholder="Select level" />
+                                    <SelectValue placeholder={t("selectLevel")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="L">Low (7%)</SelectItem>
-                                    <SelectItem value="M">Medium (15%)</SelectItem>
-                                    <SelectItem value="Q">Quartile (25%)</SelectItem>
-                                    <SelectItem value="H">High (30%)</SelectItem>
+                                    <SelectItem value="L">{t("levels.low", { percent: 7 })}</SelectItem>
+                                    <SelectItem value="M">{t("levels.medium", { percent: 15 })}</SelectItem>
+                                    <SelectItem value="Q">{t("levels.quartile", { percent: 25 })}</SelectItem>
+                                    <SelectItem value="H">{t("levels.high", { percent: 30 })}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <div className="grid gap-2">
                             <div className="flex justify-between">
-                                <Label htmlFor="size">Size ({size[0]}px)</Label>
+                                <Label htmlFor="size">{t("size", { size: size[0] })}</Label>
                             </div>
                             <Slider
                                 id="size"
@@ -142,7 +144,7 @@ export default function QrCodeGeneratorPage() {
                                 className="w-full"
                             >
                                 <Trash2 className="mr-2 h-4 w-4" />
-                                Clear
+                                {t("clear")}
                             </Button>
                         </div>
                     </div>
@@ -163,7 +165,7 @@ export default function QrCodeGeneratorPage() {
                                     className="flex items-center justify-center bg-gray-100 text-muted-foreground max-w-full h-auto aspect-square"
                                     style={{ width: size[0] }}
                                 >
-                                    Enter text to generate
+                                    {t("emptyState")}
                                 </div>
                             )}
                         </div>
@@ -173,7 +175,7 @@ export default function QrCodeGeneratorPage() {
                             className="w-full max-w-xs"
                         >
                             <Download className="mr-2 h-4 w-4" />
-                            Download PNG
+                            {t("downloadPng")}
                         </Button>
                     </div>
                 </CardContent>

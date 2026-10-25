@@ -8,8 +8,8 @@ import CronExpressionGeneratorPage from './page'
 // and to ensure we are testing our component's integration with it.
 vi.mock('cronstrue', () => ({
     default: {
-        toString: (cron: string) => {
-            if (cron === "* * * * *") return "Every minute"
+        toString: (cron: string, options?: { locale?: string }) => {
+            if (cron === "* * * * *") return options?.locale === "ja" ? "毎分" : "Every minute"
             if (cron === "*/5 * * * *") return "Every 5 minutes"
             throw new Error("Error: " + cron)
         }
@@ -88,5 +88,33 @@ describe('CronExpressionGeneratorPage', () => {
         await user.type(input, 'invalid')
 
         expect(await screen.findByText('Invalid cron expression')).toBeInTheDocument()
+    })
+})
+
+describe('CronExpressionGeneratorPage (ja)', () => {
+    it('renders Japanese translations', () => {
+        render(<CronExpressionGeneratorPage />, { locale: 'ja' })
+        expect(screen.getByText('Cron 式の生成')).toBeInTheDocument()
+        expect(screen.getByRole('tab', { name: '生成' })).toBeInTheDocument()
+        expect(screen.getByRole('tab', { name: '解説' })).toBeInTheDocument()
+        expect(screen.getByText('曜日')).toBeInTheDocument()
+        expect(screen.getByText('読みやすい表記: 毎分')).toBeInTheDocument()
+    })
+
+    it('shows a Japanese error for an invalid expression', async () => {
+        const user = userEvent.setup()
+        render(<CronExpressionGeneratorPage />, { locale: 'ja' })
+
+        await user.click(screen.getByRole('tab', { name: '解説' }))
+        await waitFor(() => {
+            expect(screen.getByText('Cron 式を貼り付けると、その内容を確認できます。')).toBeInTheDocument()
+        })
+
+        const input = screen.getByPlaceholderText('例: */5 * * * *')
+        await user.clear(input)
+        await user.type(input, 'invalid')
+
+        expect(await screen.findByText('エラー')).toBeInTheDocument()
+        expect(await screen.findByText('無効な Cron 式です')).toBeInTheDocument()
     })
 })

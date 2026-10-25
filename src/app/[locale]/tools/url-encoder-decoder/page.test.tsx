@@ -74,3 +74,23 @@ describe("UrlEncoderDecoderPage", () => {
         expect(screen.queryByDisplayValue("test")).toBeNull();
     });
 });
+
+describe("UrlEncoderDecoderPage (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<UrlEncoderDecoderPage />, { locale: "ja" });
+        expect(screen.getByText("URL エンコード/デコード")).toBeDefined();
+        expect(screen.getByText("入力テキスト")).toBeDefined();
+        expect(screen.getByPlaceholderText("エンコードまたはデコードするテキストを入力...")).toBeDefined();
+        expect(screen.getByRole("button", { name: "エンコード" })).toBeDefined();
+        expect(screen.getByRole("button", { name: "デコード" })).toBeDefined();
+        expect(screen.getByRole("button", { name: "クリア" })).toBeDefined();
+    });
+
+    it("shows a Japanese error message for invalid input", () => {
+        render(<UrlEncoderDecoderPage />, { locale: "ja" });
+        const input = screen.getByPlaceholderText("エンコードまたはデコードするテキストを入力...");
+        fireEvent.change(input, { target: { value: "%" } });
+        fireEvent.click(screen.getByRole("button", { name: "デコード" }));
+        expect(screen.getByText("URL のデコードに失敗しました: 無効な URI コンポーネントです")).toBeDefined();
+    });
+});

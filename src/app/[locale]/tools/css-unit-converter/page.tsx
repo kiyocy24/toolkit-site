@@ -6,8 +6,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Copy } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export default function CssUnitConverterPage() {
+    const t = useTranslations("Tools.css-unit-converter")
     const [rootSize, setRootSize] = useState<number>(16)
     const [px, setPx] = useState<string>("16")
     const [rem, setRem] = useState<string>("1")
@@ -90,14 +92,14 @@ export default function CssUnitConverterPage() {
         <div className="grid gap-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>CSS Unit Converter</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Convert between px, rem, and em units.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
                     <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Label htmlFor="root-size">Root Font Size (px)</Label>
+                        <Label htmlFor="root-size">{t("rootFontSize")}</Label>
                         <Input
                             type="number"
                             id="root-size"
@@ -109,7 +111,7 @@ export default function CssUnitConverterPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
                         <div className="grid w-full gap-1.5">
-                            <Label htmlFor="px-input">Pixels (px)</Label>
+                            <Label htmlFor="px-input">{t("pixels")}</Label>
                             <div className="flex space-x-2">
                                 <Input
                                     type="number"
@@ -151,7 +153,7 @@ export default function CssUnitConverterPage() {
                                     <Copy className="h-4 w-4" />
                                 </Button>
                             </div>
-                            <p className="text-xs text-muted-foreground">*Assuming parent font-size is equal to root font-size (1em = 1rem)</p>
+                            <p className="text-xs text-muted-foreground">{t("emNote")}</p>
                         </div>
                     </div>
                 </CardContent>

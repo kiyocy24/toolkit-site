@@ -9,6 +9,13 @@ export interface JwtPayload {
     [key: string]: unknown
 }
 
+// UI 側で翻訳できるよう、エラーに識別用のコードを付与する
+export type JwtSignErrorCode = "UNSUPPORTED_ALG" | "SECRET_REQUIRED"
+
+function signError(code: JwtSignErrorCode, message: string): Error & { code: JwtSignErrorCode } {
+    return Object.assign(new Error(message), { code })
+}
+
 export async function signJwt(headerObj: JwtHeader, payloadObj: JwtPayload, secret: string): Promise<string> {
     const base64UrlEncode = (str: string) => {
         return btoa(str)
@@ -31,11 +38,11 @@ export async function signJwt(headerObj: JwtHeader, payloadObj: JwtPayload, secr
     }
 
     if (headerObj.alg !== "HS256") {
-        throw new Error("Only HS256 (and none) algorithm is currently supported in this client-side demo.")
+        throw signError("UNSUPPORTED_ALG", "Only HS256 (and none) algorithm is currently supported in this client-side demo.")
     }
 
     if (!secret) {
-        throw new Error("Please provide a secret for HS256 signing.")
+        throw signError("SECRET_REQUIRED", "Please provide a secret for HS256 signing.")
     }
 
     const keyData = utf8ToUint8Array(secret)

@@ -296,3 +296,24 @@ describe("QrCodeGeneratorPage", () => {
         expect(screen.getByText(/Size \(20/)).toBeInTheDocument()
     })
 })
+
+describe("QrCodeGeneratorPage (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<QrCodeGeneratorPage />, { locale: "ja" })
+        expect(screen.getByText("QR コード生成")).toBeInTheDocument()
+        expect(screen.getByLabelText("内容")).toHaveAttribute("placeholder", "URL またはテキストを入力...")
+        expect(screen.getByText("誤り訂正レベル")).toBeInTheDocument()
+        expect(screen.getByText("サイズ（200px）")).toBeInTheDocument()
+        expect(screen.getByText("テキストを入力すると QR コードを生成します")).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "クリア" })).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "PNG をダウンロード" })).toBeInTheDocument()
+    })
+
+    it("shows Japanese error correction level options", () => {
+        render(<QrCodeGeneratorPage />, { locale: "ja" })
+        fireEvent.click(screen.getByRole("combobox"))
+        const item = screen.getByText("高（30%）")
+        fireEvent.click(item)
+        expect(screen.getByText("高（30%）")).toBeInTheDocument()
+    })
+})

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -9,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Trash2 } from "lucide-react"
 
 export default function RegexTesterPage() {
+    const t = useTranslations("Tools.regex-tester")
     const [pattern, setPattern] = useState("")
     const [flags, setFlags] = useState("gm")
     const [text, setText] = useState("")
@@ -83,25 +85,25 @@ export default function RegexTesterPage() {
         <div className="grid gap-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>Regex Tester</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Test your regular expressions with real-time highlighting.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
                     <div className="grid gap-4 md:grid-cols-[1fr_100px]">
                         <div className="grid gap-2">
-                            <Label htmlFor="pattern">Regex Pattern</Label>
+                            <Label htmlFor="pattern">{t("pattern")}</Label>
                             <Input
                                 id="pattern"
-                                placeholder="e.g. [a-z0-9]+"
+                                placeholder={t("patternPlaceholder", { example: "[a-z0-9]+" })}
                                 className="font-mono text-sm"
                                 value={pattern}
                                 onChange={(e) => setPattern(e.target.value)}
                             />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="flags">Flags</Label>
+                            <Label htmlFor="flags">{t("flags")}</Label>
                             <Input
                                 id="flags"
                                 placeholder="g, i, m..."
@@ -114,20 +116,20 @@ export default function RegexTesterPage() {
 
                     {errorMessage && (
                         <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
-                            Error: {errorMessage}
+                            {t("error", { message: errorMessage })}
                         </div>
                     )}
 
                     <div className="grid gap-2">
                         <div className="flex items-center justify-between">
-                            <Label>Test String</Label>
+                            <Label>{t("testString")}</Label>
                             <Button variant="ghost" size="sm" onClick={clearAll} className="h-8 px-2 lg:px-3">
                                 <Trash2 className="mr-2 h-4 w-4" />
-                                Clear
+                                {t("clear")}
                             </Button>
                         </div>
                         <Textarea
-                            placeholder="Paste your text here..."
+                            placeholder={t("testStringPlaceholder")}
                             className="min-h-[150px] font-mono text-sm"
                             value={text}
                             onChange={(e) => setText(e.target.value)}
@@ -135,7 +137,7 @@ export default function RegexTesterPage() {
                     </div>
 
                     <div className="grid gap-2">
-                        <Label>Match Result</Label>
+                        <Label>{t("matchResult")}</Label>
                         <div className="min-h-[150px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm whitespace-pre-wrap font-mono break-all">
                             {getHighlightedText()}
                         </div>

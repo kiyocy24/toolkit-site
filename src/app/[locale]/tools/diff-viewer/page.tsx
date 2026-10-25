@@ -7,8 +7,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { diffLines, diffChars, Change } from "diff"
 import { Trash2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export default function DiffViewerPage() {
+    const t = useTranslations("Tools.diff-viewer")
     const [oldText, setOldText] = useState("")
     const [newText, setNewText] = useState("")
     const [diffs, setDiffs] = useState<Change[]>([])
@@ -80,34 +82,34 @@ export default function DiffViewerPage() {
         <div className="grid gap-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>Diff Viewer</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Compare two text contents to see the differences.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
                     <div className="flex items-end justify-end">
                         <Button variant="ghost" size="sm" onClick={clearAll} className="h-8 px-2 lg:px-3">
                             <Trash2 className="mr-2 h-4 w-4" />
-                            Clear
+                            {t("clear")}
                         </Button>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2">
                         <div className="grid gap-2">
-                            <Label htmlFor="original-text">Original Text</Label>
+                            <Label htmlFor="original-text">{t("originalText")}</Label>
                             <Textarea
                                 id="original-text"
-                                placeholder="Paste original text..."
+                                placeholder={t("originalPlaceholder")}
                                 className="min-h-[200px] font-mono text-sm"
                                 value={oldText}
                                 onChange={(e) => setOldText(e.target.value)}
                             />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="modified-text">Modified Text</Label>
+                            <Label htmlFor="modified-text">{t("modifiedText")}</Label>
                             <Textarea
                                 id="modified-text"
-                                placeholder="Paste modified text..."
+                                placeholder={t("modifiedPlaceholder")}
                                 className="min-h-[200px] font-mono text-sm"
                                 value={newText}
                                 onChange={(e) => setNewText(e.target.value)}
@@ -115,11 +117,11 @@ export default function DiffViewerPage() {
                         </div>
                     </div>
 
-                    <Button onClick={handleDiff} className="w-full md:w-auto">Compare</Button>
+                    <Button onClick={handleDiff} className="w-full md:w-auto">{t("compare")}</Button>
 
                     {diffs.length > 0 && (
                         <div className="grid gap-2">
-                            <Label>Differences</Label>
+                            <Label>{t("differences")}</Label>
                             <div className="min-h-[150px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm font-mono whitespace-pre-wrap">
                                 {diffs.map((part, index) => {
                                     const style = part.added

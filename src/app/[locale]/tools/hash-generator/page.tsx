@@ -8,9 +8,11 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Copy, Hash } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { computeHash } from "@/lib/hash-utils"
 
 export default function HashGeneratorPage() {
+    const t = useTranslations("Tools.hash-generator")
     const [input, setInput] = useState("")
     const [hashes, setHashes] = useState({
         MD5: "",
@@ -75,20 +77,20 @@ export default function HashGeneratorPage() {
                         <div>
                             <CardTitle className="flex items-center gap-2">
                                 <Hash className="h-6 w-6" />
-                                Hash Generator
+                                {t("title")}
                             </CardTitle>
                             <CardDescription>
-                                Generate MD5, SHA-1, SHA-256, and SHA-512 hashes.
+                                {t("cardDescription")}
                             </CardDescription>
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="input">Input Text</Label>
+                        <Label htmlFor="input">{t("inputText")}</Label>
                         <Textarea
                             id="input"
-                            placeholder="Enter text to hash..."
+                            placeholder={t("inputPlaceholder")}
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             className="min-h-[100px] font-mono"
@@ -101,7 +103,7 @@ export default function HashGeneratorPage() {
                             checked={upperCase}
                             onCheckedChange={setUpperCase}
                         />
-                        <Label htmlFor="uppercase">Uppercase Output</Label>
+                        <Label htmlFor="uppercase">{t("uppercaseOutput")}</Label>
                     </div>
 
                     <div className="grid gap-4">
@@ -113,13 +115,13 @@ export default function HashGeneratorPage() {
                                         readOnly
                                         value={formatHash(hash)}
                                         className="font-mono text-sm"
-                                        placeholder={`${algo} hash will appear here...`}
+                                        placeholder={t("outputPlaceholder", { algo })}
                                     />
                                     <Button
                                         variant="outline"
                                         size="icon"
                                         onClick={() => copyToClipboard(formatHash(hash))}
-                                        title="Copy"
+                                        title={t("copy")}
                                         disabled={!hash}
                                     >
                                         <Copy className="h-4 w-4" />

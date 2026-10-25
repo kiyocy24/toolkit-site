@@ -70,3 +70,14 @@ describe("CssUnitConverterPage", () => {
         expect(screen.getByLabelText("EM")).toHaveValue(null)
     })
 })
+
+describe("CssUnitConverterPage (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<CssUnitConverterPage />, { locale: "ja" })
+        expect(screen.getByText("CSS 単位変換")).toBeInTheDocument()
+        expect(screen.getByText("px、rem、em の単位を相互に変換します。")).toBeInTheDocument()
+        expect(screen.getByLabelText("ルートのフォントサイズ (px)")).toHaveValue(16)
+        expect(screen.getByLabelText("ピクセル (px)")).toHaveValue(16)
+        expect(screen.getByText(/親要素の font-size/)).toBeInTheDocument()
+    })
+})

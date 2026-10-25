@@ -71,7 +71,7 @@ describe("JwtDebuggerPage", () => {
             })
         })
 
-        it("formats timestamp claims with readable dates", async () => {
+        it("formats timestamp claims with readable dates (en locale)", async () => {
             render(<JwtDebuggerPage />)
 
             // payload: {"iat": 1516239022, "exp": 1516242622}
@@ -82,8 +82,8 @@ describe("JwtDebuggerPage", () => {
 
             await waitFor(() => {
                 const payloadOutput = screen.getByLabelText("Payload") as HTMLTextAreaElement
-                expect(payloadOutput.value).toMatch(/"iat": 1516239022,\s*\/\/\s*2018\/01\/18 01:30:22/)
-                expect(payloadOutput.value).toMatch(/"exp": 1516242622\s*\/\/\s*2018\/01\/18 02:30:22/)
+                expect(payloadOutput.value).toMatch(/"iat": 1516239022,\s*\/\/\s*01\/18\/2018, 01:30:22\sAM/)
+                expect(payloadOutput.value).toMatch(/"exp": 1516242622\s*\/\/\s*01\/18\/2018, 02:30:22\sAM/)
             })
         })
 
@@ -248,3 +248,67 @@ describe("JwtDebuggerPage", () => {
     })
 })
 
+
+describe("JwtDebuggerPage (ja)", () => {
+    beforeEach(() => {
+        vi.resetAllMocks()
+        vi.mocked(jwtCrypto.signJwt).mockReset().mockResolvedValue("header.payload.signature")
+    })
+
+    it("renders Japanese translations", () => {
+        render(<JwtDebuggerPage />, { locale: "ja" })
+        expect(screen.getByText("JWT デバッガー")).toBeInTheDocument()
+        expect(screen.getByRole("tab", { name: "デコード" })).toBeInTheDocument()
+        expect(screen.getByRole("tab", { name: "エンコード" })).toBeInTheDocument()
+        expect(screen.getByLabelText("JWT トークン")).toBeInTheDocument()
+        expect(screen.getByLabelText("ヘッダー")).toBeInTheDocument()
+        expect(screen.getByLabelText("ペイロード")).toBeInTheDocument()
+    })
+
+    it("formats timestamp claims with readable dates (ja locale)", async () => {
+        render(<JwtDebuggerPage />, { locale: "ja" })
+
+        // payload: {"iat": 1516239022, "exp": 1516242622}
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTUxNjI0MjYyMn0.signature"
+
+        fireEvent.change(screen.getByLabelText("JWT トークン"), { target: { value: token } })
+
+        await waitFor(() => {
+            const payloadOutput = screen.getByLabelText("ペイロード") as HTMLTextAreaElement
+            expect(payloadOutput.value).toMatch(/"iat": 1516239022,\s*\/\/\s*2018\/01\/18 01:30:22/)
+            expect(payloadOutput.value).toMatch(/"exp": 1516242622\s*\/\/\s*2018\/01\/18 02:30:22/)
+        })
+    })
+
+    it("shows a Japanese error for invalid JWT structure", async () => {
+        render(<JwtDebuggerPage />, { locale: "ja" })
+        fireEvent.change(screen.getByLabelText("JWT トークン"), { target: { value: "invalid.token" } })
+
+        await waitFor(() => {
+            expect(screen.getByText("エラー")).toBeInTheDocument()
+            expect(screen.getByText("JWT の形式が不正です。ドットで区切られた 3 つの部分が必要です。")).toBeInTheDocument()
+        })
+    })
+
+    it("renders the encoder in Japanese", async () => {
+        render(<JwtEncoder />, { locale: "ja" })
+        expect(screen.getByText("セキュリティについて")).toBeInTheDocument()
+        expect(screen.getByLabelText("シークレット（HS256 用）")).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "エンコード済みトークンをコピー" })).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.getByLabelText("エンコード済みトークン")).toHaveValue("header.payload.signature")
+        }, { timeout: 3000 })
+    })
+
+    it("translates known signing errors by code", async () => {
+        vi.mocked(jwtCrypto.signJwt).mockRejectedValue(
+            Object.assign(new Error("Please provide a secret for HS256 signing."), { code: "SECRET_REQUIRED" })
+        )
+        render(<JwtEncoder />, { locale: "ja" })
+
+        await waitFor(() => {
+            expect(screen.getByText("HS256 で署名するにはシークレットを入力してください。")).toBeInTheDocument()
+        }, { timeout: 3000 })
+    })
+})

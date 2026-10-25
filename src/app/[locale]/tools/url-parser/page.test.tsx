@@ -65,3 +65,21 @@ describe("UrlParser", () => {
         expect(input).toHaveValue("https://example.com/")
     })
 })
+
+describe("UrlParser (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<UrlParser />, { locale: "ja" })
+        expect(screen.getByText("URL パーサー")).toBeInTheDocument()
+        expect(screen.getByText("URL 文字列")).toBeInTheDocument()
+        expect(screen.getByText("クエリパラメーター")).toBeInTheDocument()
+        expect(screen.getByText("クエリパラメーターはありません。")).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: /パラメーターを追加/ })).toBeInTheDocument()
+    })
+
+    it("shows a Japanese error for an invalid URL", () => {
+        render(<UrlParser />, { locale: "ja" })
+        const input = screen.getByPlaceholderText("https://example.com/path?query=1")
+        fireEvent.change(input, { target: { value: "https://" } })
+        expect(screen.getByText("無効な URL です")).toBeInTheDocument()
+    })
+})

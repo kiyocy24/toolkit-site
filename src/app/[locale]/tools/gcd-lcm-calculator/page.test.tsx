@@ -125,3 +125,37 @@ describe("GCD/LCM Calculator", () => {
         });
     });
 });
+
+describe("GCD/LCM Calculator (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<GcdLcmCalculatorPage />, { locale: "ja" });
+        expect(screen.getByText("最大公約数/最小公倍数 計算機")).toBeInTheDocument();
+        expect(screen.getByLabelText("数値")).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "計算" })).toBeInTheDocument();
+        expect(screen.getByText("数値はカンマまたはスペースで区切ってください。")).toBeInTheDocument();
+    });
+
+    it("shows Japanese error messages and result labels", async () => {
+        render(<GcdLcmCalculatorPage />, { locale: "ja" });
+        const input = screen.getByLabelText("数値");
+        const button = screen.getByRole("button", { name: "計算" });
+
+        await userEvent.type(input, "12, abc");
+        fireEvent.click(button);
+
+        await waitFor(() => {
+            expect(screen.getByText("エラー")).toBeInTheDocument();
+            expect(screen.getByText("無効な入力です: 「abc」は有効な整数ではありません。")).toBeInTheDocument();
+        });
+
+        await userEvent.clear(input);
+        await userEvent.type(input, "12, 18");
+        fireEvent.click(button);
+
+        await waitFor(() => {
+            expect(screen.getByText("GCD（最大公約数）")).toBeInTheDocument();
+            expect(screen.getByText("LCM（最小公倍数）")).toBeInTheDocument();
+            expect(screen.getByRole("button", { name: "GCD をコピー" })).toBeInTheDocument();
+        });
+    });
+});

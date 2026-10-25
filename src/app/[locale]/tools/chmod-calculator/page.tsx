@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Copy, Check } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 type PermissionScope = "owner" | "group" | "public"
 type PermissionType = "read" | "write" | "execute"
@@ -23,33 +24,21 @@ const initialPermissions: PermissionState = {
     public: { read: true, write: false, execute: true },
 }
 
-// Map scope string to a localized label if needed, or just display title case
-const scopeLabels: Record<PermissionScope, string> = {
-    owner: "Owner",
-    group: "Group",
-    public: "Public",
-}
-
-const typeLabels: Record<PermissionType, string> = {
-    read: "Read (4)",
-    write: "Write (2)",
-    execute: "Execute (1)",
-}
-
-// Presets
+// Presets (labels are translated via message keys)
 const presets = [
-    { label: "777 (Everything)", value: "777" },
-    { label: "755 (Web Server)", value: "755" },
-    { label: "644 (File Read)", value: "644" },
-    { label: "600 (Private)", value: "600" },
-    { label: "400 (Read Only)", value: "400" },
-]
+    { labelKey: "presets.p777", value: "777" },
+    { labelKey: "presets.p755", value: "755" },
+    { labelKey: "presets.p644", value: "644" },
+    { labelKey: "presets.p600", value: "600" },
+    { labelKey: "presets.p400", value: "400" },
+] as const
 
 
 const scopes: PermissionScope[] = ["owner", "group", "public"]
 const types: PermissionType[] = ["read", "write", "execute"]
 
 export default function ChmodCalculator() {
+    const t = useTranslations("Tools.chmod-calculator")
     const [permissions, setPermissions] = useState<PermissionState>(initialPermissions)
     const [octal, setOctal] = useState("755")
     const [copyFeedback, setCopyFeedback] = useState<string | null>(null)
@@ -143,9 +132,9 @@ export default function ChmodCalculator() {
         <div className="space-y-6 max-w-4xl mx-auto">
             <Card>
                 <CardHeader>
-                    <CardTitle>Chmod Calculator</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Calculate Linux/Unix file permissions visually.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -154,7 +143,7 @@ export default function ChmodCalculator() {
                         {scopes.map((scope) => (
                             <div key={scope} className="space-y-3 p-4 bg-muted/30 rounded-lg border">
                                 <h3 className="font-semibold text-lg capitalize flex items-center gap-2">
-                                    {scopeLabels[scope]}
+                                    {t(`scopes.${scope}`)}
                                 </h3>
                                 <div className="space-y-2">
                                     {types.map((type) => (
@@ -165,7 +154,7 @@ export default function ChmodCalculator() {
                                                 onCheckedChange={(c) => handleCheckboxChange(scope, type, c as boolean)}
                                             />
                                             <Label htmlFor={`${scope}-${type}`} className="cursor-pointer">
-                                                {typeLabels[type]}
+                                                {t(`types.${type}`)}
                                             </Label>
                                         </div>
                                     ))}
@@ -177,7 +166,7 @@ export default function ChmodCalculator() {
                     {/* Output Section */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <Label htmlFor="octal-input">Octal Notation (e.g. 755)</Label>
+                            <Label htmlFor="octal-input">{t("octalNotation")}</Label>
                             <div className="flex gap-2">
                                 <Input
                                     id="octal-input"
@@ -186,13 +175,13 @@ export default function ChmodCalculator() {
                                     className="font-mono text-lg"
                                     maxLength={3}
                                 />
-                                <Button size="icon" variant="outline" onClick={() => copyToClipboard(`chmod ${octal} filename`, "octal")} title="Copy command">
+                                <Button size="icon" variant="outline" onClick={() => copyToClipboard(`chmod ${octal} filename`, "octal")} title={t("copyCommand")}>
                                     {copyFeedback === "octal" ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                                 </Button>
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="symbolic-output">Symbolic Notation</Label>
+                            <Label htmlFor="symbolic-output">{t("symbolicNotation")}</Label>
                             <div className="flex gap-2">
                                 <Input
                                     id="symbolic-output"
@@ -209,7 +198,7 @@ export default function ChmodCalculator() {
 
                     {/* Presets */}
                     <div className="space-y-2">
-                        <Label>Common Presets</Label>
+                        <Label>{t("commonPresets")}</Label>
                         <div className="flex flex-wrap gap-2">
                             {presets.map((preset) => (
                                 <Button
@@ -218,7 +207,7 @@ export default function ChmodCalculator() {
                                     size="sm"
                                     onClick={() => handlePresetClick(preset.value)}
                                 >
-                                    {preset.label}
+                                    {t(preset.labelKey)}
                                 </Button>
                             ))}
                         </div>
@@ -228,20 +217,20 @@ export default function ChmodCalculator() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-sm">How it works</CardTitle>
+                    <CardTitle className="text-sm">{t("howItWorks.title")}</CardTitle>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground space-y-2">
                     <p>
-                        <strong>Read (r) = 4</strong>: Permission to read the file's content.
+                        {t.rich("howItWorks.read", { strong: (chunks) => <strong>{chunks}</strong> })}
                     </p>
                     <p>
-                        <strong>Write (w) = 2</strong>: Permission to modify or delete the file.
+                        {t.rich("howItWorks.write", { strong: (chunks) => <strong>{chunks}</strong> })}
                     </p>
                     <p>
-                        <strong>Execute (x) = 1</strong>: Permission to execute the file (if it's a script/program) or enter directory.
+                        {t.rich("howItWorks.execute", { strong: (chunks) => <strong>{chunks}</strong> })}
                     </p>
                     <p className="pt-2 border-t mt-2">
-                        The octal number is the sum of these values for each scope (Owner, Group, Public).
+                        {t("howItWorks.sum")}
                     </p>
                 </CardContent>
             </Card>

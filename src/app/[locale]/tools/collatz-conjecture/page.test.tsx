@@ -57,3 +57,37 @@ describe("CollatzConjecturePage", () => {
         expect(maxValLabel.nextElementSibling).toHaveTextContent("16")
     })
 })
+
+describe("CollatzConjecturePage (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<CollatzConjecturePage />, { locale: "ja" })
+        expect(screen.getByText("コラッツ予想")).toBeDefined()
+        expect(screen.getByLabelText("開始値")).toBeDefined()
+        expect(screen.getByPlaceholderText("例: 27")).toBeDefined()
+        expect(screen.getByRole("button", { name: "計算" })).toBeDefined()
+    })
+
+    it("shows Japanese result labels", () => {
+        render(<CollatzConjecturePage />, { locale: "ja" })
+        fireEvent.change(screen.getByLabelText("開始値"), { target: { value: "6" } })
+        fireEvent.click(screen.getByRole("button", { name: "計算" }))
+
+        expect(screen.getByText("ステップ数").nextElementSibling).toHaveTextContent("8")
+        expect(screen.getByText("最大値")).toBeDefined()
+        expect(screen.getByText("操作")).toBeDefined()
+        expect(screen.getByText("初期値")).toBeDefined()
+    })
+
+    it("shows Japanese error messages", () => {
+        render(<CollatzConjecturePage />, { locale: "ja" })
+        const input = screen.getByLabelText("開始値")
+        fireEvent.change(input, { target: { value: "-5" } })
+        fireEvent.click(screen.getByRole("button", { name: "計算" }))
+        expect(screen.getByText("エラー")).toBeDefined()
+        expect(screen.getByText("有効な正の整数を入力してください。")).toBeDefined()
+
+        fireEvent.change(input, { target: { value: "0" } })
+        fireEvent.click(screen.getByRole("button", { name: "計算" }))
+        expect(screen.getByText("0 より大きい整数を入力してください。")).toBeDefined()
+    })
+})

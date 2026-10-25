@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -10,6 +11,7 @@ import { Switch } from "@/components/ui/switch"
 import { Copy, RefreshCw } from "lucide-react"
 
 export default function PasswordGeneratorPage() {
+    const t = useTranslations("Tools.password-generator")
     const [length, setLength] = useState([16])
     const [includeUppercase, setIncludeUppercase] = useState(true)
     const [includeLowercase, setIncludeLowercase] = useState(true)
@@ -89,18 +91,18 @@ export default function PasswordGeneratorPage() {
         <div className="grid gap-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>Password Generator</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Generate secure random passwords with customizable options.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
                     <div className="grid gap-2">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="generated-password">Generated Password</Label>
+                            <Label htmlFor="generated-password">{t("generatedPassword")}</Label>
                             <Button variant="ghost" size="sm" onClick={copyToClipboard} disabled={!password}>
                                 <Copy className="mr-2 h-4 w-4" />
-                                Copy
+                                {t("copy")}
                             </Button>
                         </div>
                         <div className="flex gap-2">
@@ -110,7 +112,7 @@ export default function PasswordGeneratorPage() {
                                 readOnly
                                 className="font-mono text-lg"
                             />
-                            <Button onClick={generatePassword} aria-label="Refresh password">
+                            <Button onClick={generatePassword} aria-label={t("refresh")}>
                                 <RefreshCw className="h-4 w-4" />
                             </Button>
                         </div>
@@ -119,7 +121,7 @@ export default function PasswordGeneratorPage() {
                     <div className="grid gap-4">
                         <div className="grid gap-2">
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="length-slider">Length: {length}</Label>
+                                <Label htmlFor="length-slider">{t("length", { length: length[0] })}</Label>
                             </div>
                             <Slider
                                 id="length-slider"
@@ -134,7 +136,7 @@ export default function PasswordGeneratorPage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex items-center justify-between space-x-2">
-                                <Label htmlFor="uppercase">Uppercase (A-Z)</Label>
+                                <Label htmlFor="uppercase">{t("uppercase", { chars: "A-Z" })}</Label>
                                 <Switch
                                     id="uppercase"
                                     checked={includeUppercase}
@@ -142,7 +144,7 @@ export default function PasswordGeneratorPage() {
                                 />
                             </div>
                             <div className="flex items-center justify-between space-x-2">
-                                <Label htmlFor="lowercase">Lowercase (a-z)</Label>
+                                <Label htmlFor="lowercase">{t("lowercase", { chars: "a-z" })}</Label>
                                 <Switch
                                     id="lowercase"
                                     checked={includeLowercase}
@@ -150,7 +152,7 @@ export default function PasswordGeneratorPage() {
                                 />
                             </div>
                             <div className="flex items-center justify-between space-x-2">
-                                <Label htmlFor="numbers">Numbers (0-9)</Label>
+                                <Label htmlFor="numbers">{t("numbers", { chars: "0-9" })}</Label>
                                 <Switch
                                     id="numbers"
                                     checked={includeNumbers}
@@ -158,7 +160,7 @@ export default function PasswordGeneratorPage() {
                                 />
                             </div>
                             <div className="flex items-center justify-between space-x-2">
-                                <Label htmlFor="symbols">Symbols (!@#$%^&*()_+~`|{"}"}{"{"}[]:;?&gt;&lt;,./-=)</Label>
+                                <Label htmlFor="symbols">{t("symbols", { chars: "!@#$%^&*()_+~`|}{[]:;?><,./-=" })}</Label>
                                 <Switch
                                     id="symbols"
                                     checked={includeSymbols}

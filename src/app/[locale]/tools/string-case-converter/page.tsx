@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
@@ -67,6 +68,7 @@ const convertToCases = (text: string) => {
 }
 
 function CaseCard({ name, value }: { name: string, value: string }) {
+    const t = useTranslations("Tools.string-case-converter")
     const [copied, setCopied] = useState(false)
 
     useEffect(() => {
@@ -104,14 +106,14 @@ function CaseCard({ name, value }: { name: string, value: string }) {
                     size="icon"
                     className="h-8 w-8 shrink-0"
                     onClick={copyToClipboard}
-                    title={`Copy ${name}`}
+                    title={t("copyCase", { name })}
                 >
                     {copied ? (
                         <Check className="h-4 w-4 text-green-500" />
                     ) : (
                         <Copy className="h-4 w-4" />
                     )}
-                    <span className="sr-only">Copy {name}</span>
+                    <span className="sr-only">{t("copyCase", { name })}</span>
                 </Button>
             </CardContent>
         </Card>
@@ -119,6 +121,7 @@ function CaseCard({ name, value }: { name: string, value: string }) {
 }
 
 export default function StringCaseConverter() {
+    const t = useTranslations("Tools.string-case-converter")
     const [input, setInput] = useState("")
 
     const cases = useMemo(() => convertToCases(input), [input])
@@ -127,17 +130,17 @@ export default function StringCaseConverter() {
         <div className="space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>String Case Converter</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Convert text between various naming conventions and formats.
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-2">
-                        <Label htmlFor="input-text">Input Text</Label>
+                        <Label htmlFor="input-text">{t("inputText")}</Label>
                         <Textarea
                             id="input-text"
-                            placeholder="Type or paste text here (e.g. hello world, camelCaseVariable)..."
+                            placeholder={t("inputPlaceholder")}
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             className="min-h-[100px] font-mono"

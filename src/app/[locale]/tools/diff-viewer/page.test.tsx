@@ -44,3 +44,18 @@ describe('DiffViewerPage', () => {
         expect(screen.queryByText('Differences')).not.toBeInTheDocument()
     })
 })
+
+describe('DiffViewerPage (ja)', () => {
+    it('renders Japanese translations and compares texts', () => {
+        render(<DiffViewerPage />, { locale: 'ja' })
+        expect(screen.getByText('差分ビューアー')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'クリア' })).toBeInTheDocument()
+        expect(screen.getByPlaceholderText('変更前のテキストを貼り付け...')).toBeInTheDocument()
+
+        fireEvent.change(screen.getByLabelText('変更前のテキスト'), { target: { value: 'foo' } })
+        fireEvent.change(screen.getByLabelText('変更後のテキスト'), { target: { value: 'bar' } })
+        fireEvent.click(screen.getByRole('button', { name: '比較' }))
+
+        expect(screen.getByText('差分')).toBeInTheDocument()
+    })
+})

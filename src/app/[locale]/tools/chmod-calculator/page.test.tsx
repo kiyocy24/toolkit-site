@@ -43,3 +43,23 @@ describe("ChmodCalculator", () => {
         expect(screen.getByLabelText("Symbolic Notation")).toHaveValue("-rw-r--r--")
     })
 })
+
+describe("ChmodCalculator (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<ChmodCalculator />, { locale: "ja" })
+        expect(screen.getByText("Chmod 計算機")).toBeInTheDocument()
+        expect(screen.getByText("所有者")).toBeInTheDocument()
+        expect(screen.getAllByLabelText("書き込み (2)")).toHaveLength(3)
+        expect(screen.getByLabelText("8 進数表記（例: 755）")).toHaveValue("755")
+        expect(screen.getByLabelText("シンボリック表記")).toHaveValue("-rwxr-xr-x")
+        expect(screen.getByTitle("コマンドをコピー")).toBeInTheDocument()
+        expect(screen.getByText("仕組み")).toBeInTheDocument()
+        expect(screen.getByText("読み取り (r) = 4")).toBeInTheDocument()
+    })
+
+    it("applies a preset with a Japanese label", () => {
+        render(<ChmodCalculator />, { locale: "ja" })
+        fireEvent.click(screen.getByRole("button", { name: "644（ファイル読み取り）" }))
+        expect(screen.getByLabelText("シンボリック表記")).toHaveValue("-rw-r--r--")
+    })
+})

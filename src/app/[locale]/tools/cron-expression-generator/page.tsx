@@ -2,6 +2,9 @@
 
 import { useState, useMemo } from "react"
 import cronstrue from "cronstrue"
+// cronstrue の日本語ロケールを登録する
+import "cronstrue/locales/ja"
+import { useLocale, useTranslations } from "next-intl"
 import { Copy, AlertCircle, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -11,6 +14,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 export default function CronExpressionGeneratorPage() {
+    const t = useTranslations("Tools.cron-expression-generator")
+    const locale = useLocale()
     // Generator State
     const [minute, setMinute] = useState("*")
     const [hour, setHour] = useState("*")
@@ -31,12 +36,12 @@ export default function CronExpressionGeneratorPage() {
 
     const explanationResult = useMemo(() => {
         try {
-            const desc = cronstrue.toString(cronInput)
-            return { desc, error: "" }
+            const desc = cronstrue.toString(cronInput, { locale })
+            return { desc, error: false }
         } catch (err) {
-            return { desc: "", error: cronInput.trim() !== "" ? "Invalid cron expression" : "" }
+            return { desc: "", error: cronInput.trim() !== "" }
         }
-    }, [cronInput])
+    }, [cronInput, locale])
 
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text)
@@ -48,38 +53,38 @@ export default function CronExpressionGeneratorPage() {
         <div className="container mx-auto max-w-2xl py-6">
             <Tabs defaultValue="generate" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="generate">Generate</TabsTrigger>
-                    <TabsTrigger value="explain">Explain</TabsTrigger>
+                    <TabsTrigger value="generate">{t("tabs.generate")}</TabsTrigger>
+                    <TabsTrigger value="explain">{t("tabs.explain")}</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="generate">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Cron Generator</CardTitle>
+                            <CardTitle>{t("generator.heading")}</CardTitle>
                             <CardDescription>
-                                Build a cron expression by setting the fields below.
+                                {t("generator.description")}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                                 <div className="space-y-2">
-                                    <Label>Minute</Label>
+                                    <Label>{t("fields.minute")}</Label>
                                     <Input value={minute} onChange={(e) => setMinute(e.target.value)} placeholder="*" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Hour</Label>
+                                    <Label>{t("fields.hour")}</Label>
                                     <Input value={hour} onChange={(e) => setHour(e.target.value)} placeholder="*" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Day</Label>
+                                    <Label>{t("fields.day")}</Label>
                                     <Input value={dayOfMonth} onChange={(e) => setDayOfMonth(e.target.value)} placeholder="*" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Month</Label>
+                                    <Label>{t("fields.month")}</Label>
                                     <Input value={month} onChange={(e) => setMonth(e.target.value)} placeholder="*" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Week</Label>
+                                    <Label>{t("fields.week")}</Label>
                                     <Input value={dayOfWeek} onChange={(e) => setDayOfWeek(e.target.value)} placeholder="*" />
                                 </div>
                             </div>
@@ -92,7 +97,7 @@ export default function CronExpressionGeneratorPage() {
                             </div>
 
                             <div className="text-sm text-muted-foreground">
-                                <p>Human readable: {tryExplain(generatedCron)}</p>
+                                <p>{t("generator.humanReadable", { explanation: tryExplain(generatedCron, locale) ?? t("generator.invalidExpression") })}</p>
                             </div>
                         </CardContent>
                     </Card>
@@ -101,18 +106,18 @@ export default function CronExpressionGeneratorPage() {
                 <TabsContent value="explain">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Cron Explainer</CardTitle>
+                            <CardTitle>{t("explainer.heading")}</CardTitle>
                             <CardDescription>
-                                Paste a cron expression to understand what it does.
+                                {t("explainer.description")}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
-                                <Label>Cron Expression</Label>
+                                <Label>{t("explainer.cronExpression")}</Label>
                                 <Input
                                     value={cronInput}
                                     onChange={(e) => setCronInput(e.target.value)}
-                                    placeholder="e.g. */5 * * * *"
+                                    placeholder={t("explainer.placeholder")}
                                     className="font-mono"
                                 />
                             </div>
@@ -120,8 +125,8 @@ export default function CronExpressionGeneratorPage() {
                             {explanationResult.error ? (
                                 <Alert variant="destructive">
                                     <AlertCircle className="h-4 w-4" />
-                                    <AlertTitle>Error</AlertTitle>
-                                    <AlertDescription>{explanationResult.error}</AlertDescription>
+                                    <AlertTitle>{t("explainer.error")}</AlertTitle>
+                                    <AlertDescription>{t("explainer.invalidCron")}</AlertDescription>
                                 </Alert>
                             ) : (
                                 <div className="p-4 bg-muted rounded-md border text-center">
@@ -136,10 +141,10 @@ export default function CronExpressionGeneratorPage() {
     )
 }
 
-function tryExplain(cron: string): string {
+function tryExplain(cron: string, locale: string): string | null {
     try {
-        return cronstrue.toString(cron)
+        return cronstrue.toString(cron, { locale })
     } catch {
-        return "Invalid expression"
+        return null
     }
 }

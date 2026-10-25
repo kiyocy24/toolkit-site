@@ -77,3 +77,18 @@ describe("StringCaseConverter", () => {
         expect(mockWriteText).toHaveBeenCalledWith("copyMe")
     })
 })
+
+describe("StringCaseConverter (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<StringCaseConverter />, { locale: "ja" })
+        expect(screen.getByText("文字列ケース変換")).toBeDefined()
+        expect(screen.getByText("テキストをさまざまな命名規則や形式に変換します。")).toBeDefined()
+        const input = screen.getByLabelText("入力テキスト")
+        expect(input).toBeDefined()
+
+        fireEvent.change(input, { target: { value: "hello world" } })
+        // Case names are technical identifiers and stay untranslated
+        expect(screen.getByText("camelCase")).toBeDefined()
+        expect(screen.getByTitle("camelCase をコピー")).toBeDefined()
+    })
+})

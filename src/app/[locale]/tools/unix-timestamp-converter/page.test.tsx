@@ -87,3 +87,32 @@ describe("UnixTimestampConverterPage", () => {
         expect(screen.getByText("1700000000")).toBeDefined();
     });
 });
+
+describe("UnixTimestampConverterPage (ja)", () => {
+    it("renders Japanese translations", () => {
+        render(<UnixTimestampConverterPage />, { locale: "ja" });
+
+        expect(screen.getByText("Unix タイムスタンプ変換")).toBeDefined();
+        expect(screen.getByText("UTC（協定世界時）")).toBeDefined();
+        expect(screen.getByText("入力形式")).toBeDefined();
+        expect(screen.getByLabelText("日時文字列")).toBeDefined();
+        expect(screen.getByRole("button", { name: "変換" })).toBeDefined();
+    });
+
+    it("shows Japanese result labels and error message", () => {
+        render(<UnixTimestampConverterPage />, { locale: "ja" });
+
+        const input = screen.getByPlaceholderText("1700000000");
+        const convertBtn = screen.getByRole("button", { name: "変換" });
+
+        fireEvent.change(input, { target: { value: "1700000000" } });
+        fireEvent.click(convertBtn);
+        expect(screen.getByText("変換結果")).toBeDefined();
+        expect(screen.getByText("日時（UTC）")).toBeDefined();
+        expect(screen.getByText("相対時間")).toBeDefined();
+
+        fireEvent.change(input, { target: { value: "abc" } });
+        fireEvent.click(convertBtn);
+        expect(screen.getByText("入力が無効です。形式を確認してください。")).toBeDefined();
+    });
+});

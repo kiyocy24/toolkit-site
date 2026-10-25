@@ -58,3 +58,27 @@ describe('Base64ConverterPage', () => {
         expect(screen.getByLabelText('Output')).toHaveValue('')
     })
 })
+
+describe('Base64ConverterPage (ja)', () => {
+    it('renders Japanese translations', () => {
+        render(<Base64ConverterPage />, { locale: 'ja' })
+        expect(screen.getByText('Base64 変換')).toBeInTheDocument()
+        expect(screen.getByRole('tab', { name: 'エンコード' })).toBeInTheDocument()
+        expect(screen.getByRole('tab', { name: 'デコード' })).toBeInTheDocument()
+        expect(screen.getByLabelText('入力')).toHaveAttribute('placeholder', 'エンコードするテキストを入力...')
+        expect(screen.getByLabelText('出力')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'クリア' })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'コピー' })).toBeInTheDocument()
+    })
+
+    it('shows a Japanese error for invalid base64 input', async () => {
+        const user = userEvent.setup()
+        render(<Base64ConverterPage />, { locale: 'ja' })
+
+        await user.click(screen.getByRole('tab', { name: 'デコード' }))
+        expect(screen.getByLabelText('入力')).toHaveAttribute('placeholder', 'デコードする Base64 文字列を貼り付け...')
+        await user.type(screen.getByLabelText('入力'), '!!!')
+
+        expect(screen.getByText('デコードできない入力です')).toBeInTheDocument()
+    })
+})

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -8,11 +9,16 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, Copy, Check } from "lucide-react"
 
+type CalcError =
+    | { key: "atLeastTwo" | "positiveIntegers" | "unexpected" }
+    | { key: "invalidInteger"; value: string }
+
 export default function GcdLcmCalculatorPage() {
+    const t = useTranslations("Tools.gcd-lcm-calculator")
     const [input, setInput] = useState("")
     const [gcdResult, setGcdResult] = useState<string | null>(null)
     const [lcmResult, setLcmResult] = useState<string | null>(null)
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<CalcError | null>(null)
     const [gcdCopied, setGcdCopied] = useState(false)
     const [lcmCopied, setLcmCopied] = useState(false)
 
@@ -41,7 +47,7 @@ export default function GcdLcmCalculatorPage() {
             const rawNumbers = input.split(/[\s,]+/).filter(s => s.trim() !== "")
 
             if (rawNumbers.length < 2) {
-                setError("Please enter at least two numbers.")
+                setError({ key: "atLeastTwo" })
                 return
             }
 
@@ -49,12 +55,12 @@ export default function GcdLcmCalculatorPage() {
 
             for (const raw of rawNumbers) {
                 if (!/^-?\d+$/.test(raw)) {
-                    setError(`Invalid input: "${raw}" is not a valid integer.`)
+                    setError({ key: "invalidInteger", value: raw })
                     return
                 }
                 const n = BigInt(raw)
                 if (n < 0n) {
-                    setError("Please enter positive integers.")
+                    setError({ key: "positiveIntegers" })
                     return
                 }
                 numbers.push(n)
@@ -72,7 +78,7 @@ export default function GcdLcmCalculatorPage() {
             setLcmResult(currentLCM.toString())
 
         } catch (e) {
-            setError("An unexpected error occurred during calculation.")
+            setError({ key: "unexpected" })
         }
     }
 
@@ -86,20 +92,20 @@ export default function GcdLcmCalculatorPage() {
         <div className="space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>GCD/LCM Calculator</CardTitle>
+                    <CardTitle>{t("title")}</CardTitle>
                     <CardDescription>
-                        Enter two or more non-negative integers to calculate their Greatest Common Divisor (GCD) and Least Common Multiple (LCM).
+                        {t("cardDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid w-full gap-1.5">
-                        <Label htmlFor="numbers">Numbers</Label>
+                        <Label htmlFor="numbers">{t("numbers")}</Label>
                         <div className="flex space-x-2">
                             <Input
                                 type="text"
                                 inputMode="numeric"
                                 id="numbers"
-                                placeholder="e.g. 12, 18 or 8 12 16"
+                                placeholder={t("placeholder")}
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) => {
@@ -108,16 +114,20 @@ export default function GcdLcmCalculatorPage() {
                                     }
                                 }}
                             />
-                            <Button onClick={calculate}>Calculate</Button>
+                            <Button onClick={calculate}>{t("calculate")}</Button>
                         </div>
-                        <p className="text-sm text-muted-foreground">Separate numbers with commas or spaces.</p>
+                        <p className="text-sm text-muted-foreground">{t("hint")}</p>
                     </div>
 
                     {error && (
                         <Alert variant="destructive">
                             <AlertCircle className="h-4 w-4" />
-                            <AlertTitle>Error</AlertTitle>
-                            <AlertDescription>{error}</AlertDescription>
+                            <AlertTitle>{t("error")}</AlertTitle>
+                            <AlertDescription>
+                                {error.key === "invalidInteger"
+                                    ? t("errors.invalidInteger", { value: error.value })
+                                    : t(`errors.${error.key}`)}
+                            </AlertDescription>
                         </Alert>
                     )}
 
@@ -126,8 +136,8 @@ export default function GcdLcmCalculatorPage() {
                             {gcdResult && (
                                 <div className="p-4 rounded-md bg-muted relative">
                                     <div className="flex justify-between items-start mb-1">
-                                        <p className="text-sm font-medium text-muted-foreground">GCD (Greatest Common Divisor)</p>
-                                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(gcdResult, setGcdCopied)} aria-label={gcdCopied ? "GCD copied" : "Copy GCD"}>
+                                        <p className="text-sm font-medium text-muted-foreground">{t("gcdLabel")}</p>
+                                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(gcdResult, setGcdCopied)} aria-label={gcdCopied ? t("gcdCopied") : t("copyGcd")}>
                                             {gcdCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                                         </Button>
                                     </div>
@@ -138,8 +148,8 @@ export default function GcdLcmCalculatorPage() {
                             {lcmResult && (
                                 <div className="p-4 rounded-md bg-muted relative">
                                     <div className="flex justify-between items-start mb-1">
-                                        <p className="text-sm font-medium text-muted-foreground">LCM (Least Common Multiple)</p>
-                                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(lcmResult, setLcmCopied)} aria-label={lcmCopied ? "LCM copied" : "Copy LCM"}>
+                                        <p className="text-sm font-medium text-muted-foreground">{t("lcmLabel")}</p>
+                                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyToClipboard(lcmResult, setLcmCopied)} aria-label={lcmCopied ? t("lcmCopied") : t("copyLcm")}>
                                             {lcmCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                                         </Button>
                                     </div>

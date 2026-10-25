@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
@@ -8,10 +9,9 @@ import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { Trash2 } from "lucide-react"
 
-const DEFAULT_MARKDOWN = "# Hello Markdown\n\nWrite your markdown here..."
-
 export default function MarkdownPreviewerPage() {
-    const [markdown, setMarkdown] = useState<string>(DEFAULT_MARKDOWN)
+    const t = useTranslations("Tools.markdown-previewer")
+    const [markdown, setMarkdown] = useState<string>(() => t("defaultMarkdown"))
 
     const clearAll = useCallback(() => {
         setMarkdown("")
@@ -22,19 +22,19 @@ export default function MarkdownPreviewerPage() {
             <Card className="flex flex-col h-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <div className="space-y-1">
-                        <CardTitle>Editor</CardTitle>
+                        <CardTitle>{t("editor")}</CardTitle>
                         <CardDescription>
-                            Write your markdown here.
+                            {t("editorDescription")}
                         </CardDescription>
                     </div>
                     <Button variant="ghost" size="sm" onClick={clearAll} className="h-8 px-2 lg:px-3">
                         <Trash2 className="mr-2 h-4 w-4" />
-                        Clear
+                        {t("clear")}
                     </Button>
                 </CardHeader>
                 <CardContent className="flex-1 p-0">
                     <Textarea
-                        placeholder="Type your markdown here..."
+                        placeholder={t("placeholder")}
                         className="h-full resize-none border-0 focus-visible:ring-0 p-6 font-mono rounded-b-xl rounded-t-none"
                         value={markdown}
                         onChange={(e) => setMarkdown(e.target.value)}
@@ -44,9 +44,9 @@ export default function MarkdownPreviewerPage() {
 
             <Card className="flex flex-col h-full overflow-hidden">
                 <CardHeader>
-                    <CardTitle>Preview</CardTitle>
+                    <CardTitle>{t("preview")}</CardTitle>
                     <CardDescription>
-                        Real-time preview of your markdown.
+                        {t("previewDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="flex-1 overflow-auto bg-muted/30 p-6">
