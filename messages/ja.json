@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "Toolkit",
-    "description": "開発者の生産性を高めるツールを厳選して集めました。フォーマッターからジェネレーターまで、必要なものがひとつの場所に揃っています。"
+    "description": "フォーマッターや変換ツールなど、開発でよく使うツールをまとめました。"
   },
   "Header": {
     "docs": "ドキュメント",
@@ -15,28 +15,28 @@
     "description": "メインナビゲーションメニュー"
   },
   "CommandMenu": {
-    "placeholder": "コマンドを入力または検索...",
+    "placeholder": "ツールを検索...",
     "empty": "該当する結果がありません。"
   },
   "LocaleSwitcher": {
     "label": "言語を切り替える"
   },
   "Home": {
-    "followOnGithub": "GitHub で開発をフォロー",
-    "heroTitle": "モダンなエンジニアのための必須ツール",
-    "heroDescription": "開発者の生産性を高めるツールを厳選して集めました。フォーマッターからジェネレーターまで、必要なものがひとつの場所に揃っています。",
-    "exploreTools": "ツールを見る",
-    "featuresTitle": "機能",
-    "featuresDescription": "このプロジェクトは、Next.js 15 と shadcn/ui でモダンなツールキットアプリをどう作れるかを試す実験です。",
+    "followOnGithub": "GitHub で公開中",
+    "heroTitle": "エンジニアのための便利ツール集",
+    "heroDescription": "フォーマッターや変換ツールなど、開発でよく使うツールをまとめました。",
+    "exploreTools": "ツール一覧を見る",
+    "featuresTitle": "ツール",
+    "featuresDescription": "Next.js 15 と shadcn/ui で作っている、実験的なツール集です。",
     "footer": "<author>kiyocy24</author> が開発しています。ソースコードは <github>GitHub</github> で公開しています。"
   },
   "ToolsIndex": {
-    "title": "すべてのツール",
-    "description": "開発者向けツールをカテゴリ別に一覧できます。"
+    "title": "ツール一覧",
+    "description": "よく使う開発ツールをカテゴリ別にまとめています。"
   },
   "ToolsLayout": {
-    "title": "開発者ツール",
-    "description": "日々の開発作業に役立つ、シンプルで効率的なツール集です。",
+    "title": "開発ツール",
+    "description": "日々の開発でちょっと使いたいツールをまとめています。",
     "searchPlaceholder": "ツールを検索...",
     "selectPlaceholder": "ツールを選択",
     "noTools": "ツールが見つかりません",
@@ -55,19 +55,19 @@
     "backToHome": "ホームに戻る"
   },
   "Categories": {
-    "Core": "コア",
+    "Core": "定番",
     "Utility": "ユーティリティ",
     "Development": "開発",
     "Security": "セキュリティ",
     "Database": "データベース",
     "Math": "数学",
-    "Date": "日付"
+    "Date": "日付・時刻"
   },
   "Tools": {
     "json-formatter": {
-      "title": "JSON フォーマッター",
-      "description": "JSON データを整形・検証します。",
-      "cardDescription": "JSON データを整形・検証します。",
+      "title": "JSON Formatter",
+      "description": "JSON を整形・検証します。",
+      "cardDescription": "JSON を整形・検証します。",
       "inputJson": "入力 JSON",
       "clear": "クリア",
       "dropFileHere": "ここにファイルをドロップ",
@@ -84,7 +84,7 @@
       }
     },
     "base64-converter": {
-      "title": "Base64 変換",
+      "title": "Base64 Converter",
       "description": "Base64 文字列をエンコード・デコードします。",
       "cardDescription": "Base64 文字列をエンコード・デコードします。",
       "tabs": {
@@ -105,9 +105,9 @@
       }
     },
     "uuid-generator": {
-      "title": "UUID 生成",
-      "description": "ランダムな UUID v4 を生成します。",
-      "cardDescription": "ランダムな v4 UUID を生成します。",
+      "title": "UUID Generator",
+      "description": "UUID v4 をまとめて生成します。",
+      "cardDescription": "UUID v4 をまとめて生成します。",
       "count": "生成数（1〜50）",
       "generate": "生成",
       "generatedUuids": "生成された UUID",
@@ -115,9 +115,9 @@
       "copy": "コピー"
     },
     "sql-formatter": {
-      "title": "SQL フォーマッター",
-      "description": "SQL クエリを見やすく整形します。",
-      "cardDescription": "SQL クエリを見やすく整形します。",
+      "title": "SQL Formatter",
+      "description": "SQL クエリを読みやすく整形します。",
+      "cardDescription": "SQL クエリを読みやすく整形します。",
       "inputSql": "入力 SQL",
       "dialect": "方言",
       "standardSql": "標準 SQL",
@@ -130,9 +130,9 @@
       }
     },
     "regex-tester": {
-      "title": "正規表現テスター",
-      "description": "正規表現をテストします。",
-      "cardDescription": "正規表現をテストし、マッチ箇所をリアルタイムでハイライト表示します。",
+      "title": "Regex Tester",
+      "description": "正規表現の動作を確認します。",
+      "cardDescription": "正規表現にマッチする箇所をリアルタイムでハイライトします。",
       "pattern": "正規表現パターン",
       "patternPlaceholder": "例: {example}",
       "flags": "フラグ",
@@ -143,9 +143,9 @@
       "matchResult": "マッチ結果"
     },
     "diff-viewer": {
-      "title": "差分ビューアー",
-      "description": "2 つのテキストを比較します。",
-      "cardDescription": "2 つのテキストを比較して差分を確認します。",
+      "title": "Diff Viewer",
+      "description": "2 つのテキストの差分を表示します。",
+      "cardDescription": "2 つのテキストを並べて差分を確認します。",
       "clear": "クリア",
       "originalText": "変更前のテキスト",
       "originalPlaceholder": "変更前のテキストを貼り付け...",
@@ -155,9 +155,9 @@
       "differences": "差分"
     },
     "prime-factorization": {
-      "title": "素因数分解",
-      "description": "整数を素因数に分解します。",
-      "cardDescription": "整数を入力すると素因数に分解します。大きな数にも対応しています。",
+      "title": "Prime Factorization",
+      "description": "整数を素因数分解します。",
+      "cardDescription": "整数を素因数分解します。大きな数にも対応しています。",
       "number": "数値",
       "placeholder": "例: 123456789",
       "factorize": "分解",
@@ -176,9 +176,9 @@
       }
     },
     "collatz-conjecture": {
-      "title": "コラッツ予想",
-      "description": "3n + 1 数列を可視化します。",
-      "cardDescription": "指定した数のコラッツ数列を可視化します。（偶数なら n / 2、奇数なら 3n + 1）",
+      "title": "Collatz Conjecture",
+      "description": "コラッツ数列（3n + 1 問題）を可視化します。",
+      "cardDescription": "入力した数から始まるコラッツ数列を可視化します（偶数なら n / 2、奇数なら 3n + 1）。",
       "startingNumber": "開始値",
       "placeholder": "例: 27",
       "calculate": "計算",
@@ -197,9 +197,9 @@
       }
     },
     "hash-generator": {
-      "title": "ハッシュ生成",
-      "description": "テキストのハッシュ値（MD5、SHA）を計算します。",
-      "cardDescription": "MD5、SHA-1、SHA-256、SHA-512 のハッシュ値を生成します。",
+      "title": "Hash Generator",
+      "description": "テキストのハッシュ値（MD5・SHA）を計算します。",
+      "cardDescription": "MD5・SHA-1・SHA-256・SHA-512 のハッシュ値を計算します。",
       "inputText": "入力テキスト",
       "inputPlaceholder": "ハッシュ化するテキストを入力...",
       "uppercaseOutput": "大文字で出力",
@@ -207,16 +207,16 @@
       "copy": "コピー"
     },
     "color-converter": {
-      "title": "カラー変換",
-      "description": "色の表記形式（HEX、RGB、HSL）を変換します。",
-      "cardDescription": "HEX、RGB、HSL、CMYK の各形式を相互に変換します。",
+      "title": "Color Converter",
+      "description": "色の表記（HEX・RGB・HSL）を相互に変換します。",
+      "cardDescription": "HEX・RGB・HSL・CMYK を相互に変換します。",
       "pickColor": "色を選択",
       "copyFormat": "{format} をコピー"
     },
     "password-generator": {
-      "title": "パスワード生成",
-      "description": "安全なランダムパスワードを生成します。",
-      "cardDescription": "オプションを指定して、安全なランダムパスワードを生成します。",
+      "title": "Password Generator",
+      "description": "安全なランダムパスワードを作成します。",
+      "cardDescription": "長さや文字の種類を指定して、安全なパスワードを作成します。",
       "generatedPassword": "生成されたパスワード",
       "copy": "コピー",
       "refresh": "パスワードを再生成",
@@ -227,7 +227,7 @@
       "symbols": "記号（{chars}）"
     },
     "qr-code-generator": {
-      "title": "QR コード生成",
+      "title": "QR Code Generator",
       "description": "URL やテキストから QR コードを生成します。",
       "cardDescription": "URL やテキストから QR コードを生成します。",
       "content": "内容",
@@ -246,8 +246,8 @@
       "downloadPng": "PNG をダウンロード"
     },
     "jwt-debugger": {
-      "title": "JWT デバッガー",
-      "description": "JSON Web Token のデコード・エンコード・署名を行います。",
+      "title": "JWT Debugger",
+      "description": "JWT のデコード・エンコード・署名ができます。",
       "cardDescription": "JSON Web Token（JWT）をデコード・エンコードします。",
       "tabs": {
         "decoder": "デコード",
@@ -281,16 +281,16 @@
       }
     },
     "css-unit-converter": {
-      "title": "CSS 単位変換",
-      "description": "px、rem、em の単位を相互に変換します。",
-      "cardDescription": "px、rem、em の単位を相互に変換します。",
+      "title": "CSS Unit Converter",
+      "description": "px・rem・em を相互に変換します。",
+      "cardDescription": "px・rem・em を相互に変換します。",
       "rootFontSize": "ルートのフォントサイズ (px)",
       "pixels": "ピクセル (px)",
       "emNote": "※ 親要素の font-size がルートの font-size と等しいものとして計算しています（1em = 1rem）"
     },
     "markdown-previewer": {
-      "title": "Markdown プレビュー",
-      "description": "GFM 対応で Markdown テキストをプレビューします。",
+      "title": "Markdown Previewer",
+      "description": "GFM 対応の Markdown プレビューです。",
       "defaultMarkdown": "# こんにちは Markdown\n\nここに Markdown を入力してください...",
       "editor": "エディター",
       "editorDescription": "ここに Markdown を入力します。",
@@ -300,9 +300,9 @@
       "previewDescription": "Markdown をリアルタイムでプレビューします。"
     },
     "unix-timestamp-converter": {
-      "title": "Unix タイムスタンプ変換",
-      "description": "タイムスタンプと日時を相互に変換します。",
-      "cardDescription": "Unix タイムスタンプと人が読める日時を相互に変換します（タイムゾーン対応）。",
+      "title": "Unix Timestamp Converter",
+      "description": "Unix タイムスタンプと日時を相互に変換します。",
+      "cardDescription": "Unix タイムスタンプと日時を相互に変換します。タイムゾーンにも対応しています。",
       "currentTimestamp": "現在の Unix タイムスタンプ",
       "seconds": "秒",
       "pause": "一時停止",
@@ -333,10 +333,10 @@
       }
     },
     "url-encoder-decoder": {
-      "title": "URL エンコード/デコード",
-      "description": "URL 文字列をエンコード・デコードします。",
-      "cardTitle": "URL エンコード/デコード",
-      "cardDescription": "テキストを URL セーフな形式にエンコード、または URL エンコードされた文字列をデコードします。",
+      "title": "URL Encoder/Decoder",
+      "description": "URL エンコード・デコードを行います。",
+      "cardTitle": "URL Encoder / Decoder",
+      "cardDescription": "テキストを URL エンコード、または URL エンコードされた文字列をデコードします。",
       "inputText": "入力テキスト",
       "clear": "クリア",
       "inputPlaceholder": "エンコードまたはデコードするテキストを入力...",
@@ -350,16 +350,16 @@
       }
     },
     "cron-expression-generator": {
-      "title": "Cron 式ジェネレーター",
-      "description": "Cron 式を生成・解説します。",
+      "title": "Cron Expression Generator",
+      "description": "Cron 式の作成と解説ができます。",
       "tabs": {
         "generate": "生成",
         "explain": "解説"
       },
       "generator": {
-        "heading": "Cron 式の生成",
-        "description": "以下のフィールドを設定して Cron 式を作成します。",
-        "humanReadable": "読みやすい表記: {explanation}",
+        "heading": "Cron 式を作成",
+        "description": "各フィールドを設定して Cron 式を作成します。",
+        "humanReadable": "意味: {explanation}",
         "invalidExpression": "無効な式です"
       },
       "fields": {
@@ -370,8 +370,8 @@
         "week": "曜日"
       },
       "explainer": {
-        "heading": "Cron 式の解説",
-        "description": "Cron 式を貼り付けると、その内容を確認できます。",
+        "heading": "Cron 式を解説",
+        "description": "Cron 式を入力すると、その意味を表示します。",
         "cronExpression": "Cron 式",
         "placeholder": "例: */5 * * * *",
         "error": "エラー",
@@ -379,8 +379,8 @@
       }
     },
     "lorem-ipsum-generator": {
-      "title": "ダミーテキスト生成",
-      "description": "ダミーテキスト（Lorem Ipsum、日本語）を生成します。",
+      "title": "Lorem Ipsum Generator",
+      "description": "ダミーテキスト（Lorem Ipsum・日本語）を生成します。",
       "cardDescription": "レイアウト確認用のダミーテキストを生成します。",
       "count": "生成数",
       "unit": "単位",
@@ -400,17 +400,17 @@
       "outputPlaceholder": "生成されたテキストがここに表示されます..."
     },
     "string-case-converter": {
-      "title": "文字列ケース変換",
-      "description": "テキストをさまざまな命名規則（ケース）に変換します。",
-      "cardDescription": "テキストをさまざまな命名規則や形式に変換します。",
+      "title": "String Case Converter",
+      "description": "camelCase や snake_case など、命名規則を変換します。",
+      "cardDescription": "テキストを camelCase や snake_case などの形式に一括変換します。",
       "inputText": "入力テキスト",
       "inputPlaceholder": "ここにテキストを入力または貼り付け（例: hello world, camelCaseVariable）...",
       "copyCase": "{name} をコピー"
     },
     "chmod-calculator": {
-      "title": "Chmod 計算機",
-      "description": "Linux/Unix のファイルパーミッションを計算します。",
-      "cardDescription": "Linux/Unix のファイルパーミッションを視覚的に計算します。",
+      "title": "Chmod Calculator",
+      "description": "Linux/Unix のパーミッションを計算します。",
+      "cardDescription": "チェックボックスで Linux/Unix のパーミッションを計算します。",
       "scopes": {
         "owner": "所有者",
         "group": "グループ",
@@ -441,9 +441,9 @@
       }
     },
     "url-parser": {
-      "title": "URL パーサー",
-      "description": "URL を分解・編集・再構築します。",
-      "cardDescription": "URL を分解・編集・再構築します。",
+      "title": "URL Parser",
+      "description": "URL を分解して、編集・組み立てができます。",
+      "cardDescription": "URL を分解して、編集・組み立てができます。",
       "urlString": "URL 文字列",
       "copyUrl": "URL をコピー",
       "protocol": "プロトコル",
@@ -464,9 +464,9 @@
       }
     },
     "number-base-converter": {
-      "title": "基数変換",
-      "description": "2 進数・8 進数・10 進数・16 進数を相互に変換します。",
-      "cardDescription": "2 進数・8 進数・10 進数・16 進数、および任意の基数（2〜36）の間で数値を変換します。",
+      "title": "Number Base Converter",
+      "description": "2・8・10・16 進数を相互に変換します。",
+      "cardDescription": "2・8・10・16 進数に加えて、任意の基数（2〜36）にも変換できます。",
       "reset": "リセット",
       "error": "エラー",
       "bases": {
@@ -496,9 +496,9 @@
       "copy": "コピー"
     },
     "gcd-lcm-calculator": {
-      "title": "最大公約数/最小公倍数 計算機",
-      "description": "最大公約数（GCD）と最小公倍数（LCM）を計算します。",
-      "cardDescription": "2 つ以上の 0 以上の整数を入力して、最大公約数（GCD）と最小公倍数（LCM）を計算します。",
+      "title": "GCD/LCM Calculator",
+      "description": "最大公約数（GCD）と最小公倍数（LCM）を求めます。",
+      "cardDescription": "2 つ以上の整数から、最大公約数（GCD）と最小公倍数（LCM）を求めます。",
       "numbers": "数値",
       "placeholder": "例: 12, 18 または 8 12 16",
       "calculate": "計算",

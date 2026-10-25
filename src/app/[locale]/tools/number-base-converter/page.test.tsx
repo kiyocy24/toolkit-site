@@ -212,7 +212,7 @@ describe('NumberBaseConverterPage', () => {
 describe('NumberBaseConverterPage (ja)', () => {
     it('renders Japanese translations', () => {
         render(<NumberBaseConverterPage />, { locale: 'ja' })
-        expect(screen.getByText('基数変換')).toBeInTheDocument()
+        expect(screen.getByText('Number Base Converter')).toBeInTheDocument()
         expect(screen.getByRole('button', { name: 'リセット' })).toBeInTheDocument()
         expect(screen.getByLabelText('10 進数')).toBeInTheDocument()
         expect(screen.getByLabelText('任意の基数')).toBeInTheDocument()

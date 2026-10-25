@@ -59,7 +59,7 @@ describe('SqlFormatterPage', () => {
 describe('SqlFormatterPage (ja)', () => {
     it('renders Japanese translations', () => {
         render(<SqlFormatterPage />, { locale: 'ja' })
-        expect(screen.getByText('SQL フォーマッター')).toBeInTheDocument()
+        expect(screen.getByText('SQL Formatter')).toBeInTheDocument()
         expect(screen.getByText('入力 SQL')).toBeInTheDocument()
         expect(screen.getByRole('button', { name: 'SQL を整形' })).toBeInTheDocument()
         expect(screen.getByRole('button', { name: 'クリア' })).toBeInTheDocument()

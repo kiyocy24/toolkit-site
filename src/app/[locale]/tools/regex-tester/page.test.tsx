@@ -47,7 +47,7 @@ describe('RegexTesterPage', () => {
 describe('RegexTesterPage (ja)', () => {
     it('renders Japanese translations', () => {
         render(<RegexTesterPage />, { locale: 'ja' })
-        expect(screen.getByText('正規表現テスター')).toBeInTheDocument()
+        expect(screen.getByText('Regex Tester')).toBeInTheDocument()
         expect(screen.getByLabelText('正規表現パターン')).toHaveAttribute('placeholder', '例: [a-z0-9]+')
         expect(screen.getByLabelText('フラグ')).toBeInTheDocument()
         expect(screen.getByText('テスト文字列')).toBeInTheDocument()

@@ -300,7 +300,7 @@ describe("QrCodeGeneratorPage", () => {
 describe("QrCodeGeneratorPage (ja)", () => {
     it("renders Japanese translations", () => {
         render(<QrCodeGeneratorPage />, { locale: "ja" })
-        expect(screen.getByText("QR コード生成")).toBeInTheDocument()
+        expect(screen.getByText("QR Code Generator")).toBeInTheDocument()
         expect(screen.getByLabelText("内容")).toHaveAttribute("placeholder", "URL またはテキストを入力...")
         expect(screen.getByText("誤り訂正レベル")).toBeInTheDocument()
         expect(screen.getByText("サイズ（200px）")).toBeInTheDocument()

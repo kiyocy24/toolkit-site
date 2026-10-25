@@ -66,7 +66,7 @@ describe("LoremIpsumGeneratorPage (ja)", () => {
 
     it("renders Japanese translations", () => {
         render(<LoremIpsumGeneratorPage />, { locale: "ja" })
-        expect(screen.getByText("ダミーテキスト生成")).toBeInTheDocument()
+        expect(screen.getByText("Lorem Ipsum Generator")).toBeInTheDocument()
         expect(screen.getByText("レイアウト確認用のダミーテキストを生成します。")).toBeInTheDocument()
         expect(screen.getByLabelText("生成数")).toBeInTheDocument()
         expect(screen.getByText("単位")).toBeInTheDocument()

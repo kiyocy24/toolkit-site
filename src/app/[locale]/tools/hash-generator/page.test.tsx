@@ -100,7 +100,7 @@ describe("HashGeneratorPage", () => {
 describe("HashGeneratorPage (ja)", () => {
     it("renders Japanese translations", () => {
         render(<HashGeneratorPage />, { locale: "ja" })
-        expect(screen.getByText("ハッシュ生成")).toBeInTheDocument()
+        expect(screen.getByText("Hash Generator")).toBeInTheDocument()
         expect(screen.getByLabelText("入力テキスト")).toBeInTheDocument()
         expect(screen.getByPlaceholderText("ハッシュ化するテキストを入力...")).toBeInTheDocument()
         expect(screen.getByLabelText("大文字で出力")).toBeInTheDocument()

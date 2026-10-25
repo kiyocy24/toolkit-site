@@ -27,10 +27,10 @@ export default function Home() {
             >
               {t("followOnGithub")}
             </Link>
-            <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+            <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight [word-break:auto-phrase]">
               {t("heroTitle")}
             </h1>
-            <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+            <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8 text-balance [word-break:auto-phrase]">
               {t("heroDescription")}
             </p>
             <div className="space-x-4">

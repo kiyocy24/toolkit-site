@@ -78,7 +78,7 @@ describe("UrlEncoderDecoderPage", () => {
 describe("UrlEncoderDecoderPage (ja)", () => {
     it("renders Japanese translations", () => {
         render(<UrlEncoderDecoderPage />, { locale: "ja" });
-        expect(screen.getByText("URL エンコード/デコード")).toBeDefined();
+        expect(screen.getByText("URL Encoder / Decoder")).toBeDefined();
         expect(screen.getByText("入力テキスト")).toBeDefined();
         expect(screen.getByPlaceholderText("エンコードまたはデコードするテキストを入力...")).toBeDefined();
         expect(screen.getByRole("button", { name: "エンコード" })).toBeDefined();

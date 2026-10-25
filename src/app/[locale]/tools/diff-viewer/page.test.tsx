@@ -48,7 +48,7 @@ describe('DiffViewerPage', () => {
 describe('DiffViewerPage (ja)', () => {
     it('renders Japanese translations and compares texts', () => {
         render(<DiffViewerPage />, { locale: 'ja' })
-        expect(screen.getByText('差分ビューアー')).toBeInTheDocument()
+        expect(screen.getByText('Diff Viewer')).toBeInTheDocument()
         expect(screen.getByRole('button', { name: 'クリア' })).toBeInTheDocument()
         expect(screen.getByPlaceholderText('変更前のテキストを貼り付け...')).toBeInTheDocument()
 

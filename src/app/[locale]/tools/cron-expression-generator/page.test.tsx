@@ -94,11 +94,11 @@ describe('CronExpressionGeneratorPage', () => {
 describe('CronExpressionGeneratorPage (ja)', () => {
     it('renders Japanese translations', () => {
         render(<CronExpressionGeneratorPage />, { locale: 'ja' })
-        expect(screen.getByText('Cron 式の生成')).toBeInTheDocument()
+        expect(screen.getByText('Cron 式を作成')).toBeInTheDocument()
         expect(screen.getByRole('tab', { name: '生成' })).toBeInTheDocument()
         expect(screen.getByRole('tab', { name: '解説' })).toBeInTheDocument()
         expect(screen.getByText('曜日')).toBeInTheDocument()
-        expect(screen.getByText('読みやすい表記: 毎分')).toBeInTheDocument()
+        expect(screen.getByText('意味: 毎分')).toBeInTheDocument()
     })
 
     it('shows a Japanese error for an invalid expression', async () => {
@@ -107,7 +107,7 @@ describe('CronExpressionGeneratorPage (ja)', () => {
 
         await user.click(screen.getByRole('tab', { name: '解説' }))
         await waitFor(() => {
-            expect(screen.getByText('Cron 式を貼り付けると、その内容を確認できます。')).toBeInTheDocument()
+            expect(screen.getByText('Cron 式を入力すると、その意味を表示します。')).toBeInTheDocument()
         })
 
         const input = screen.getByPlaceholderText('例: */5 * * * *')

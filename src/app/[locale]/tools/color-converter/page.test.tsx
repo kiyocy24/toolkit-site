@@ -79,8 +79,8 @@ describe("ColorConverterPage", () => {
 describe("ColorConverterPage (ja)", () => {
     it("renders Japanese translations", () => {
         render(<ColorConverterPage />, { locale: "ja" })
-        expect(screen.getByText("カラー変換")).toBeInTheDocument()
-        expect(screen.getByText("HEX、RGB、HSL、CMYK の各形式を相互に変換します。")).toBeInTheDocument()
+        expect(screen.getByText("Color Converter")).toBeInTheDocument()
+        expect(screen.getByText("HEX・RGB・HSL・CMYK を相互に変換します。")).toBeInTheDocument()
         expect(screen.getByLabelText("色を選択")).toBeInTheDocument()
         expect(screen.getByTitle("HEX をコピー")).toBeInTheDocument()
         expect(screen.getByRole("button", { name: "RGB をコピー" })).toBeInTheDocument()

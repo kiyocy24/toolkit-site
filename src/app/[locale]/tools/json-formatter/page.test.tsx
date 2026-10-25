@@ -132,7 +132,7 @@ describe('JsonFormatterPage', () => {
 describe('JsonFormatterPage (ja)', () => {
     it('renders Japanese translations', () => {
         render(<JsonFormatterPage />, { locale: 'ja' })
-        expect(screen.getByText('JSON フォーマッター')).toBeInTheDocument()
+        expect(screen.getByText('JSON Formatter')).toBeInTheDocument()
         expect(screen.getByText('入力 JSON')).toBeInTheDocument()
         expect(screen.getByRole('button', { name: '整形' })).toBeInTheDocument()
         expect(screen.getByRole('button', { name: '圧縮' })).toBeInTheDocument()

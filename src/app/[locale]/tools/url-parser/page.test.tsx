@@ -69,7 +69,7 @@ describe("UrlParser", () => {
 describe("UrlParser (ja)", () => {
     it("renders Japanese translations", () => {
         render(<UrlParser />, { locale: "ja" })
-        expect(screen.getByText("URL パーサー")).toBeInTheDocument()
+        expect(screen.getByText("URL Parser")).toBeInTheDocument()
         expect(screen.getByText("URL 文字列")).toBeInTheDocument()
         expect(screen.getByText("クエリパラメーター")).toBeInTheDocument()
         expect(screen.getByText("クエリパラメーターはありません。")).toBeInTheDocument()

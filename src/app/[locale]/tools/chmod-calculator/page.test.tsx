@@ -47,7 +47,7 @@ describe("ChmodCalculator", () => {
 describe("ChmodCalculator (ja)", () => {
     it("renders Japanese translations", () => {
         render(<ChmodCalculator />, { locale: "ja" })
-        expect(screen.getByText("Chmod 計算機")).toBeInTheDocument()
+        expect(screen.getByText("Chmod Calculator")).toBeInTheDocument()
         expect(screen.getByText("所有者")).toBeInTheDocument()
         expect(screen.getAllByLabelText("書き込み (2)")).toHaveLength(3)
         expect(screen.getByLabelText("8 進数表記（例: 755）")).toHaveValue("755")

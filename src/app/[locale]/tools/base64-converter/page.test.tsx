@@ -62,7 +62,7 @@ describe('Base64ConverterPage', () => {
 describe('Base64ConverterPage (ja)', () => {
     it('renders Japanese translations', () => {
         render(<Base64ConverterPage />, { locale: 'ja' })
-        expect(screen.getByText('Base64 変換')).toBeInTheDocument()
+        expect(screen.getByText('Base64 Converter')).toBeInTheDocument()
         expect(screen.getByRole('tab', { name: 'エンコード' })).toBeInTheDocument()
         expect(screen.getByRole('tab', { name: 'デコード' })).toBeInTheDocument()
         expect(screen.getByLabelText('入力')).toHaveAttribute('placeholder', 'エンコードするテキストを入力...')

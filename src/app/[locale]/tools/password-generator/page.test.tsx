@@ -124,7 +124,7 @@ describe("PasswordGeneratorPage (ja)", () => {
 
     it("renders Japanese translations", () => {
         render(<PasswordGeneratorPage />, { locale: "ja" })
-        expect(screen.getByText("パスワード生成")).toBeInTheDocument()
+        expect(screen.getByText("Password Generator")).toBeInTheDocument()
         expect(screen.getByLabelText("生成されたパスワード")).not.toHaveValue("")
         expect(screen.getByRole("button", { name: "コピー" })).toBeInTheDocument()
         expect(screen.getByRole("button", { name: "パスワードを再生成" })).toBeInTheDocument()

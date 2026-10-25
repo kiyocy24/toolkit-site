@@ -92,7 +92,7 @@ describe("UnixTimestampConverterPage (ja)", () => {
     it("renders Japanese translations", () => {
         render(<UnixTimestampConverterPage />, { locale: "ja" });
 
-        expect(screen.getByText("Unix タイムスタンプ変換")).toBeDefined();
+        expect(screen.getByText("Unix Timestamp Converter")).toBeDefined();
         expect(screen.getByText("UTC（協定世界時）")).toBeDefined();
         expect(screen.getByText("入力形式")).toBeDefined();
         expect(screen.getByLabelText("日時文字列")).toBeDefined();

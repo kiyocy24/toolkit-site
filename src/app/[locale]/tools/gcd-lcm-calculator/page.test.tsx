@@ -129,7 +129,7 @@ describe("GCD/LCM Calculator", () => {
 describe("GCD/LCM Calculator (ja)", () => {
     it("renders Japanese translations", () => {
         render(<GcdLcmCalculatorPage />, { locale: "ja" });
-        expect(screen.getByText("最大公約数/最小公倍数 計算機")).toBeInTheDocument();
+        expect(screen.getByText("GCD/LCM Calculator")).toBeInTheDocument();
         expect(screen.getByLabelText("数値")).toBeInTheDocument();
         expect(screen.getByRole("button", { name: "計算" })).toBeInTheDocument();
         expect(screen.getByText("数値はカンマまたはスペースで区切ってください。")).toBeInTheDocument();

@@ -61,7 +61,7 @@ describe("CollatzConjecturePage", () => {
 describe("CollatzConjecturePage (ja)", () => {
     it("renders Japanese translations", () => {
         render(<CollatzConjecturePage />, { locale: "ja" })
-        expect(screen.getByText("コラッツ予想")).toBeDefined()
+        expect(screen.getByText("Collatz Conjecture")).toBeDefined()
         expect(screen.getByLabelText("開始値")).toBeDefined()
         expect(screen.getByPlaceholderText("例: 27")).toBeDefined()
         expect(screen.getByRole("button", { name: "計算" })).toBeDefined()

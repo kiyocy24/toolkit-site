@@ -145,7 +145,7 @@ describe("PrimeFactorizationPage", () => {
 describe("PrimeFactorizationPage (ja)", () => {
     it("renders Japanese translations", () => {
         render(<PrimeFactorizationPage />, { locale: "ja" })
-        expect(screen.getByText("素因数分解")).toBeDefined()
+        expect(screen.getByText("Prime Factorization")).toBeDefined()
         expect(screen.getByLabelText("数値")).toBeDefined()
         expect(screen.getByPlaceholderText("例: 123456789")).toBeDefined()
         expect(screen.getByRole("button", { name: "分解" })).toBeDefined()

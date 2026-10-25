@@ -257,7 +257,7 @@ describe("JwtDebuggerPage (ja)", () => {
 
     it("renders Japanese translations", () => {
         render(<JwtDebuggerPage />, { locale: "ja" })
-        expect(screen.getByText("JWT デバッガー")).toBeInTheDocument()
+        expect(screen.getByText("JWT Debugger")).toBeInTheDocument()
         expect(screen.getByRole("tab", { name: "デコード" })).toBeInTheDocument()
         expect(screen.getByRole("tab", { name: "エンコード" })).toBeInTheDocument()
         expect(screen.getByLabelText("JWT トークン")).toBeInTheDocument()

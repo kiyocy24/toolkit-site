@@ -81,8 +81,8 @@ describe("StringCaseConverter", () => {
 describe("StringCaseConverter (ja)", () => {
     it("renders Japanese translations", () => {
         render(<StringCaseConverter />, { locale: "ja" })
-        expect(screen.getByText("文字列ケース変換")).toBeDefined()
-        expect(screen.getByText("テキストをさまざまな命名規則や形式に変換します。")).toBeDefined()
+        expect(screen.getByText("String Case Converter")).toBeDefined()
+        expect(screen.getByText("テキストを camelCase や snake_case などの形式に一括変換します。")).toBeDefined()
         const input = screen.getByLabelText("入力テキスト")
         expect(input).toBeDefined()
 
