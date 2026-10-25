@@ -51,3 +51,12 @@ describe('UuidGeneratorPage', () => {
         expect(outputs).toHaveLength(2)
     })
 })
+
+describe('UuidGeneratorPage (ja)', () => {
+    it('renders Japanese translations', () => {
+        render(<UuidGeneratorPage />, { locale: 'ja' })
+        expect(screen.getByText('UUID 生成')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: '生成' })).toBeInTheDocument()
+        expect(screen.getByLabelText('生成数（1〜50）')).toBeInTheDocument()
+    })
+})

@@ -74,7 +74,13 @@
     },
     "uuid-generator": {
       "title": "UUID 生成",
-      "description": "ランダムな UUID v4 を生成します。"
+      "description": "ランダムな UUID v4 を生成します。",
+      "cardDescription": "ランダムな v4 UUID を生成します。",
+      "count": "生成数（1〜50）",
+      "generate": "生成",
+      "generatedUuids": "生成された UUID",
+      "copyAll": "すべてコピー",
+      "copy": "コピー"
     },
     "sql-formatter": {
       "title": "SQL フォーマッター",

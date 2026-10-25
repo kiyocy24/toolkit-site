@@ -74,7 +74,13 @@
     },
     "uuid-generator": {
       "title": "UUID Generator",
-      "description": "Generate random UUIDs v4."
+      "description": "Generate random UUIDs v4.",
+      "cardDescription": "Generate random v4 UUIDs.",
+      "count": "Count (1-50)",
+      "generate": "Generate",
+      "generatedUuids": "Generated UUIDs",
+      "copyAll": "Copy All",
+      "copy": "Copy"
     },
     "sql-formatter": {
       "title": "SQL Formatter",
