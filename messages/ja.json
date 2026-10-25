@@ -1,0 +1,164 @@
+{
+  "Metadata": {
+    "title": "Toolkit",
+    "description": "開発者の生産性を高めるツールを厳選して集めました。フォーマッターからジェネレーターまで、必要なものがひとつの場所に揃っています。"
+  },
+  "Header": {
+    "docs": "ドキュメント",
+    "tools": "ツール",
+    "searchLong": "ツールを検索...",
+    "searchShort": "検索..."
+  },
+  "MobileNav": {
+    "toggleMenu": "メニューを開閉",
+    "title": "モバイルナビゲーション",
+    "description": "メインナビゲーションメニュー"
+  },
+  "CommandMenu": {
+    "placeholder": "コマンドを入力または検索...",
+    "empty": "該当する結果がありません。"
+  },
+  "LocaleSwitcher": {
+    "label": "言語を切り替える"
+  },
+  "Home": {
+    "followOnGithub": "GitHub で開発をフォロー",
+    "heroTitle": "モダンなエンジニアのための必須ツール",
+    "heroDescription": "開発者の生産性を高めるツールを厳選して集めました。フォーマッターからジェネレーターまで、必要なものがひとつの場所に揃っています。",
+    "exploreTools": "ツールを見る",
+    "featuresTitle": "機能",
+    "featuresDescription": "このプロジェクトは、Next.js 15 と shadcn/ui でモダンなツールキットアプリをどう作れるかを試す実験です。",
+    "footer": "<author>kiyocy24</author> が開発しています。ソースコードは <github>GitHub</github> で公開しています。"
+  },
+  "ToolsIndex": {
+    "title": "すべてのツール",
+    "description": "開発者向けツールをカテゴリ別に一覧できます。"
+  },
+  "ToolsLayout": {
+    "title": "開発者ツール",
+    "description": "日々の開発作業に役立つ、シンプルで効率的なツール集です。",
+    "searchPlaceholder": "ツールを検索...",
+    "selectPlaceholder": "ツールを選択",
+    "noTools": "ツールが見つかりません",
+    "noToolsMatching": "「{query}」に一致するツールが見つかりません"
+  },
+  "Docs": {
+    "metaTitle": "ドキュメント",
+    "title": "はじめに",
+    "paragraph1": "個人的にほしいなと思ったものを作っているだけです。 主にエンジニアが使うツールを提供しています。",
+    "paragraph2": "計算処理はすべてクライアントで実行しています。 使い方によっては端末に負荷をかける可能性があるのでご注意ください。",
+    "paragraph3": "動作は保証しませんので、利用は自己責任でお願いします。"
+  },
+  "NotFound": {
+    "title": "ページが見つかりません",
+    "description": "お探しのページは存在しません。",
+    "backToHome": "ホームに戻る"
+  },
+  "Categories": {
+    "Core": "コア",
+    "Utility": "ユーティリティ",
+    "Development": "開発",
+    "Security": "セキュリティ",
+    "Database": "データベース",
+    "Math": "数学",
+    "Date": "日付"
+  },
+  "Tools": {
+    "json-formatter": {
+      "title": "JSON フォーマッター",
+      "description": "JSON データを整形・検証します。"
+    },
+    "base64-converter": {
+      "title": "Base64 変換",
+      "description": "Base64 文字列をエンコード・デコードします。"
+    },
+    "uuid-generator": {
+      "title": "UUID 生成",
+      "description": "ランダムな UUID v4 を生成します。"
+    },
+    "sql-formatter": {
+      "title": "SQL フォーマッター",
+      "description": "SQL クエリを見やすく整形します。"
+    },
+    "regex-tester": {
+      "title": "正規表現テスター",
+      "description": "正規表現をテストします。"
+    },
+    "diff-viewer": {
+      "title": "差分ビューアー",
+      "description": "2 つのテキストを比較します。"
+    },
+    "prime-factorization": {
+      "title": "素因数分解",
+      "description": "整数を素因数に分解します。"
+    },
+    "collatz-conjecture": {
+      "title": "コラッツ予想",
+      "description": "3n + 1 数列を可視化します。"
+    },
+    "hash-generator": {
+      "title": "ハッシュ生成",
+      "description": "テキストのハッシュ値（MD5、SHA）を計算します。"
+    },
+    "color-converter": {
+      "title": "カラー変換",
+      "description": "色の表記形式（HEX、RGB、HSL）を変換します。"
+    },
+    "password-generator": {
+      "title": "パスワード生成",
+      "description": "安全なランダムパスワードを生成します。"
+    },
+    "qr-code-generator": {
+      "title": "QR コード生成",
+      "description": "URL やテキストから QR コードを生成します。"
+    },
+    "jwt-debugger": {
+      "title": "JWT デバッガー",
+      "description": "JSON Web Token のデコード・エンコード・署名を行います。"
+    },
+    "css-unit-converter": {
+      "title": "CSS 単位変換",
+      "description": "px、rem、em の単位を相互に変換します。"
+    },
+    "markdown-previewer": {
+      "title": "Markdown プレビュー",
+      "description": "GFM 対応で Markdown テキストをプレビューします。"
+    },
+    "unix-timestamp-converter": {
+      "title": "Unix タイムスタンプ変換",
+      "description": "タイムスタンプと日時を相互に変換します。"
+    },
+    "url-encoder-decoder": {
+      "title": "URL エンコード/デコード",
+      "description": "URL 文字列をエンコード・デコードします。"
+    },
+    "cron-expression-generator": {
+      "title": "Cron 式ジェネレーター",
+      "description": "Cron 式を生成・解説します。"
+    },
+    "lorem-ipsum-generator": {
+      "title": "ダミーテキスト生成",
+      "description": "ダミーテキスト（Lorem Ipsum、日本語）を生成します。"
+    },
+    "string-case-converter": {
+      "title": "文字列ケース変換",
+      "description": "テキストをさまざまな命名規則（ケース）に変換します。"
+    },
+    "chmod-calculator": {
+      "title": "Chmod 計算機",
+      "description": "Linux/Unix のファイルパーミッションを計算します。"
+    },
+    "url-parser": {
+      "title": "URL パーサー",
+      "description": "URL を分解・編集・再構築します。"
+    },
+    "number-base-converter": {
+      "title": "基数変換",
+      "description": "2 進数・8 進数・10 進数・16 進数を相互に変換します。"
+    },
+    "gcd-lcm-calculator": {
+      "title": "最大公約数/最小公倍数 計算機",
+      "description": "最大公約数（GCD）と最小公倍数（LCM）を計算します。"
+    }
+  }
+}

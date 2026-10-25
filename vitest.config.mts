@@ -11,6 +11,12 @@ export default defineConfig({
         environment: 'happy-dom',
         globals: true,
         setupFiles: './src/test/setup.ts',
+        server: {
+            deps: {
+                // next-intl は ESM のみのため、Vitest で変換対象に含める
+                inline: ['next-intl'],
+            },
+        },
         alias: {
             '@': path.resolve(__dirname, './src'),
         },

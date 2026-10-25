@@ -3,13 +3,17 @@
 import * as React from "react"
 import Link from "next/link"
 import { Github } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { cn } from "@/lib/utils"
 import { CommandMenu } from "@/components/command-menu"
 import { MobileNav } from "@/components/mobile-nav"
+import { LocaleSwitcher } from "@/components/locale-switcher"
+import { Link as LocaleLink } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
 
 export function SiteHeader() {
+    const t = useTranslations("Header")
     const [open, setOpen] = React.useState(false)
 
     React.useEffect(() => {
@@ -38,25 +42,25 @@ export function SiteHeader() {
             <div className="container mx-auto flex h-14 items-center">
                 <MobileNav />
                 <div className="md:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-                    <Link href="/" className="font-bold pointer-events-auto">Toolkit</Link>
+                    <LocaleLink href="/" className="font-bold pointer-events-auto">Toolkit</LocaleLink>
                 </div>
                 <div className="mr-4 hidden md:flex">
-                    <Link className="mr-6 flex items-center space-x-2" href="/">
+                    <LocaleLink className="mr-6 flex items-center space-x-2" href="/">
                         <span className="hidden font-bold sm:inline-block">Toolkit</span>
-                    </Link>
+                    </LocaleLink>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
-                        <Link
+                        <LocaleLink
                             href="/docs"
                             className="transition-colors hover:text-foreground/80 text-foreground/60"
                         >
-                            Docs
-                        </Link>
-                        <Link
+                            {t("docs")}
+                        </LocaleLink>
+                        <LocaleLink
                             href="/tools"
                             className="transition-colors hover:text-foreground/80 text-foreground/60"
                         >
-                            Tools
-                        </Link>
+                            {t("tools")}
+                        </LocaleLink>
                     </nav>
                 </div>
                 <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -68,15 +72,16 @@ export function SiteHeader() {
                             )}
                             onClick={() => setOpen(true)}
                         >
-                            <span className="hidden lg:inline-flex">Search documentation...</span>
-                            <span className="inline-flex lg:hidden">Search...</span>
+                            <span className="hidden lg:inline-flex">{t("searchLong")}</span>
+                            <span className="inline-flex lg:hidden">{t("searchShort")}</span>
                             <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
                                 <span className="text-xs">⌘</span>K
                             </kbd>
                         </Button>
                         <CommandMenu open={open} onOpenChange={setOpen} />
                     </div>
-                    <nav className="flex items-center">
+                    <nav className="flex items-center gap-2">
+                        <LocaleSwitcher />
                         <Link
                             href="https://github.com/kiyocy24/toolkit-site"
                             target="_blank"

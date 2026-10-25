@@ -1,15 +1,17 @@
 "use client"
 
 import * as React from "react"
-import Link, { LinkProps } from "next/link"
-import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { Monitor, FileText, Menu, Settings } from "lucide-react"
 
+import { Link, useRouter } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 
 export function MobileNav() {
+    const t = useTranslations("MobileNav")
+    const tHeader = useTranslations("Header")
     const [open, setOpen] = React.useState(false)
 
     return (
@@ -17,12 +19,12 @@ export function MobileNav() {
             <SheetTrigger asChild>
                 <Button variant="ghost" className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden">
                     <Menu className="h-5 w-5" />
-                    <span className="sr-only">Toggle Menu</span>
+                    <span className="sr-only">{t("toggleMenu")}</span>
                 </Button>
             </SheetTrigger>
             <SheetContent side="left" className="pl-6 pr-6 pt-10">
-                <SheetTitle className="sr-only">Mobile Navigation</SheetTitle>
-                <SheetDescription className="sr-only">Main navigation menu</SheetDescription>
+                <SheetTitle className="sr-only">{t("title")}</SheetTitle>
+                <SheetDescription className="sr-only">{t("description")}</SheetDescription>
 
                 <div className="px-2 mb-8">
                     <MobileLink
@@ -38,13 +40,13 @@ export function MobileNav() {
                     <MobileLink href="/docs" onOpenChange={setOpen} className="text-muted-foreground hover:text-foreground transition-colors">
                         <div className="flex items-center gap-4 py-2">
                             <FileText className="h-5 w-5" />
-                            <span className="text-base font-medium">Docs</span>
+                            <span className="text-base font-medium">{tHeader("docs")}</span>
                         </div>
                     </MobileLink>
                     <MobileLink href="/tools" onOpenChange={setOpen} className="text-muted-foreground hover:text-foreground transition-colors">
                         <div className="flex items-center gap-4 py-2">
                             <Monitor className="h-5 w-5" />
-                            <span className="text-base font-medium">Tools</span>
+                            <span className="text-base font-medium">{tHeader("tools")}</span>
                         </div>
                     </MobileLink>
                 </div>
@@ -53,10 +55,9 @@ export function MobileNav() {
     )
 }
 
-interface MobileLinkProps extends LinkProps {
+interface MobileLinkProps extends Omit<React.ComponentProps<typeof Link>, "href"> {
+    href: string
     onOpenChange?: (open: boolean) => void
-    children: React.ReactNode
-    className?: string
 }
 
 function MobileLink({
@@ -71,7 +72,7 @@ function MobileLink({
         <Link
             href={href}
             onClick={() => {
-                router.push(href.toString())
+                router.push(href)
                 onOpenChange?.(false)
             }}
             className={cn(className)}

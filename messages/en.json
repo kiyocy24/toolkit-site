@@ -1,0 +1,164 @@
+{
+  "Metadata": {
+    "title": "Toolkit",
+    "description": "A curated collection of developer tools to boost your productivity. From formatters to generators, everything you need in one place."
+  },
+  "Header": {
+    "docs": "Docs",
+    "tools": "Tools",
+    "searchLong": "Search documentation...",
+    "searchShort": "Search..."
+  },
+  "MobileNav": {
+    "toggleMenu": "Toggle Menu",
+    "title": "Mobile Navigation",
+    "description": "Main navigation menu"
+  },
+  "CommandMenu": {
+    "placeholder": "Type a command or search...",
+    "empty": "No results found."
+  },
+  "LocaleSwitcher": {
+    "label": "Change language"
+  },
+  "Home": {
+    "followOnGithub": "Follow along on GitHub",
+    "heroTitle": "Essential Tools for Modern Engineers",
+    "heroDescription": "A curated collection of developer tools to boost your productivity. From formatters to generators, everything you need in one place.",
+    "exploreTools": "Explore Tools",
+    "featuresTitle": "Features",
+    "featuresDescription": "This project is an experiment to see how we can build a modern toolkit app with Next.js 15 and shadcn/ui.",
+    "footer": "Built by <author>kiyocy24</author>. The source code is available on <github>GitHub</github>."
+  },
+  "ToolsIndex": {
+    "title": "All Tools",
+    "description": "Browse our collection of developer tools by category."
+  },
+  "ToolsLayout": {
+    "title": "Developer Tools",
+    "description": "Simple and efficient tools for your daily development tasks.",
+    "searchPlaceholder": "Search tools...",
+    "selectPlaceholder": "Select a tool",
+    "noTools": "No tools found",
+    "noToolsMatching": "No tools found matching \"{query}\""
+  },
+  "Docs": {
+    "metaTitle": "Docs",
+    "title": "Introduction",
+    "paragraph1": "These are just tools I personally wanted, built for my own use. They are mainly intended for engineers.",
+    "paragraph2": "All computations run on the client side. Depending on how you use them, they may put a heavy load on your device, so please be careful.",
+    "paragraph3": "No guarantees are made about how these tools behave. Use them at your own risk."
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist.",
+    "backToHome": "Back to Home"
+  },
+  "Categories": {
+    "Core": "Core",
+    "Utility": "Utility",
+    "Development": "Development",
+    "Security": "Security",
+    "Database": "Database",
+    "Math": "Math",
+    "Date": "Date"
+  },
+  "Tools": {
+    "json-formatter": {
+      "title": "JSON Formatter",
+      "description": "Format and validate your JSON data."
+    },
+    "base64-converter": {
+      "title": "Base64 Converter",
+      "description": "Encode and decode Base64 strings."
+    },
+    "uuid-generator": {
+      "title": "UUID Generator",
+      "description": "Generate random UUIDs v4."
+    },
+    "sql-formatter": {
+      "title": "SQL Formatter",
+      "description": "Beautify your SQL queries."
+    },
+    "regex-tester": {
+      "title": "Regex Tester",
+      "description": "Test your regular expressions."
+    },
+    "diff-viewer": {
+      "title": "Diff Viewer",
+      "description": "Compare two text contents."
+    },
+    "prime-factorization": {
+      "title": "Prime Factorization",
+      "description": "Decompose integers into prime factors."
+    },
+    "collatz-conjecture": {
+      "title": "Collatz Conjecture",
+      "description": "Visualize the 3n + 1 sequence."
+    },
+    "hash-generator": {
+      "title": "Hash Generator",
+      "description": "Compute text hashes (MD5, SHA)."
+    },
+    "color-converter": {
+      "title": "Color Converter",
+      "description": "Convert color formats (HEX, RGB, HSL)."
+    },
+    "password-generator": {
+      "title": "Password Generator",
+      "description": "Generate secure random passwords."
+    },
+    "qr-code-generator": {
+      "title": "QR Code Generator",
+      "description": "Generate QR codes for URLs or text."
+    },
+    "jwt-debugger": {
+      "title": "JWT Debugger",
+      "description": "Decode, encode, and sign JSON Web Tokens."
+    },
+    "css-unit-converter": {
+      "title": "CSS Unit Converter",
+      "description": "Convert between px, rem, and em units."
+    },
+    "markdown-previewer": {
+      "title": "Markdown Previewer",
+      "description": "Preview markdown text with GFM support."
+    },
+    "unix-timestamp-converter": {
+      "title": "Unix Timestamp Converter",
+      "description": "Convert timestamps to dates and vice versa."
+    },
+    "url-encoder-decoder": {
+      "title": "URL Encoder/Decoder",
+      "description": "Encode and decode URL strings."
+    },
+    "cron-expression-generator": {
+      "title": "Cron Expression Generator",
+      "description": "Generate and explain cron expressions."
+    },
+    "lorem-ipsum-generator": {
+      "title": "Lorem Ipsum Generator",
+      "description": "Generate dummy text (Lorem Ipsum, Japanese)."
+    },
+    "string-case-converter": {
+      "title": "String Case Converter",
+      "description": "Convert text between different naming cases."
+    },
+    "chmod-calculator": {
+      "title": "Chmod Calculator",
+      "description": "Calculate Linux/Unix file permissions."
+    },
+    "url-parser": {
+      "title": "URL Parser",
+      "description": "Parse, edit, and rebuild URLs."
+    },
+    "number-base-converter": {
+      "title": "Number Base Converter",
+      "description": "Convert numbers between Binary, Octal, Decimal, and Hex."
+    },
+    "gcd-lcm-calculator": {
+      "title": "GCD/LCM Calculator",
+      "description": "Calculate Greatest Common Divisor and Least Common Multiple."
+    }
+  }
+}
