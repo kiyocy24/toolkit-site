@@ -1,0 +1,521 @@
+{
+  "Metadata": {
+    "title": "Toolkit",
+    "description": "フォーマッターや変換ツールなど、開発でよく使うツールをまとめました。"
+  },
+  "Header": {
+    "docs": "ドキュメント",
+    "tools": "ツール",
+    "searchLong": "ツールを検索...",
+    "searchShort": "検索..."
+  },
+  "MobileNav": {
+    "toggleMenu": "メニューを開閉",
+    "title": "モバイルナビゲーション",
+    "description": "メインナビゲーションメニュー"
+  },
+  "CommandMenu": {
+    "placeholder": "ツールを検索...",
+    "empty": "該当する結果がありません。"
+  },
+  "LocaleSwitcher": {
+    "label": "言語を切り替える"
+  },
+  "Home": {
+    "followOnGithub": "Follow along on GitHub",
+    "heroTitle": "エンジニアのための便利ツール集",
+    "heroDescription": "フォーマッターや変換ツールなど、開発でよく使うツールをまとめました。",
+    "exploreTools": "ツール一覧を見る",
+    "featuresTitle": "ツール",
+    "featuresDescription": "Next.js 15 と shadcn/ui で作っている、実験的なツール集です。",
+    "footer": "<author>kiyocy24</author> が開発しています。ソースコードは <github>GitHub</github> で公開しています。"
+  },
+  "ToolsIndex": {
+    "title": "ツール一覧",
+    "description": "よく使う開発ツールをカテゴリ別にまとめています。"
+  },
+  "ToolsLayout": {
+    "title": "開発ツール",
+    "description": "日々の開発でちょっと使いたいツールをまとめています。",
+    "searchPlaceholder": "ツールを検索...",
+    "selectPlaceholder": "ツールを選択",
+    "noTools": "ツールが見つかりません",
+    "noToolsMatching": "「{query}」に一致するツールが見つかりません"
+  },
+  "Docs": {
+    "metaTitle": "ドキュメント",
+    "title": "はじめに",
+    "paragraph1": "個人的にほしいなと思ったものを作っているだけです。 主にエンジニアが使うツールを提供しています。",
+    "paragraph2": "計算処理はすべてクライアントで実行しています。 使い方によっては端末に負荷をかける可能性があるのでご注意ください。",
+    "paragraph3": "動作は保証しませんので、利用は自己責任でお願いします。"
+  },
+  "NotFound": {
+    "title": "ページが見つかりません",
+    "description": "お探しのページは存在しません。",
+    "backToHome": "ホームに戻る"
+  },
+  "Categories": {
+    "Core": "定番",
+    "Utility": "ユーティリティ",
+    "Development": "開発",
+    "Security": "セキュリティ",
+    "Database": "データベース",
+    "Math": "数学",
+    "Date": "日付・時刻"
+  },
+  "Tools": {
+    "json-formatter": {
+      "title": "JSON Formatter",
+      "description": "JSON を整形・検証します。",
+      "cardDescription": "JSON を整形・検証します。",
+      "inputJson": "入力 JSON",
+      "clear": "クリア",
+      "dropFileHere": "ここにファイルをドロップ",
+      "placeholder": "ここに JSON を貼り付け...",
+      "format": "整形",
+      "minify": "圧縮",
+      "output": "出力",
+      "copy": "コピー",
+      "errors": {
+        "syntaxAt": "構文エラー: {message}（{line} 行目、{column} 列目）",
+        "syntax": "構文エラー: {message}",
+        "invalidJson": "無効な JSON です",
+        "fileReadFailed": "ファイルを読み込めませんでした。"
+      }
+    },
+    "base64-converter": {
+      "title": "Base64 Converter",
+      "description": "Base64 文字列をエンコード・デコードします。",
+      "cardDescription": "Base64 文字列をエンコード・デコードします。",
+      "tabs": {
+        "encode": "エンコード",
+        "decode": "デコード"
+      },
+      "input": "入力",
+      "output": "出力",
+      "clear": "クリア",
+      "copy": "コピー",
+      "placeholders": {
+        "encode": "エンコードするテキストを入力...",
+        "decode": "デコードする Base64 文字列を貼り付け..."
+      },
+      "errors": {
+        "invalidEncode": "エンコードできない入力です",
+        "invalidDecode": "デコードできない入力です"
+      }
+    },
+    "uuid-generator": {
+      "title": "UUID Generator",
+      "description": "UUID v4 をまとめて生成します。",
+      "cardDescription": "UUID v4 をまとめて生成します。",
+      "count": "生成数（1〜50）",
+      "generate": "生成",
+      "generatedUuids": "生成された UUID",
+      "copyAll": "すべてコピー",
+      "copy": "コピー"
+    },
+    "sql-formatter": {
+      "title": "SQL Formatter",
+      "description": "SQL クエリを読みやすく整形します。",
+      "cardDescription": "SQL クエリを読みやすく整形します。",
+      "inputSql": "入力 SQL",
+      "dialect": "方言",
+      "standardSql": "標準 SQL",
+      "clear": "クリア",
+      "formatSql": "SQL を整形",
+      "output": "出力",
+      "copy": "コピー",
+      "errors": {
+        "formatFailed": "SQL を整形できませんでした。選択した方言では無効な構文の可能性があります。"
+      }
+    },
+    "regex-tester": {
+      "title": "Regex Tester",
+      "description": "正規表現の動作を確認します。",
+      "cardDescription": "正規表現にマッチする箇所をリアルタイムでハイライトします。",
+      "pattern": "正規表現パターン",
+      "patternPlaceholder": "例: {example}",
+      "flags": "フラグ",
+      "error": "エラー: {message}",
+      "testString": "テスト文字列",
+      "testStringPlaceholder": "テキストを貼り付けてください...",
+      "clear": "クリア",
+      "matchResult": "マッチ結果"
+    },
+    "diff-viewer": {
+      "title": "Diff Viewer",
+      "description": "2 つのテキストの差分を表示します。",
+      "cardDescription": "2 つのテキストを並べて差分を確認します。",
+      "clear": "クリア",
+      "originalText": "変更前のテキスト",
+      "originalPlaceholder": "変更前のテキストを貼り付け...",
+      "modifiedText": "変更後のテキスト",
+      "modifiedPlaceholder": "変更後のテキストを貼り付け...",
+      "compare": "比較",
+      "differences": "差分"
+    },
+    "prime-factorization": {
+      "title": "Prime Factorization",
+      "description": "整数を素因数分解します。",
+      "cardDescription": "整数を素因数分解します。大きな数にも対応しています。",
+      "number": "数値",
+      "placeholder": "例: 123456789",
+      "factorize": "分解",
+      "processing": "処理中",
+      "calculatingWarning": "計算中... 大きな数は時間がかかる場合があります。",
+      "error": "エラー",
+      "result": "結果:",
+      "primeNumber": "素数",
+      "copyResult": "結果をコピー",
+      "resultCopied": "結果をコピーしました",
+      "errors": {
+        "tooLarge": "入力が大きすぎます。20 桁以下の整数を入力してください。",
+        "invalidInteger": "有効な整数を入力してください。",
+        "notGreaterThanOne": "1 より大きい整数を入力してください。",
+        "invalidInput": "入力が無効です。"
+      }
+    },
+    "collatz-conjecture": {
+      "title": "Collatz Conjecture",
+      "description": "コラッツ数列（3n + 1 問題）を可視化します。",
+      "cardDescription": "入力した数から始まるコラッツ数列を可視化します（偶数なら n / 2、奇数なら 3n + 1）。",
+      "startingNumber": "開始値",
+      "placeholder": "例: 27",
+      "calculate": "計算",
+      "error": "エラー",
+      "steps": "ステップ数",
+      "maxValue": "最大値",
+      "step": "ステップ",
+      "value": "値",
+      "operation": "操作",
+      "initialValue": "初期値",
+      "errors": {
+        "invalidInteger": "有効な正の整数を入力してください。",
+        "notPositive": "0 より大きい整数を入力してください。",
+        "tooManySteps": "{maxSteps} ステップで計算を停止しました。数列が長すぎて表示できません。",
+        "invalidInput": "入力が無効です。"
+      }
+    },
+    "hash-generator": {
+      "title": "Hash Generator",
+      "description": "テキストのハッシュ値（MD5・SHA）を計算します。",
+      "cardDescription": "MD5・SHA-1・SHA-256・SHA-512 のハッシュ値を計算します。",
+      "inputText": "入力テキスト",
+      "inputPlaceholder": "ハッシュ化するテキストを入力...",
+      "uppercaseOutput": "大文字で出力",
+      "outputPlaceholder": "{algo} ハッシュがここに表示されます...",
+      "copy": "コピー"
+    },
+    "color-converter": {
+      "title": "Color Converter",
+      "description": "色の表記（HEX・RGB・HSL）を相互に変換します。",
+      "cardDescription": "HEX・RGB・HSL・CMYK を相互に変換します。",
+      "pickColor": "色を選択",
+      "copyFormat": "{format} をコピー"
+    },
+    "password-generator": {
+      "title": "Password Generator",
+      "description": "安全なランダムパスワードを作成します。",
+      "cardDescription": "長さや文字の種類を指定して、安全なパスワードを作成します。",
+      "generatedPassword": "生成されたパスワード",
+      "copy": "コピー",
+      "refresh": "パスワードを再生成",
+      "length": "文字数: {length}",
+      "uppercase": "英大文字（{chars}）",
+      "lowercase": "英小文字（{chars}）",
+      "numbers": "数字（{chars}）",
+      "symbols": "記号（{chars}）"
+    },
+    "qr-code-generator": {
+      "title": "QR Code Generator",
+      "description": "URL やテキストから QR コードを生成します。",
+      "cardDescription": "URL やテキストから QR コードを生成します。",
+      "content": "内容",
+      "contentPlaceholder": "URL またはテキストを入力...",
+      "errorLevel": "誤り訂正レベル",
+      "selectLevel": "レベルを選択",
+      "levels": {
+        "low": "低（{percent}%）",
+        "medium": "中（{percent}%）",
+        "quartile": "やや高（{percent}%）",
+        "high": "高（{percent}%）"
+      },
+      "size": "サイズ（{size}px）",
+      "clear": "クリア",
+      "emptyState": "テキストを入力すると QR コードを生成します",
+      "downloadPng": "PNG をダウンロード"
+    },
+    "jwt-debugger": {
+      "title": "JWT Debugger",
+      "description": "JWT のデコード・エンコード・署名ができます。",
+      "cardDescription": "JSON Web Token（JWT）をデコード・エンコードします。",
+      "tabs": {
+        "decoder": "デコード",
+        "encoder": "エンコード"
+      },
+      "error": "エラー",
+      "decoder": {
+        "tokenLabel": "JWT トークン",
+        "tokenPlaceholder": "JWT を貼り付けてください（例: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...）",
+        "header": "ヘッダー",
+        "headerPlaceholder": "ヘッダーの JSON がここに表示されます...",
+        "payload": "ペイロード",
+        "payloadPlaceholder": "ペイロードの JSON がここに表示されます..."
+      },
+      "encoder": {
+        "securityTitle": "セキュリティについて",
+        "securityDescription": "署名は Web Crypto API を使ってすべてブラウザ内で行われます。シークレットキーがサーバーに送信されることはありません。",
+        "headerLabel": "ヘッダー（JSON）",
+        "payloadLabel": "ペイロード（JSON）",
+        "secretLabel": "シークレット（HS256 用）",
+        "encodedToken": "エンコード済みトークン",
+        "encodedPlaceholder": "JWT がここに表示されます...",
+        "copyEncodedToken": "エンコード済みトークンをコピー"
+      },
+      "errors": {
+        "invalidStructure": "JWT の形式が不正です。ドットで区切られた 3 つの部分が必要です。",
+        "illegalBase64Url": "base64url 文字列が不正です。",
+        "decodeFailed": "JWT のデコードに失敗しました",
+        "unsupportedAlg": "このクライアントサイドのデモでは、現在 HS256（および none）アルゴリズムのみ対応しています。",
+        "secretRequired": "HS256 で署名するにはシークレットを入力してください。"
+      }
+    },
+    "css-unit-converter": {
+      "title": "CSS Unit Converter",
+      "description": "px・rem・em を相互に変換します。",
+      "cardDescription": "px・rem・em を相互に変換します。",
+      "rootFontSize": "ルートのフォントサイズ (px)",
+      "pixels": "ピクセル (px)",
+      "emNote": "※ 親要素の font-size がルートの font-size と等しいものとして計算しています（1em = 1rem）"
+    },
+    "markdown-previewer": {
+      "title": "Markdown Previewer",
+      "description": "GFM 対応の Markdown プレビューです。",
+      "defaultMarkdown": "# こんにちは Markdown\n\nここに Markdown を入力してください...",
+      "editor": "エディター",
+      "editorDescription": "ここに Markdown を入力します。",
+      "clear": "クリア",
+      "placeholder": "ここに Markdown を入力...",
+      "preview": "プレビュー",
+      "previewDescription": "Markdown をリアルタイムでプレビューします。"
+    },
+    "unix-timestamp-converter": {
+      "title": "Unix Timestamp Converter",
+      "description": "Unix タイムスタンプと日時を相互に変換します。",
+      "cardDescription": "Unix タイムスタンプと日時を相互に変換します。タイムゾーンにも対応しています。",
+      "currentTimestamp": "現在の Unix タイムスタンプ",
+      "seconds": "秒",
+      "pause": "一時停止",
+      "resume": "再開",
+      "inputType": "入力形式",
+      "dateString": "日時文字列",
+      "targetTimezone": "変換先タイムゾーン",
+      "selectTimezone": "タイムゾーンを選択",
+      "inputValue": "入力値",
+      "dateExamples": "例: {examples}",
+      "convert": "変換",
+      "conversionResult": "変換結果",
+      "unixTimestamp": "Unix タイムスタンプ",
+      "dateInTimezone": "日時（{timezone}）",
+      "relative": "相対時間",
+      "timezones": {
+        "utc": "UTC（協定世界時）",
+        "tokyo": "JST（日本標準時）",
+        "newYork": "EST/EDT（ニューヨーク）",
+        "losAngeles": "PST/PDT（ロサンゼルス）",
+        "london": "GMT/BST（ロンドン）",
+        "paris": "CET/CEST（パリ）",
+        "shanghai": "CST（上海）",
+        "sydney": "AEST/AEDT（シドニー）"
+      },
+      "errors": {
+        "invalidInput": "入力が無効です。形式を確認してください。"
+      }
+    },
+    "url-encoder-decoder": {
+      "title": "URL Encoder/Decoder",
+      "description": "URL エンコード・デコードを行います。",
+      "cardTitle": "URL Encoder / Decoder",
+      "cardDescription": "テキストを URL エンコード、または URL エンコードされた文字列をデコードします。",
+      "inputText": "入力テキスト",
+      "clear": "クリア",
+      "inputPlaceholder": "エンコードまたはデコードするテキストを入力...",
+      "encode": "エンコード",
+      "decode": "デコード",
+      "result": "結果",
+      "copy": "コピー",
+      "errors": {
+        "encode": "URL のエンコードに失敗しました",
+        "decode": "URL のデコードに失敗しました: 無効な URI コンポーネントです"
+      }
+    },
+    "cron-expression-generator": {
+      "title": "Cron Expression Generator",
+      "description": "Cron 式の作成と解説ができます。",
+      "tabs": {
+        "generate": "生成",
+        "explain": "解説"
+      },
+      "generator": {
+        "heading": "Cron 式を作成",
+        "description": "各フィールドを設定して Cron 式を作成します。",
+        "humanReadable": "意味: {explanation}",
+        "invalidExpression": "無効な式です"
+      },
+      "fields": {
+        "minute": "分",
+        "hour": "時",
+        "day": "日",
+        "month": "月",
+        "week": "曜日"
+      },
+      "explainer": {
+        "heading": "Cron 式を解説",
+        "description": "Cron 式を入力すると、その意味を表示します。",
+        "cronExpression": "Cron 式",
+        "placeholder": "例: */5 * * * *",
+        "error": "エラー",
+        "invalidCron": "無効な Cron 式です"
+      }
+    },
+    "lorem-ipsum-generator": {
+      "title": "Lorem Ipsum Generator",
+      "description": "ダミーテキスト（Lorem Ipsum・日本語）を生成します。",
+      "cardDescription": "レイアウト確認用のダミーテキストを生成します。",
+      "count": "生成数",
+      "unit": "単位",
+      "units": {
+        "paragraphs": "段落",
+        "sentences": "文",
+        "words": "単語"
+      },
+      "language": "言語",
+      "languages": {
+        "english": "英語",
+        "japanese": "日本語"
+      },
+      "generate": "生成",
+      "generatedText": "生成されたテキスト",
+      "copy": "コピー",
+      "outputPlaceholder": "生成されたテキストがここに表示されます..."
+    },
+    "string-case-converter": {
+      "title": "String Case Converter",
+      "description": "camelCase や snake_case など、命名規則を変換します。",
+      "cardDescription": "テキストを camelCase や snake_case などの形式に一括変換します。",
+      "inputText": "入力テキスト",
+      "inputPlaceholder": "ここにテキストを入力または貼り付け（例: hello world, camelCaseVariable）...",
+      "copyCase": "{name} をコピー"
+    },
+    "chmod-calculator": {
+      "title": "Chmod Calculator",
+      "description": "Linux/Unix のパーミッションを計算します。",
+      "cardDescription": "チェックボックスで Linux/Unix のパーミッションを計算します。",
+      "scopes": {
+        "owner": "所有者",
+        "group": "グループ",
+        "public": "その他"
+      },
+      "types": {
+        "read": "読み取り (4)",
+        "write": "書き込み (2)",
+        "execute": "実行 (1)"
+      },
+      "octalNotation": "8 進数表記（例: 755）",
+      "copyCommand": "コマンドをコピー",
+      "symbolicNotation": "シンボリック表記",
+      "commonPresets": "よく使うプリセット",
+      "presets": {
+        "p777": "777（すべて許可）",
+        "p755": "755（Web サーバー）",
+        "p644": "644（ファイル読み取り）",
+        "p600": "600（本人のみ）",
+        "p400": "400（読み取り専用）"
+      },
+      "howItWorks": {
+        "title": "仕組み",
+        "read": "<strong>読み取り (r) = 4</strong>: ファイルの内容を読み取る権限です。",
+        "write": "<strong>書き込み (w) = 2</strong>: ファイルを変更・削除する権限です。",
+        "execute": "<strong>実行 (x) = 1</strong>: ファイル（スクリプトやプログラムの場合）を実行する権限、またはディレクトリに入る権限です。",
+        "sum": "8 進数の値は、各対象（所有者・グループ・その他）ごとにこれらの値を合計したものです。"
+      }
+    },
+    "url-parser": {
+      "title": "URL Parser",
+      "description": "URL を分解して、編集・組み立てができます。",
+      "cardDescription": "URL を分解して、編集・組み立てができます。",
+      "urlString": "URL 文字列",
+      "copyUrl": "URL をコピー",
+      "protocol": "プロトコル",
+      "host": "ホスト",
+      "port": "ポート",
+      "path": "パス",
+      "hash": "ハッシュ",
+      "queryParameters": "クエリパラメーター",
+      "addParam": "パラメーターを追加",
+      "noQueryParameters": "クエリパラメーターはありません。",
+      "keyPlaceholder": "キー",
+      "valuePlaceholder": "値",
+      "removeParameter": "パラメーターを削除",
+      "errors": {
+        "invalidUrl": "無効な URL です",
+        "updateFailed": "URL の構成要素を更新できませんでした。",
+        "reconstructFailed": "構成要素から URL を再構築できませんでした。"
+      }
+    },
+    "number-base-converter": {
+      "title": "Number Base Converter",
+      "description": "2・8・10・16 進数を相互に変換します。",
+      "cardDescription": "2・8・10・16 進数に加えて、任意の基数（2〜36）にも変換できます。",
+      "reset": "リセット",
+      "error": "エラー",
+      "bases": {
+        "decimal": {
+          "name": "10 進数",
+          "placeholder": "10 進数を入力..."
+        },
+        "hex": {
+          "name": "16 進数",
+          "placeholder": "16 進数を入力..."
+        },
+        "binary": {
+          "name": "2 進数",
+          "placeholder": "2 進数を入力..."
+        },
+        "octal": {
+          "name": "8 進数",
+          "placeholder": "8 進数を入力..."
+        }
+      },
+      "copyBase": "{name}をコピー",
+      "customBase": "任意の基数",
+      "customPlaceholder": "{base} 進数を入力...",
+      "enterNumber": "数値を入力...",
+      "customAriaLabel": "{base} 進数を入力",
+      "copyCustomBase": "{base} 進数をコピー",
+      "copy": "コピー"
+    },
+    "gcd-lcm-calculator": {
+      "title": "GCD/LCM Calculator",
+      "description": "最大公約数（GCD）と最小公倍数（LCM）を求めます。",
+      "cardDescription": "2 つ以上の整数から、最大公約数（GCD）と最小公倍数（LCM）を求めます。",
+      "numbers": "数値",
+      "placeholder": "例: 12, 18 または 8 12 16",
+      "calculate": "計算",
+      "hint": "数値はカンマまたはスペースで区切ってください。",
+      "error": "エラー",
+      "errors": {
+        "atLeastTwo": "数値を 2 つ以上入力してください。",
+        "invalidInteger": "無効な入力です: 「{value}」は有効な整数ではありません。",
+        "positiveIntegers": "正の整数を入力してください。",
+        "unexpected": "計算中に予期しないエラーが発生しました。"
+      },
+      "gcdLabel": "GCD（最大公約数）",
+      "lcmLabel": "LCM（最小公倍数）",
+      "copyGcd": "GCD をコピー",
+      "gcdCopied": "GCD をコピーしました",
+      "copyLcm": "LCM をコピー",
+      "lcmCopied": "LCM をコピーしました"
+    }
+  }
+}

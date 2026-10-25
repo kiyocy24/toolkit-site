@@ -1,0 +1,521 @@
+{
+  "Metadata": {
+    "title": "Toolkit",
+    "description": "A curated collection of developer tools to boost your productivity. From formatters to generators, everything you need in one place."
+  },
+  "Header": {
+    "docs": "Docs",
+    "tools": "Tools",
+    "searchLong": "Search documentation...",
+    "searchShort": "Search..."
+  },
+  "MobileNav": {
+    "toggleMenu": "Toggle Menu",
+    "title": "Mobile Navigation",
+    "description": "Main navigation menu"
+  },
+  "CommandMenu": {
+    "placeholder": "Type a command or search...",
+    "empty": "No results found."
+  },
+  "LocaleSwitcher": {
+    "label": "Change language"
+  },
+  "Home": {
+    "followOnGithub": "Follow along on GitHub",
+    "heroTitle": "Essential Tools for Modern Engineers",
+    "heroDescription": "A curated collection of developer tools to boost your productivity. From formatters to generators, everything you need in one place.",
+    "exploreTools": "Explore Tools",
+    "featuresTitle": "Features",
+    "featuresDescription": "This project is an experiment to see how we can build a modern toolkit app with Next.js 15 and shadcn/ui.",
+    "footer": "Built by <author>kiyocy24</author>. The source code is available on <github>GitHub</github>."
+  },
+  "ToolsIndex": {
+    "title": "All Tools",
+    "description": "Browse our collection of developer tools by category."
+  },
+  "ToolsLayout": {
+    "title": "Developer Tools",
+    "description": "Simple and efficient tools for your daily development tasks.",
+    "searchPlaceholder": "Search tools...",
+    "selectPlaceholder": "Select a tool",
+    "noTools": "No tools found",
+    "noToolsMatching": "No tools found matching \"{query}\""
+  },
+  "Docs": {
+    "metaTitle": "Docs",
+    "title": "Introduction",
+    "paragraph1": "These are just tools I personally wanted, built for my own use. They are mainly intended for engineers.",
+    "paragraph2": "All computations run on the client side. Depending on how you use them, they may put a heavy load on your device, so please be careful.",
+    "paragraph3": "No guarantees are made about how these tools behave. Use them at your own risk."
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist.",
+    "backToHome": "Back to Home"
+  },
+  "Categories": {
+    "Core": "Core",
+    "Utility": "Utility",
+    "Development": "Development",
+    "Security": "Security",
+    "Database": "Database",
+    "Math": "Math",
+    "Date": "Date"
+  },
+  "Tools": {
+    "json-formatter": {
+      "title": "JSON Formatter",
+      "description": "Format and validate your JSON data.",
+      "cardDescription": "Format and validate your JSON data.",
+      "inputJson": "Input JSON",
+      "clear": "Clear",
+      "dropFileHere": "Drop file here",
+      "placeholder": "Paste your JSON here...",
+      "format": "Format",
+      "minify": "Minify",
+      "output": "Output",
+      "copy": "Copy",
+      "errors": {
+        "syntaxAt": "Syntax Error: {message} (Line {line}, Column {column})",
+        "syntax": "Syntax Error: {message}",
+        "invalidJson": "Invalid JSON",
+        "fileReadFailed": "Failed to read file."
+      }
+    },
+    "base64-converter": {
+      "title": "Base64 Converter",
+      "description": "Encode and decode Base64 strings.",
+      "cardDescription": "Encode and decode Base64 strings.",
+      "tabs": {
+        "encode": "Encode",
+        "decode": "Decode"
+      },
+      "input": "Input",
+      "output": "Output",
+      "clear": "Clear",
+      "copy": "Copy",
+      "placeholders": {
+        "encode": "Type text to encode...",
+        "decode": "Paste Base64 string to decode..."
+      },
+      "errors": {
+        "invalidEncode": "Invalid input for encode",
+        "invalidDecode": "Invalid input for decode"
+      }
+    },
+    "uuid-generator": {
+      "title": "UUID Generator",
+      "description": "Generate random UUIDs v4.",
+      "cardDescription": "Generate random v4 UUIDs.",
+      "count": "Count (1-50)",
+      "generate": "Generate",
+      "generatedUuids": "Generated UUIDs",
+      "copyAll": "Copy All",
+      "copy": "Copy"
+    },
+    "sql-formatter": {
+      "title": "SQL Formatter",
+      "description": "Beautify your SQL queries.",
+      "cardDescription": "Beautify your SQL queries.",
+      "inputSql": "Input SQL",
+      "dialect": "Dialect",
+      "standardSql": "Standard SQL",
+      "clear": "Clear",
+      "formatSql": "Format SQL",
+      "output": "Output",
+      "copy": "Copy",
+      "errors": {
+        "formatFailed": "Could not format SQL. It might be invalid syntax for the selected dialect."
+      }
+    },
+    "regex-tester": {
+      "title": "Regex Tester",
+      "description": "Test your regular expressions.",
+      "cardDescription": "Test your regular expressions with real-time highlighting.",
+      "pattern": "Regex Pattern",
+      "patternPlaceholder": "e.g. {example}",
+      "flags": "Flags",
+      "error": "Error: {message}",
+      "testString": "Test String",
+      "testStringPlaceholder": "Paste your text here...",
+      "clear": "Clear",
+      "matchResult": "Match Result"
+    },
+    "diff-viewer": {
+      "title": "Diff Viewer",
+      "description": "Compare two text contents.",
+      "cardDescription": "Compare two text contents to see the differences.",
+      "clear": "Clear",
+      "originalText": "Original Text",
+      "originalPlaceholder": "Paste original text...",
+      "modifiedText": "Modified Text",
+      "modifiedPlaceholder": "Paste modified text...",
+      "compare": "Compare",
+      "differences": "Differences"
+    },
+    "prime-factorization": {
+      "title": "Prime Factorization",
+      "description": "Decompose integers into prime factors.",
+      "cardDescription": "Enter an integer to decompose it into its prime factors. Supports large numbers.",
+      "number": "Number",
+      "placeholder": "e.g. 123456789",
+      "factorize": "Factorize",
+      "processing": "Processing",
+      "calculatingWarning": "Calculating... Large numbers may take some time.",
+      "error": "Error",
+      "result": "Result:",
+      "primeNumber": "Prime Number",
+      "copyResult": "Copy result",
+      "resultCopied": "Result copied",
+      "errors": {
+        "tooLarge": "Input is too large. Please enter an integer with 20 digits or fewer.",
+        "invalidInteger": "Please enter a valid integer.",
+        "notGreaterThanOne": "Please enter an integer greater than 1.",
+        "invalidInput": "Invalid input."
+      }
+    },
+    "collatz-conjecture": {
+      "title": "Collatz Conjecture",
+      "description": "Visualize the 3n + 1 sequence.",
+      "cardDescription": "Visualizes the Collatz sequence for a given number. (If even: n / 2, If odd: 3n + 1)",
+      "startingNumber": "Starting Number",
+      "placeholder": "e.g. 27",
+      "calculate": "Calculate",
+      "error": "Error",
+      "steps": "Steps",
+      "maxValue": "Max Value",
+      "step": "Step",
+      "value": "Value",
+      "operation": "Operation",
+      "initialValue": "Initial value",
+      "errors": {
+        "invalidInteger": "Please enter a valid positive integer.",
+        "notPositive": "Please enter an integer greater than 0.",
+        "tooManySteps": "Calculation stopped after {maxSteps} steps. The sequence is too long to display.",
+        "invalidInput": "Invalid input."
+      }
+    },
+    "hash-generator": {
+      "title": "Hash Generator",
+      "description": "Compute text hashes (MD5, SHA).",
+      "cardDescription": "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes.",
+      "inputText": "Input Text",
+      "inputPlaceholder": "Enter text to hash...",
+      "uppercaseOutput": "Uppercase Output",
+      "outputPlaceholder": "{algo} hash will appear here...",
+      "copy": "Copy"
+    },
+    "color-converter": {
+      "title": "Color Converter",
+      "description": "Convert color formats (HEX, RGB, HSL).",
+      "cardDescription": "Convert between HEX, RGB, HSL, and CMYK formats.",
+      "pickColor": "Pick a color",
+      "copyFormat": "Copy {format}"
+    },
+    "password-generator": {
+      "title": "Password Generator",
+      "description": "Generate secure random passwords.",
+      "cardDescription": "Generate secure random passwords with customizable options.",
+      "generatedPassword": "Generated Password",
+      "copy": "Copy",
+      "refresh": "Refresh password",
+      "length": "Length: {length}",
+      "uppercase": "Uppercase ({chars})",
+      "lowercase": "Lowercase ({chars})",
+      "numbers": "Numbers ({chars})",
+      "symbols": "Symbols ({chars})"
+    },
+    "qr-code-generator": {
+      "title": "QR Code Generator",
+      "description": "Generate QR codes for URLs or text.",
+      "cardDescription": "Generate QR codes for URLs or text.",
+      "content": "Content",
+      "contentPlaceholder": "Enter URL or text...",
+      "errorLevel": "Error Correction Level",
+      "selectLevel": "Select level",
+      "levels": {
+        "low": "Low ({percent}%)",
+        "medium": "Medium ({percent}%)",
+        "quartile": "Quartile ({percent}%)",
+        "high": "High ({percent}%)"
+      },
+      "size": "Size ({size}px)",
+      "clear": "Clear",
+      "emptyState": "Enter text to generate",
+      "downloadPng": "Download PNG"
+    },
+    "jwt-debugger": {
+      "title": "JWT Debugger",
+      "description": "Decode, encode, and sign JSON Web Tokens.",
+      "cardDescription": "Decode and Encode JSON Web Tokens (JWT).",
+      "tabs": {
+        "decoder": "Decoder",
+        "encoder": "Encoder"
+      },
+      "error": "Error",
+      "decoder": {
+        "tokenLabel": "JWT Token",
+        "tokenPlaceholder": "Paste your JWT here (e.g. eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...)",
+        "header": "Header",
+        "headerPlaceholder": "Header JSON will appear here...",
+        "payload": "Payload",
+        "payloadPlaceholder": "Payload JSON will appear here..."
+      },
+      "encoder": {
+        "securityTitle": "Security Note",
+        "securityDescription": "Signing is performed entirely in your browser using the Web Crypto API. Your secret key is never sent to any server.",
+        "headerLabel": "Header (JSON)",
+        "payloadLabel": "Payload (JSON)",
+        "secretLabel": "Secret (for HS256)",
+        "encodedToken": "Encoded Token",
+        "encodedPlaceholder": "JWT will appear here...",
+        "copyEncodedToken": "Copy encoded token"
+      },
+      "errors": {
+        "invalidStructure": "Invalid JWT structure. Expected 3 parts separated by dots.",
+        "illegalBase64Url": "Illegal base64url string!",
+        "decodeFailed": "Failed to decode JWT",
+        "unsupportedAlg": "Only HS256 (and none) algorithm is currently supported in this client-side demo.",
+        "secretRequired": "Please provide a secret for HS256 signing."
+      }
+    },
+    "css-unit-converter": {
+      "title": "CSS Unit Converter",
+      "description": "Convert between px, rem, and em units.",
+      "cardDescription": "Convert between px, rem, and em units.",
+      "rootFontSize": "Root Font Size (px)",
+      "pixels": "Pixels (px)",
+      "emNote": "*Assuming parent font-size is equal to root font-size (1em = 1rem)"
+    },
+    "markdown-previewer": {
+      "title": "Markdown Previewer",
+      "description": "Preview markdown text with GFM support.",
+      "defaultMarkdown": "# Hello Markdown\n\nWrite your markdown here...",
+      "editor": "Editor",
+      "editorDescription": "Write your markdown here.",
+      "clear": "Clear",
+      "placeholder": "Type your markdown here...",
+      "preview": "Preview",
+      "previewDescription": "Real-time preview of your markdown."
+    },
+    "unix-timestamp-converter": {
+      "title": "Unix Timestamp Converter",
+      "description": "Convert timestamps to dates and vice versa.",
+      "cardDescription": "Convert between Unix Timestamps and Human-readable dates (with Timezone support).",
+      "currentTimestamp": "Current Unix Timestamp",
+      "seconds": "Seconds",
+      "pause": "Pause",
+      "resume": "Resume",
+      "inputType": "Input Type",
+      "dateString": "Date String",
+      "targetTimezone": "Target Timezone",
+      "selectTimezone": "Select timezone",
+      "inputValue": "Input Value",
+      "dateExamples": "e.g. {examples}",
+      "convert": "Convert",
+      "conversionResult": "Conversion Result",
+      "unixTimestamp": "Unix Timestamp",
+      "dateInTimezone": "Date ({timezone})",
+      "relative": "Relative",
+      "timezones": {
+        "utc": "UTC (Coordinated Universal Time)",
+        "tokyo": "JST (Japan Standard Time)",
+        "newYork": "EST/EDT (New York)",
+        "losAngeles": "PST/PDT (Los Angeles)",
+        "london": "GMT/BST (London)",
+        "paris": "CET/CEST (Paris)",
+        "shanghai": "CST (Shanghai)",
+        "sydney": "AEST/AEDT (Sydney)"
+      },
+      "errors": {
+        "invalidInput": "Invalid input. Please check your format."
+      }
+    },
+    "url-encoder-decoder": {
+      "title": "URL Encoder/Decoder",
+      "description": "Encode and decode URL strings.",
+      "cardTitle": "URL Encoder / Decoder",
+      "cardDescription": "Encode text to URL-safe format or decode URL-encoded strings.",
+      "inputText": "Input Text",
+      "clear": "Clear",
+      "inputPlaceholder": "Enter text to encode or decode...",
+      "encode": "Encode",
+      "decode": "Decode",
+      "result": "Result",
+      "copy": "Copy",
+      "errors": {
+        "encode": "Error encoding URL",
+        "decode": "Error decoding URL: Invalid URI component"
+      }
+    },
+    "cron-expression-generator": {
+      "title": "Cron Expression Generator",
+      "description": "Generate and explain cron expressions.",
+      "tabs": {
+        "generate": "Generate",
+        "explain": "Explain"
+      },
+      "generator": {
+        "heading": "Cron Generator",
+        "description": "Build a cron expression by setting the fields below.",
+        "humanReadable": "Human readable: {explanation}",
+        "invalidExpression": "Invalid expression"
+      },
+      "fields": {
+        "minute": "Minute",
+        "hour": "Hour",
+        "day": "Day",
+        "month": "Month",
+        "week": "Week"
+      },
+      "explainer": {
+        "heading": "Cron Explainer",
+        "description": "Paste a cron expression to understand what it does.",
+        "cronExpression": "Cron Expression",
+        "placeholder": "e.g. */5 * * * *",
+        "error": "Error",
+        "invalidCron": "Invalid cron expression"
+      }
+    },
+    "lorem-ipsum-generator": {
+      "title": "Lorem Ipsum Generator",
+      "description": "Generate dummy text (Lorem Ipsum, Japanese).",
+      "cardDescription": "Generate dummy text for your layouts.",
+      "count": "Count",
+      "unit": "Unit",
+      "units": {
+        "paragraphs": "Paragraphs",
+        "sentences": "Sentences",
+        "words": "Words"
+      },
+      "language": "Language",
+      "languages": {
+        "english": "English",
+        "japanese": "Japanese"
+      },
+      "generate": "Generate",
+      "generatedText": "Generated Text",
+      "copy": "Copy",
+      "outputPlaceholder": "Generated text will appear here..."
+    },
+    "string-case-converter": {
+      "title": "String Case Converter",
+      "description": "Convert text between different naming cases.",
+      "cardDescription": "Convert text between various naming conventions and formats.",
+      "inputText": "Input Text",
+      "inputPlaceholder": "Type or paste text here (e.g. hello world, camelCaseVariable)...",
+      "copyCase": "Copy {name}"
+    },
+    "chmod-calculator": {
+      "title": "Chmod Calculator",
+      "description": "Calculate Linux/Unix file permissions.",
+      "cardDescription": "Calculate Linux/Unix file permissions visually.",
+      "scopes": {
+        "owner": "Owner",
+        "group": "Group",
+        "public": "Public"
+      },
+      "types": {
+        "read": "Read (4)",
+        "write": "Write (2)",
+        "execute": "Execute (1)"
+      },
+      "octalNotation": "Octal Notation (e.g. 755)",
+      "copyCommand": "Copy command",
+      "symbolicNotation": "Symbolic Notation",
+      "commonPresets": "Common Presets",
+      "presets": {
+        "p777": "777 (Everything)",
+        "p755": "755 (Web Server)",
+        "p644": "644 (File Read)",
+        "p600": "600 (Private)",
+        "p400": "400 (Read Only)"
+      },
+      "howItWorks": {
+        "title": "How it works",
+        "read": "<strong>Read (r) = 4</strong>: Permission to read the file's content.",
+        "write": "<strong>Write (w) = 2</strong>: Permission to modify or delete the file.",
+        "execute": "<strong>Execute (x) = 1</strong>: Permission to execute the file (if it's a script/program) or enter directory.",
+        "sum": "The octal number is the sum of these values for each scope (Owner, Group, Public)."
+      }
+    },
+    "url-parser": {
+      "title": "URL Parser",
+      "description": "Parse, edit, and rebuild URLs.",
+      "cardDescription": "Parse, edit, and reconstruct URLs.",
+      "urlString": "URL String",
+      "copyUrl": "Copy URL",
+      "protocol": "Protocol",
+      "host": "Host",
+      "port": "Port",
+      "path": "Path",
+      "hash": "Hash",
+      "queryParameters": "Query Parameters",
+      "addParam": "Add Param",
+      "noQueryParameters": "No query parameters.",
+      "keyPlaceholder": "Key",
+      "valuePlaceholder": "Value",
+      "removeParameter": "Remove parameter",
+      "errors": {
+        "invalidUrl": "Invalid URL",
+        "updateFailed": "Failed to update URL component.",
+        "reconstructFailed": "Failed to reconstruct URL from components."
+      }
+    },
+    "number-base-converter": {
+      "title": "Number Base Converter",
+      "description": "Convert numbers between Binary, Octal, Decimal, and Hex.",
+      "cardDescription": "Convert numbers between Binary (2), Octal (8), Decimal (10), Hexadecimal (16), and arbitrary bases (2-36).",
+      "reset": "Reset",
+      "error": "Error",
+      "bases": {
+        "decimal": {
+          "name": "Decimal (10)",
+          "placeholder": "Enter decimal number..."
+        },
+        "hex": {
+          "name": "Hexadecimal (16)",
+          "placeholder": "Enter hex number..."
+        },
+        "binary": {
+          "name": "Binary (2)",
+          "placeholder": "Enter binary number..."
+        },
+        "octal": {
+          "name": "Octal (8)",
+          "placeholder": "Enter octal number..."
+        }
+      },
+      "copyBase": "Copy {name}",
+      "customBase": "Custom Base",
+      "customPlaceholder": "Enter base {base} number...",
+      "enterNumber": "Enter number...",
+      "customAriaLabel": "Enter base {base} number",
+      "copyCustomBase": "Copy Base {base}",
+      "copy": "Copy"
+    },
+    "gcd-lcm-calculator": {
+      "title": "GCD/LCM Calculator",
+      "description": "Calculate Greatest Common Divisor and Least Common Multiple.",
+      "cardDescription": "Enter two or more non-negative integers to calculate their Greatest Common Divisor (GCD) and Least Common Multiple (LCM).",
+      "numbers": "Numbers",
+      "placeholder": "e.g. 12, 18 or 8 12 16",
+      "calculate": "Calculate",
+      "hint": "Separate numbers with commas or spaces.",
+      "error": "Error",
+      "errors": {
+        "atLeastTwo": "Please enter at least two numbers.",
+        "invalidInteger": "Invalid input: \"{value}\" is not a valid integer.",
+        "positiveIntegers": "Please enter positive integers.",
+        "unexpected": "An unexpected error occurred during calculation."
+      },
+      "gcdLabel": "GCD (Greatest Common Divisor)",
+      "lcmLabel": "LCM (Least Common Multiple)",
+      "copyGcd": "Copy GCD",
+      "gcdCopied": "GCD copied",
+      "copyLcm": "Copy LCM",
+      "lcmCopied": "LCM copied"
+    }
+  }
+}
